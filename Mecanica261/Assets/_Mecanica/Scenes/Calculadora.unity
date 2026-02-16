@@ -433,8 +433,56 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7280426449243592495, guid: 0916b9d400f3c48448e23e0294fcfec1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 882793540}
   m_SourcePrefab: {fileID: 100100000, guid: 0916b9d400f3c48448e23e0294fcfec1, type: 3}
+--- !u!1 &882793537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7280426449243592495, guid: 0916b9d400f3c48448e23e0294fcfec1, type: 3}
+  m_PrefabInstance: {fileID: 882793536}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &882793538 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7041212031141549473, guid: 0916b9d400f3c48448e23e0294fcfec1, type: 3}
+  m_PrefabInstance: {fileID: 882793536}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_InputField
+--- !u!114 &882793539 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4172286669032664156, guid: 0916b9d400f3c48448e23e0294fcfec1, type: 3}
+  m_PrefabInstance: {fileID: 882793536}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_InputField
+--- !u!114 &882793540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882793537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ef760d857dde74b9dced77ff8edafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LeverCalculadora
+  _knownWeightOneInputField: {fileID: 882793539}
+  _knownDistanceOneInputField: {fileID: 882793538}
+  _knownWeightTwoInputField: {fileID: 0}
+  _knownDistanceTwoInputField: {fileID: 0}
+  _distanceResultText: {fileID: 0}
+  _weightResultText: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
