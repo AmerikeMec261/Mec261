@@ -1,16 +1,14 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeverCalculator : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Header("Dependencies")]
+    [SerializeField] private TMP_InputField _knowWeightOneInputField;
+    [SerializeField] private TMP_InputField _knowDistanceOneInputField;
+    [SerializeField] private TMP_InputField _knowWeightTwoInputField;
+    [SerializeField] private TMP_InputField _knowDistanceTwoInputField;
+    [SerializeField] private TextMeshProUGUI _distanceResultText;
+    [SerializeField] private TextMeshProUGUI _weightResultText;
 }
