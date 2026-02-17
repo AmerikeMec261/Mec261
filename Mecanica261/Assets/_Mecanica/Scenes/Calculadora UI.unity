@@ -490,6 +490,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputField MC
       objectReference: {fileID: 0}
+    - target: {fileID: 2121005784540369095, guid: 04e24053bcc615a43a6964964a0485da, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 350
+      objectReference: {fileID: 0}
     - target: {fileID: 2563431634138599461, guid: 04e24053bcc615a43a6964964a0485da, type: 3}
       propertyPath: m_Name
       value: InputField DC
