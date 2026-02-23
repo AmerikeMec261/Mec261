@@ -40,7 +40,7 @@ public class SimplePlane : MonoBehaviour
 
     private float CalculateNormalForce()
     {
-        return CalculateWeight() * Mathf.Cos(float.Parse(_angleInputField.text));
+        return CalculateWeight() * Mathf.Cos(float.Parse(_angleInputField.text) * Mathf.Deg2Rad);
     }
 
     private float CalculateFrictionForce()
