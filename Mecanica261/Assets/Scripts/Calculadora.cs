@@ -1,16 +1,19 @@
+using NaughtyAttributes;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Calculadora : MonoBehaviour
+public class LevelCalculator : MonoBehaviour
 {
-    [Header("Dependencies")]
+    [Header("Deoendencia")]
     [SerializeField] private TMP_InputField _knowWeightOneInputField;
     [SerializeField] private TMP_InputField _knowDistanceOneInputField;
     [SerializeField] private TMP_InputField _knowWeightTwoInputField;
     [SerializeField] private TMP_InputField _knowDistanceTwoInputField;
     [SerializeField] private TextMeshProUGUI _distanceResultText;
     [SerializeField] private TextMeshProUGUI _weightResultText;
+
 
     public void CalculateSolution()
     {
@@ -26,7 +29,7 @@ public class Calculadora : MonoBehaviour
         _knowDistanceOneInputField.text = "";
         _knowWeightTwoInputField.text = "";
         _knowDistanceTwoInputField.text = "";
-        _distanceResultText.text = "0 m";
+        _distanceResultText .text= "0 m";
         _weightResultText.text = "0 N";
     }
 
@@ -37,10 +40,11 @@ public class Calculadora : MonoBehaviour
     private float CalculatorWeight()
     {
         return float.Parse(_knowWeightOneInputField.text) * float.Parse(_knowDistanceOneInputField.text) / float.Parse(_knowDistanceTwoInputField.text);
-    }
+        }
 
     private bool ValidateInput(TMP_InputField inputToValidate)
     {
         return inputToValidate.text != "";
     }
 }
+    
