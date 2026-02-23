@@ -13,7 +13,7 @@ public class Calculadora2 : MonoBehaviour
 
     public void Calculate()
     {
-        _answerLabel.text = (CalculateParaleWeight() + CalculateNormalForce()).ToString("F2") + "N";
+        _answerLabel.text = (CalculateParaleWeight() + CalculateFrictionForce()).ToString("F2") + "N";
 
     }
     private float CalculateWeight()
