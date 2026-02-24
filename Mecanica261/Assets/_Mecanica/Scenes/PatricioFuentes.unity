@@ -6743,6 +6743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb12e0a917af7cd4193ef8e627a918dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Friccion
+  force: 2148
 --- !u!1 &1658463577
 GameObject:
   m_ObjectHideFlags: 0

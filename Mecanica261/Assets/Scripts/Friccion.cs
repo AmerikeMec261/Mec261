@@ -1,8 +1,10 @@
 using UnityEngine;
 
+
 public class Friccion : MonoBehaviour
 {
     Rigidbody rb;
+    public float force = 2148f;
 
     void Start()
     {
@@ -11,6 +13,6 @@ public class Friccion : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.AddForce(Vector3.forward * 2143.8f);
+        rb.AddForce(Vector3.forward * force);
     }
 }
