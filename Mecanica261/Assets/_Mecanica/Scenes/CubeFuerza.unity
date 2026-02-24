@@ -250,7 +250,7 @@ Transform:
   m_GameObject: {fileID: 81595200}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 20.7, y: 1, z: -30.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -362,13 +362,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 594242395}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.17364816, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 40.9, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 20}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1877557798
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +510,7 @@ GameObject:
   - component: {fileID: 1891840457}
   - component: {fileID: 1891840456}
   - component: {fileID: 1891840455}
+  - component: {fileID: 1891840461}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -524,12 +525,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891840454}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d613a32f0f5fd534d8d84508a3ff77eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ForceSim
-  fuerzaAplicada: 38574
+  fuerzaAplicada: 4972
 --- !u!54 &1891840456
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -644,12 +645,27 @@ Transform:
   m_GameObject: {fileID: 1891840454}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.57, y: -0.55, z: 0}
+  m_LocalPosition: {x: -3.57, y: 2.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1891840461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891840454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fea8a57acece1347b22f115883a8966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TiroHyperbolico
+  velocidadInicial: 20
+  angulo: 45
+  gravedad: 9.8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
