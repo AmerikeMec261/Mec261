@@ -705,7 +705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AddForce
   _rigidbody: {fileID: 167207212}
-  _forceToAdd: 2143
+  _forceToAdd: 2500
 --- !u!1 &223045673
 GameObject:
   m_ObjectHideFlags: 0
