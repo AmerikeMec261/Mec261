@@ -3,7 +3,7 @@ using UnityEngine;
 public class ForceSim : MonoBehaviour
 {
     private Rigidbody rb;
-    public float fuerzaAplicada = 2150f;
+    public float fuerzaAplicada = 2143f;
 
     void Start()
     {
@@ -13,6 +13,6 @@ public class ForceSim : MonoBehaviour
     void FixedUpdate()
     {
        
-        rb.AddRelativeForce(Vector3.forward * fuerzaAplicada);
+        rb.AddRelativeForce(Vector3.right * fuerzaAplicada);
     }
 }
