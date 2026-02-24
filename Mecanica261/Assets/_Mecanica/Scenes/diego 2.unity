@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bee0e1b59c678d48832ad9a304a6fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Friccion
-  force: 2148
+  force: 3000
 --- !u!54 &310574720
 Rigidbody:
   m_ObjectHideFlags: 0
