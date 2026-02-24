@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Levercalculator : MonoBehaviour
 {
-    [Header("Dependencies")]
+    
 
   
 }
