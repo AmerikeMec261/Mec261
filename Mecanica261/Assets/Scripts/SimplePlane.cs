@@ -5,12 +5,11 @@ using UnityEngine.UI;
 public class SimplePlane : MonoBehaviour
 {
     [Header("Dependencias")]
-    [SerializeField] private TMP_InputField _weightInputField;
-    [SerializeField] private TMP_InputField _angleInputField;
-    [SerializeField] private TMP_InputField _FrictionInputField;
-    [SerializeField] private TMP_InputField _gravityInputField;
+    [SerializeField] private TMP_InputField _weightInputField;   
+    [SerializeField] private TMP_InputField _angleInputField;    
+    [SerializeField] private TMP_InputField _FrictionInputField; 
+    [SerializeField] private TMP_InputField _gravityInputField;  
     [SerializeField] private TextMeshProUGUI _answerLabel;
-
 
     public void ClearAll()
     {
@@ -19,9 +18,7 @@ public class SimplePlane : MonoBehaviour
         _FrictionInputField.text = "";
         _gravityInputField.text = "";
         _answerLabel.text = "";
-   
     }
-
 
     public void Calculate()
     {
@@ -35,7 +32,7 @@ public class SimplePlane : MonoBehaviour
 
     private float CalculateParaleWeight()
     {
-        return CalculateWeight() * Mathf.Sin(float.Parse(_angleInputField.text));
+        return CalculateWeight() * Mathf.Sin(float.Parse(_angleInputField.text) * Mathf.Deg2Rad);
     }
 
     private float CalculateNormalForce()
@@ -47,8 +44,5 @@ public class SimplePlane : MonoBehaviour
     {
         return CalculateNormalForce() * float.Parse(_FrictionInputField.text);
     }
-    
-
-
 
 }
