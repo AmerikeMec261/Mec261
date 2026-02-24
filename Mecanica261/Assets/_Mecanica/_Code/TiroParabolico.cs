@@ -6,8 +6,8 @@ public class TiroParabolico : MonoBehaviour
     [SerializeField] private Rigidbody _rigidbody;
 
     [Header("Settings")]
-    [SerializeField] private float _velocity = 20f; // Vo = 20 m/s
-    [SerializeField] private float _angle = 45f;    // Ángulo = 45°
+    [SerializeField] private float _velocity = 20f; 
+    [SerializeField] private float _angle = 45f;    
 
     private void Start()
     {
