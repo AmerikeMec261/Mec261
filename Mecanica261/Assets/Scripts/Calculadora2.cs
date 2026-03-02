@@ -47,5 +47,5 @@ public class SimplePlane : MonoBehaviour
     private float CalculateFrictionForce()
     {
         return CalculateNormalForce() * float.Parse(_FrictionInputField.text);
-    }
+    }                                                                                       
 }
