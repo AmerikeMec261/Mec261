@@ -9,26 +9,31 @@ public class Lanzamiento : MonoBehaviour
     [SerializeField] private float _velocity = 20f;
     [SerializeField] private float _angle = 45f;
 
+    [Header("Cooldown")]
+    public float cooldown = 1f;
+    private float _tiempodisparo;
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= _tiempodisparo)
         {
             Lanzar();
+            _tiempodisparo = Time.time + cooldown;
         }
-
     }
+
     private void Lanzar()
     {
-     
         GameObject newCube = Instantiate(_balaPrefab, transform.position, Quaternion.identity);
         Rigidbody rb = newCube.GetComponent<Rigidbody>();
 
         float angleInRadians = _angle * Mathf.Deg2Rad;
+
         Vector3 velocityVector = new Vector3(
             _velocity * Mathf.Cos(angleInRadians),
             _velocity * Mathf.Sin(angleInRadians),
             0f
-    );
+        );
         rb.linearVelocity = velocityVector;
     }
 }
