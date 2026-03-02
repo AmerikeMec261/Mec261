@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class SimplePlane : MonoBehaviour
+public class Relevantes : MonoBehaviour
 {
     [Header("Dependencies")]
 
