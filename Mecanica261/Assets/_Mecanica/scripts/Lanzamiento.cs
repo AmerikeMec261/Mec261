@@ -1,18 +1,14 @@
-using System.Collections;
 using UnityEngine;
 
 public class Lanzamiento : MonoBehaviour
 {
-    public float fuerzaHorizontal = 1.0f;
-    public float fuerzaVertical = 9.0f;
-    public float limiteArrastre = 4.0f;
-    public float minimoHorizontal = 0.2f;
-    public float minimoVertical = 3.0f;
     public Transform manos;
-    public float tiempoReaparicion = 3.0f;
+    public float fuerzaHorizontal = 2f;
+    public float fuerzaVertical = 6f;
+    public float tiempoReaparicion = 2f;
     private Rigidbody rb;
-    private bool arrastrando = false;
     private bool enManos = true;
+    private bool arrastrando = false;
     private Vector3 inicioArrastre;
     private Vector3 actualArrastre;
 
@@ -24,22 +20,25 @@ public class Lanzamiento : MonoBehaviour
 
     void Update()
     {
+        
         if (enManos && manos != null)
             transform.position = manos.position;
 
         if (enManos && Input.GetMouseButtonDown(0))
         {
             arrastrando = true;
-            inicioArrastre = ObtenerPuntoMouse();
+            inicioArrastre = PuntoEnSuelo();
             actualArrastre = inicioArrastre;
         }
 
-        if (enManos && Input.GetMouseButton(0) && arrastrando)
+       
+        if (enManos && arrastrando && Input.GetMouseButton(0))
         {
-            actualArrastre = ObtenerPuntoMouse();
+            actualArrastre = PuntoEnSuelo();
         }
 
-        if (enManos && Input.GetMouseButtonUp(0) && arrastrando)
+       
+        if (enManos && arrastrando && Input.GetMouseButtonUp(0))
         {
             arrastrando = false;
             Lanzar();
@@ -53,34 +52,21 @@ public class Lanzamiento : MonoBehaviour
         rb.isKinematic = false;
         rb.useGravity = true;
 
-        Vector3 vectorArrastre = inicioArrastre - actualArrastre;
+      
+        Vector3 arrastre = inicioArrastre - actualArrastre;
 
-        if (vectorArrastre.magnitude > limiteArrastre)
-            vectorArrastre = vectorArrastre.normalized * limiteArrastre;
+    
+        float velX = arrastre.x * fuerzaHorizontal;
+        float velZ = arrastre.z * fuerzaHorizontal;
+        float velY = Mathf.Abs(arrastre.z) * fuerzaVertical; 
 
-        float intensidad = vectorArrastre.magnitude;
-
-        Vector3 dirH = new Vector3(vectorArrastre.x, 0f, vectorArrastre.z);
-        if (dirH.magnitude > 0.001f)
-            dirH = dirH.normalized;
-
-        float velH = (intensidad * fuerzaHorizontal) + minimoHorizontal;
-        float velV = (intensidad * fuerzaVertical) + minimoVertical;
-
-        Vector3 velocidad = dirH * velH;
-        velocidad.y = velV;
+        Vector3 velocidad = new Vector3(velX, velY, velZ);
 
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.linearVelocity = velocidad;
 
-        StartCoroutine(Reaparecer());
-    }
-
-    IEnumerator Reaparecer()
-    {
-        yield return new WaitForSeconds(tiempoReaparicion);
-        PonerEnManos();
+        Invoke("PonerEnManos", tiempoReaparicion);
     }
 
     void PonerEnManos()
@@ -98,7 +84,8 @@ public class Lanzamiento : MonoBehaviour
             transform.position = manos.position;
     }
 
-    Vector3 ObtenerPuntoMouse()
+
+    Vector3 PuntoEnSuelo()
     {
         Plane plano = new Plane(Vector3.up, new Vector3(0f, transform.position.y, 0f));
         Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -110,7 +97,19 @@ public class Lanzamiento : MonoBehaviour
         return transform.position;
     }
 
-    public bool EstaArrastrando() { return arrastrando; }
-    public Vector3 ObtenerInicio() { return inicioArrastre; }
-    public Vector3 ObtenerActual() { return actualArrastre; }
+    
+    public bool EstaArrastrando()
+    {
+        return arrastrando && enManos;
+    }
+
+    public Vector3 ObtenerInicio()
+    {
+        return inicioArrastre;
+    }
+
+    public Vector3 ObtenerActual()
+    {
+        return actualArrastre;
+    }
 }
