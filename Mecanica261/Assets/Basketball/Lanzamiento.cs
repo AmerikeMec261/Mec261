@@ -3,28 +3,26 @@ using UnityEngine;
 public class Lanzamiento : MonoBehaviour
 {
     [Header("Dependencies")]
-    [SerializeField] private GameObject _balaPrefab;
+    [SerializeField] private GameObject _booletPrefab;
 
     [Header("Settings")]
     [SerializeField] private float _velocity = 20f;
     [SerializeField] private float _angle = 45f;
-
-    [Header("Cooldown")]
-    public float cooldown = 1f;
-    private float _tiempodisparo;
+    private float _cooldown = 1f;
+    private float _timeshoot;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= _tiempodisparo)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= _timeshoot)
         {
             Lanzar();
-            _tiempodisparo = Time.time + cooldown;
+            _timeshoot = Time.time + _cooldown;
         }
     }
 
     private void Lanzar()
     {
-        GameObject newCube = Instantiate(_balaPrefab, transform.position, Quaternion.identity);
+        GameObject newCube = Instantiate(_booletPrefab, transform.position, Quaternion.identity);
         Rigidbody rb = newCube.GetComponent<Rigidbody>();
 
         float angleInRadians = _angle * Mathf.Deg2Rad;
