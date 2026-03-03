@@ -1,52 +1,71 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class tirobasket : MonoBehaviour
 {
     [Header("Datos iniciales")]
-    public float velocidadInicial = 20f;   // m/s
-    public float angulo = 45f;             // grados
-    public float gravedad = 9.8f;          // m/s^2
+    public float velocidadInicial = 12f;
+    public float angulo = 45f;    
 
-    private float v0x;
-    private float v0y;
-    private float tiempoVuelo;
+    [Header("Configuraciï¿½n Flotado")]
+    public float amplitud = 0.5f;
+    public float velocidadflotado = 2f;
 
-    private float tiempo;
+    private Rigidbody rb;
     private Vector3 posicionInicial;
+    private bool lanzado = false;
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         posicionInicial = transform.position;
-
-        // Convertir ángulo a radianes
-        float anguloRad = angulo * Mathf.Deg2Rad;
-
-        // Calcular velocidades
-        v0x = velocidadInicial * Mathf.Cos(anguloRad);
-        v0y = velocidadInicial * Mathf.Sin(anguloRad);
-
-        // Calcular tiempo total de vuelo
-        tiempoVuelo = (2 * v0y) / gravedad;
-
-        Debug.Log("V0x = " + v0x);
-        Debug.Log("V0y = " + v0y);
-        Debug.Log("Tiempo total = " + tiempoVuelo + " s");
+        
+        rb.isKinematic = true;
     }
 
     void Update()
     {
-        tiempo += Time.deltaTime;
-
-        // Ecuaciones del movimiento
-        float x = v0x * tiempo;
-        float y = v0y * tiempo - 0.5f * gravedad * tiempo * tiempo;
-
-        transform.position = posicionInicial + new Vector3(x, y, 0);
-
-        // Si cae al suelo, detener
-        if (y < 0)
-        {
-            enabled = false;
+        if (!lanzado)
+        {            
+            float nuevoY = posicionInicial.y + Mathf.Sin(Time.time * velocidadflotado) * amplitud;
+            transform.position = new Vector3(posicionInicial.x, nuevoY, posicionInicial.z);
+            
+            if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                Lanzar();
+            }
         }
+        else
+        {            
+            if (transform.position.y < -5f)
+            {
+                Reiniciar();
+            }
+        }
+    }
+
+    void Lanzar()
+    {
+        lanzado = true;
+        
+        rb.isKinematic = false;
+        rb.useGravity = true;
+       
+        float anguloRad = angulo * Mathf.Deg2Rad;
+        float v0x = 0; 
+        float v0y = velocidadInicial * Mathf.Sin(anguloRad);
+        float v0z = velocidadInicial * Mathf.Cos(anguloRad);
+       
+        rb.linearVelocity = new Vector3(v0x, v0y, v0z);
+    }
+
+    void Reiniciar()
+    {
+        lanzado = false;
+        rb.isKinematic = true;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        transform.position = posicionInicial;
+        transform.rotation = Quaternion.identity;
     }
 }
