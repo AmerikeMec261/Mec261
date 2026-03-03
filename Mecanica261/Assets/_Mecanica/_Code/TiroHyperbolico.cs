@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;  // Agregado para Input System
 
 public class TiroHyperbolico : MonoBehaviour
 {
@@ -13,6 +14,18 @@ public class TiroHyperbolico : MonoBehaviour
 
     private float tiempo;
     private Vector3 posicionInicial;
+
+    // Variables para control manual
+    private bool disparando = false;
+    private PlayerInput playerInput;  // Referencia al Input System
+
+    void Awake()
+    {
+        // Crear InputAction automático para espacio
+        var espacioAction = new InputAction("Disparar", InputActionType.Button, "<Keyboard>/space");
+        espacioAction.performed += _ => IniciarDisparo();
+        espacioAction.Enable();
+    }
 
     void Start()
     {
@@ -35,6 +48,12 @@ public class TiroHyperbolico : MonoBehaviour
 
     void Update()
     {
+        if (!disparando)
+        {
+            tiempo = 0f;  // Reset tiempo cuando no está disparando
+            return;
+        }
+
         tiempo += Time.deltaTime;
 
         // Ecuaciones del movimiento
@@ -46,7 +65,18 @@ public class TiroHyperbolico : MonoBehaviour
         // Si cae al suelo, detener
         if (y < 0)
         {
-            enabled = false;
+            disparando = false;
+        }
+    }
+
+    // Método para iniciar el disparo manualmente
+    private void IniciarDisparo()
+    {
+        if (!disparando)
+        {
+            disparando = true;
+            tiempo = 0f;
+            Debug.Log("¡Disparo iniciado con espacio!");
         }
     }
 }
