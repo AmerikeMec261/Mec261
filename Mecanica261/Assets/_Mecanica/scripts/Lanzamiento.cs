@@ -6,18 +6,13 @@ public class Lanzamiento : MonoBehaviour
     public float fuerzaHorizontal = 1.0f;
     public float fuerzaVertical = 9.0f;
     public float limiteArrastre = 4.0f;
-
     public float minimoHorizontal = 0.2f;
     public float minimoVertical = 3.0f;
-
     public Transform manos;
     public float tiempoReaparicion = 3.0f;
-
     private Rigidbody rb;
-
     private bool arrastrando = false;
     private bool enManos = true;
-
     private Vector3 inicioArrastre;
     private Vector3 actualArrastre;
 

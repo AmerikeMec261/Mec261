@@ -4,10 +4,8 @@ public class Trayectoria : MonoBehaviour
 {
     public Lanzamiento lanzamiento;
     public Transform balon;
-
     public int puntos = 25;
     public float pasoTiempo = 0.1f;
-
     private LineRenderer linea;
 
     void Start()

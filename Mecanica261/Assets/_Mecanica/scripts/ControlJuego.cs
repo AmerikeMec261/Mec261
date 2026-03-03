@@ -8,10 +8,8 @@ public class ControlJuego : MonoBehaviour
     public TMP_Text textoPuntos;
     public TMP_Text textoRecord;
     public TMP_Text textoFinal;
-
     public GameObject botonReiniciar;
     public Lanzamiento lanzamiento; 
-
     private float tiempo = 60f;
     private int puntos = 0;
     private int record = 0;

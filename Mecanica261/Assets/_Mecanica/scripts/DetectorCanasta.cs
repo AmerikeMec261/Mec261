@@ -4,7 +4,6 @@ public class DetectorCanasta : MonoBehaviour
 {
     public ControlJuego controlJuego;
     public bool esArriba = false; 
-
     private static bool pasoPorArriba = false;
 
     void OnTriggerEnter(Collider other)
