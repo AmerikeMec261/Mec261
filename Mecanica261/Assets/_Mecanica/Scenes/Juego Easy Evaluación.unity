@@ -244,8 +244,8 @@ GameObject:
   - component: {fileID: 298996287}
   - component: {fileID: 298996286}
   - component: {fileID: 298996285}
-  - component: {fileID: 298996284}
   - component: {fileID: 298996289}
+  - component: {fileID: 298996290}
   m_Layer: 0
   m_Name: Pelotita
   m_TagString: Untagged
@@ -253,18 +253,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &298996284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 298996283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61b8857b92390a642b99fed948143cad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::tiroparabolico
 --- !u!135 &298996285
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -380,11 +368,24 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &298996290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298996283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61b8857b92390a642b99fed948143cad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::tiroparabolico
+  fuerza: {x: 14.14, y: 14.14, z: 0}
 --- !u!1 &462758804 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bf279ac4b94bc114a80d326b8cce1bb6, type: 3}
@@ -412,6 +413,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: bf279ac4b94bc114a80d326b8cce1bb6, type: 3}
+--- !u!114 &462758810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462758804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3935a409a270ec047894f87f57e64460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovimientoCesto
+  velocidad: 5
+  limite: 5
 --- !u!1 &520870128
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,13 +513,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 520870128}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 39.76, y: 1, z: -10}
+  m_LocalRotation: {x: -0, y: 0.16578206, z: -0, w: 0.9861624}
+  m_LocalPosition: {x: 8.4, y: 1, z: -61.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 19.085, z: 0}
 --- !u!114 &520870132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -702,11 +717,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bf279ac4b94bc114a80d326b8cce1bb6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.03
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bf279ac4b94bc114a80d326b8cce1bb6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bf279ac4b94bc114a80d326b8cce1bb6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -747,6 +762,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bf279ac4b94bc114a80d326b8cce1bb6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 462758809}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bf279ac4b94bc114a80d326b8cce1bb6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 462758810}
   m_SourcePrefab: {fileID: 100100000, guid: bf279ac4b94bc114a80d326b8cce1bb6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
