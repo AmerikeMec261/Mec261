@@ -2,51 +2,30 @@ using UnityEngine;
 
 public class Lanzamiento : MonoBehaviour
 {
-    [Header("Datos iniciales")]
-    public float velocidadInicial = 20f;   // m/s
-    public float angulo = 45f;             // grados
-    public float gravedad = 9.8f;          // m/s^2
+    [Header("Dependencies")]
+    [SerializeField] private Rigidbody _rigidbody;
 
-    private float v0x;
-    private float v0y;
-    private float tiempoVuelo;
+    [Header("Settings")]
+    [SerializeField] private float _velocity = 20f; // Vo = 20 m/s
+    [SerializeField] private float _angle = 45f;    // Ángulo = 45°
 
-    private float tiempo;
-    private Vector3 posicionInicial;
-
-    void Start()
+    private void Start()
     {
-        posicionInicial = transform.position;
+        // Convertimos el ángulo de grados a radianes para las funciones de Math
+        float angleInRadians = _angle * Mathf.Deg2Rad;
 
-        
-        float anguloRad = angulo * Mathf.Deg2Rad;
+        // Calculamos las componentes de la velocidad (Vox y Voy)
+        // Vox = Vo * cos(θ)
+        // Voy = Vo * sin(θ)
+        Vector3 velocityVector = new Vector3(
+            _velocity * Mathf.Cos(angleInRadians),
+            _velocity * Mathf.Sin(angleInRadians),
+            0f
+        );
 
-        // Calcular velocidades
-        v0x = velocidadInicial * Mathf.Cos(anguloRad);
-        v0y = velocidadInicial * Mathf.Sin(anguloRad);
-
-        // Calcular tiempo total de vuelo
-        tiempoVuelo = (2 * v0y) / gravedad;
-
-        Debug.Log("V0x = " + v0x);
-        Debug.Log("V0y = " + v0y);
-        Debug.Log("Tiempo total = " + tiempoVuelo + " s");
-    }
-
-    void Update()
-    {
-        tiempo += Time.deltaTime;
-
-        // Ecuaciones del movimiento
-        float x = v0x * tiempo;
-        float y = v0y * tiempo - 0.5f * gravedad * tiempo * tiempo;
-
-        transform.position = posicionInicial + new Vector3(x, y, 0);
-
-        // Si cae al suelo, detener
-        if (y < 0)
-        {
-            enabled = false;
-        }
+        // Aplicamos la velocidad inicial al Rigidbody
+        // Nota: En versiones recientes de Unity se usa linearVelocity
+        // En versiones anteriores usa: _rigidbody.velocity = velocityVector;
+        _rigidbody.linearVelocity = velocityVector;
     }
 }
