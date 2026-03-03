@@ -1811,8 +1811,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -723, y: 455}
-  m_SizeDelta: {x: 494.6218, y: 126.3229}
+  m_AnchoredPosition: {x: -723, y: 438.02588}
+  m_SizeDelta: {x: 494.6218, y: 160.2712}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &744497544
 MonoBehaviour:
@@ -1841,13 +1841,15 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 1
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Con "R" se reinicia la posicion de la pelota
+  m_Text: 'Con "R" se reinicia la posicion de la pelota
+
+    Con "A y D" se rota'
 --- !u!222 &744497545
 CanvasRenderer:
   m_ObjectHideFlags: 0
