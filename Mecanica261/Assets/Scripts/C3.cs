@@ -9,7 +9,15 @@ public class ParabolicShot : MonoBehaviour
     [SerializeField] private float _velocity = 20f; // Vo = 20 m/s
     [SerializeField] private float _angle = 45f;    // Ángulo = 45°
 
-    private void Start()
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+        Debug.Log("presionarspace");
+            PresionaLanzar();
+        }
+    }
+    public void PresionaLanzar()
     {
         // Convertimos el ángulo de grados a radianes para las funciones de Math
         float angleInRadians = _angle * Mathf.Deg2Rad;
@@ -28,4 +36,7 @@ public class ParabolicShot : MonoBehaviour
         // En versiones anteriores usa: _rigidbody.velocity = velocityVector;
         _rigidbody.linearVelocity = velocityVector;
     }
+
+ 
+    
 }
