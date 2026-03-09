@@ -4,62 +4,58 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public TiroParabolico tiro;
-    public Transform PuntodeRotacion;
-    public InputField angulo;
-    public InputField Velocidad;
-    public GameObject PaneldeReinicio;
-    public GameObject GrupoLata1;
-    public GameObject GrupoLata2;
-    public GameObject GrupoLata3;
- 
+    [Header("Objetos")]
+    [SerializeField] public TiroParabolico shoot;
+    [SerializeField] public InputField angle;
+    [SerializeField] public InputField Velocity;
+    [SerializeField] public GameObject RestartsUI;
 
-    public int MaximoTiros = 3;
-    public float VelocidadDeRotacion = 50f;
+    [Header("Valores")]
+    [SerializeField] public int MaxShoots = 3;
+    [SerializeField] public float RotationVelocity = 50f;
 
-    private int TirosGastados = 0;
+    private int WastedShoots = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        PaneldeReinicio.SetActive(false);
-        angulo.text = "45";
-        Velocidad.text = "20";
+        RestartsUI.SetActive(false);
+        angle.text = "45";
+        Velocity.text = "20";
 
-      
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKey(KeyCode.A))
-            tiro.transform.Rotate(Vector3.up * -VelocidadDeRotacion * Time.deltaTime);
+            shoot.transform.Rotate(Vector3.up * -RotationVelocity * Time.deltaTime);
         if (Input.GetKey(KeyCode.D))
-            tiro.transform.Rotate(Vector3.up * VelocidadDeRotacion * Time.deltaTime);
-        if (Input.GetKeyDown(KeyCode.Space) && TirosGastados < MaximoTiros)
-            Disparar();
+            shoot.transform.Rotate(Vector3.up * RotationVelocity * Time.deltaTime);
+        if (Input.GetKeyDown(KeyCode.Space) && WastedShoots < MaxShoots)
+            Shoot();
     }
-    void Disparar()
+    void Shoot()
     {
-        float ang = float.Parse(angulo.text);
-        float vel = float.Parse(Velocidad.text);
+        float ang = float.Parse(angle.text);
+        float vel = float.Parse(Velocity.text);
 
-        tiro.Parametros(vel, ang);
-        tiro.Disparo();
+        shoot.Parametros(vel, ang);
+        shoot.Disparo();
 
-        TirosGastados++;
-        if(TirosGastados >= MaximoTiros )
-            PaneldeReinicio?.SetActive(true);
+        WastedShoots++;
+        if(WastedShoots >= MaxShoots )
+            RestartsUI?.SetActive(true);
     
     }
 
-    public void ReinicioJuego()
+    public void GameRestart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        TirosGastados = 0;
-        tiro.Reinicio();
-        PaneldeReinicio.SetActive(false);
-        angulo.text = "45";
-        Velocidad.text = "20";
+        WastedShoots = 0;
+        shoot.Reinicio();
+        RestartsUI.SetActive(false);
+        angle.text = "45";
+        Velocity.text = "20";
     }
 }

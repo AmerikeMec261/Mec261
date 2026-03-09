@@ -60,7 +60,4 @@ public class TiroParabolico : MonoBehaviour
         
         TirosGastados = 0; 
     }
-    
-
-
 }
