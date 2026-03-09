@@ -357,10 +357,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e3545e628460f478fbb1965957b35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lanzamiento
-  _balaPrefab: {fileID: 2013930235801182247, guid: a06eb0725ad6c7f46b671a6d33d36b7c, type: 3}
+  _booletPrefab: {fileID: 2013930235801182247, guid: a06eb0725ad6c7f46b671a6d33d36b7c, type: 3}
   _velocity: 35
   _angle: 10
-  cooldown: 1.5
 --- !u!4 &376319982
 Transform:
   m_ObjectHideFlags: 0
