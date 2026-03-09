@@ -2,39 +2,37 @@
 
 public class BallLauncher : MonoBehaviour
 {
-    public GameObject pelotaPrefab;
+    public GameObject ballPrefab;
 
-    
-    public Vector3 centroAro = new Vector3(0f, 3f, 15f);
+    public Vector3 hoopCenter = new Vector3(0f, 3f, 15f);
 
-    public float fuerza = 25f;
-    public float alturaExtra = 3f;
+    public float launchForce = 25f;
+    public float extraHeight = 3f;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Disparar();
+            LaunchBall();
         }
     }
 
-    void Disparar()
+    void LaunchBall()
     {
-        GameObject nuevaPelota = Instantiate(
-            pelotaPrefab,
+        GameObject newBall = Instantiate(
+            ballPrefab,
             transform.position,
             Quaternion.identity
         );
 
-        Rigidbody rb = nuevaPelota.GetComponent<Rigidbody>();
+        Rigidbody rb = newBall.GetComponent<Rigidbody>();
 
-        
-        Vector3 direccion = centroAro - transform.position;
+        Vector3 direction = hoopCenter - transform.position;
 
-        direccion.y += alturaExtra;
+        direction.y += extraHeight;
 
-        direccion = direccion.normalized;
+        direction = direction.normalized;
 
-        rb.AddForce(direccion * fuerza, ForceMode.Impulse);
+        rb.AddForce(direction * launchForce, ForceMode.Impulse);
     }
 }
