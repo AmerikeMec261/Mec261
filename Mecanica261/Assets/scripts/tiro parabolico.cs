@@ -2,30 +2,34 @@ using UnityEngine;
 
 public class tiroparabolico : MonoBehaviour
 {
-    public Vector3 fuerza = new Vector3(14.14f, 14.14f, 0f);
-    Rigidbody rb;
+    [SerializeField] private Vector3 _force = new Vector3(14.14f, 14.14f, 0f);
+   [SerializeField] private Rigidbody _rigidbody;
 
-    private Vector3 Inicialposition;
+    private Vector3 _initialPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       rb = GetComponent<Rigidbody>();
-        Inicialposition = this.transform.position;
+       _rigidbody = GetComponent<Rigidbody>();
+        _initialPosition = this.transform.position;
     }
 
     void Update()
     {
-          if (Input.GetKeyDown(KeyCode.Space))
-          {
-            rb.AddForce(fuerza, ForceMode.VelocityChange);
-          }
+        SettingsControls();
+    }
+
+    private void SettingsControls()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _rigidbody.AddForce(_force, ForceMode.VelocityChange);
+        }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            rb.linearVelocity = Vector3.zero;
-            this.transform.position = Inicialposition;
+            _rigidbody.linearVelocity = Vector3.zero;
+            this.transform.position = _initialPosition;
         }
     }
 
-   
 }
