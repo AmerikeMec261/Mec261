@@ -2,29 +2,29 @@ using UnityEngine;
 
 public class CestaController : MonoBehaviour
 {
-    [SerializeField] private float speed = 0.5f;     
-    [SerializeField] private float range = 2.0f;     
-    private Vector3 startPosition;
-    private bool goingRight = true;
+    [SerializeField] private float _speed = 0.5f;     
+    [SerializeField] private float _range = 2.0f;     
+    private Vector3 _startPosition;
+    private bool _goingRight = true;
 
     private void Start()
     {
-        startPosition = transform.position;
+        _startPosition = transform.position;
     }
 
     private void Update()
     {
-        float step = speed * Time.deltaTime;
+        float step = _speed * Time.deltaTime;
 
-        if (goingRight)
+        if (_goingRight)
         {
             
             transform.position += Vector3.right * step;
 
            
-            if (transform.position.x >= startPosition.x + range)
+            if (transform.position.x >= _startPosition.x + _range)
             {
-                goingRight = false;
+                _goingRight = false;
             }
         }
         else
@@ -33,10 +33,10 @@ public class CestaController : MonoBehaviour
             transform.position += Vector3.left * step;
 
             
-            float minX = startPosition.x; 
+            float minX = _startPosition.x; 
             if (transform.position.x <= minX)
             {
-                goingRight = true;
+                _goingRight = true;
             }
         }
     }
