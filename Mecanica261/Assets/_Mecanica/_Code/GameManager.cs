@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
         float ang = float.Parse(angle.text);
         float vel = float.Parse(Velocity.text);
 
-        shoot.Parametros(vel, ang);
-        shoot.Disparo();
+        shoot.Parameters(vel, ang);
+        shoot.Shooting();
 
         WastedShoots++;
         if(WastedShoots >= MaxShoots )

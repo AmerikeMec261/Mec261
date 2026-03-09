@@ -29,13 +29,13 @@ public class TiroParabolico : MonoBehaviour
         }
     }
 
-    public void Parametros(float vel, float ang)
+    public void Parameters(float vel, float ang)
     { 
     _velocity = vel;
     _angle = ang;
     }
 
-    public void Disparo ()
+    public void Shooting ()
     {
     float angleInRadians = _angle * Mathf.Deg2Rad;
 
