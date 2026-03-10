@@ -2,16 +2,15 @@ using UnityEngine;
 
 public class Fuerza : MonoBehaviour
 {
-    private Rigidbody rb;
-    public float fuerzaaplicada = 2147f;
+    private Rigidbody _rigidBody;
+    public float _fuerzaAplicada = 2147f;
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        _rigidBody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        rb.AddRelativeForce(Vector2.right * fuerzaaplicada);
+        _rigidBody.AddRelativeForce(Vector2.right * _fuerzaAplicada);
     }
 }

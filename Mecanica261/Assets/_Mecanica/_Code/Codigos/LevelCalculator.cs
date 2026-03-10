@@ -14,10 +14,11 @@ public class LevelCalculator : MonoBehaviour
 
     public void CalculateSolution()
     {
-        if(ValiteInput(_knomWeigthTwoInputField))
+        if (ValiteInput(_knomWeigthTwoInputField))
         {
             _distanceResult_Text.text = CalculateDistancie().ToString("F2") + "m";
-        }else if(ValiteInput(_knomDistanceTwoInputField))
+        }
+        else if (ValiteInput(_knomDistanceTwoInputField))
         {
             _weigthResultText.text = CalculateWeigtn().ToString("F2") + "kg";
         }
