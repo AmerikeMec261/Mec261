@@ -6,7 +6,7 @@ public class TargetGoal : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Projectile"))
         {
-            Debug.Log("Goool!"); // Muestra el mensaje en la consola
+            Debug.Log("Goool!");
         }
     }
 }
