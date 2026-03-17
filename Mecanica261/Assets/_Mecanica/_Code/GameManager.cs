@@ -58,12 +58,12 @@ public class GameManager : MonoBehaviour
         _pauseButton.gameObject.SetActive(true);
         if (isPaused)
         {
-            float noSpeed = 0;
+            //* float noSpeed = 0;
             HandleAnimatorSpeed(0);
         }
         else
         {
-            float fullSpeed = 1;
+            //* float fullSpeed = 1;
             HandleAnimatorSpeed(1);
         }
     }
