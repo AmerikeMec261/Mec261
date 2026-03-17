@@ -18250,10 +18250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcdf42c0525525f4cb8653f35051bc73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallLauncher
-  pelotaPrefab: {fileID: 9031336347758430014, guid: 11dd41b9077d3b94d8fe5c76d374a850, type: 3}
-  centroAro: {x: 21.14, y: 4.13, z: 1.64}
-  fuerza: 20
-  alturaExtra: 9
+  ballPrefab: {fileID: 9031336347758430014, guid: 11dd41b9077d3b94d8fe5c76d374a850, type: 3}
+  hoopCenter: {x: 21.14, y: 4.13, z: 1.64}
+  launchForce: 25
+  extraHeight: 5
 --- !u!4 &2019883937
 Transform:
   m_ObjectHideFlags: 0
