@@ -1,0 +1,58 @@
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UIElements;
+
+public class Turret : MonoBehaviour
+{
+    [Header("Dependencies")]
+    [SerializeField] private Transform _yawPivot;
+    [SerializeField] private Transform _pitchPivot;
+    [SerializeField] private Transform _bulletSpawn;
+    [SerializeField] private GameObject _bulletPrefab;
+
+    [Header ("YawSettings")]
+    [SerializeField ] private float _yawSpeed = 90f;
+    [SerializeField ] private Vector2 _yawLimits = new Vector2 (-90f, 90f);
+
+    [Header("PichSettings")]
+    [SerializeField] private float _pitchSpeed = 90f;
+    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
+
+    public void FireProjectile()
+    {
+        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
+        currentBullet.GetComponent<Projectile>()?.Fire();
+
+    }
+
+    private void Upadate()
+    {
+        float yawInput = Input.GetKeyDown(KeyCode.A) ? -1f : Input.GetKeyDown(KeyCode.D) ? 1f : 0f;
+        float pitchInput = Input.GetKeyDown(KeyCode.W) ? 1f : Input.GetKeyDown(KeyCode.S) ? -1f : 0f;
+
+        RotateYaw(yawInput);
+        RotationPitch(pitchInput);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            FireProjectile();
+        }
+    }
+
+    private void RotateYaw(float input)
+    {
+        float yawChange = input* _yawSpeed * Time.deltaTime;
+        float newYam = Mathf.Clamp(_yawPivot.localEulerAngles.y + yawChange, _yawLimits.x, _yawLimits.y);
+
+    }
+
+    private void RotationPitch(float input)
+    {
+        float pitchChange = input* _pitchSpeed * Time.deltaTime;
+        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
+        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
+
+    }
+
+}
+
