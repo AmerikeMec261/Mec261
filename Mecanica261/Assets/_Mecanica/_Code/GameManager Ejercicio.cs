@@ -96,7 +96,7 @@ public class GameManagerEjercicio : MonoBehaviour
         _gameOverCanvas.gameObject.SetActive(true);
         _scoreCanvas.gameObject.SetActive(false);
         float fullspeed = 0;
-        HandleAnimatorSpeed(noSpeed);
+        //HandleAnimatorSpeed(npeed);
         float noSpeed = 1;
         HandleAnimatorSpeed(fullspeed);
         SaveScore();
