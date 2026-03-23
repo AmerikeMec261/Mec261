@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 6143689018398606695}
   - component: {fileID: 6838426380631819465}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: YawPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,14 +141,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 797708216551581936}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.2886238, z: -0, w: 0.9574426}
   m_LocalPosition: {x: 0.69, y: 3, z: 0}
-  m_LocalScale: {x: 6.2548857, y: 6.2548857, z: 6.2548857}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 181191995913907132}
+  - {fileID: 7798577034985232297}
   m_Father: {fileID: 8633417365859807023}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -33.551, z: 0}
 --- !u!33 &3782822691261896549
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -254,14 +254,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 836859699235657311}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.54507136, y: -0, z: -0, w: 0.8383897}
-  m_LocalPosition: {x: 0, y: 1.46, z: -3.11}
-  m_LocalScale: {x: 1, y: 3.2738004, z: 1}
+  m_LocalRotation: {x: -0.017825756, y: -0.82424456, z: -0.5652889, w: 0.027419003}
+  m_LocalPosition: {x: -1.9, y: 7, z: 21.4}
+  m_LocalScale: {x: 6.2548857, y: 20.477251, z: 6.2548857}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6240056305665365730}
-  m_Father: {fileID: 1790381620919618193}
-  m_LocalEulerAnglesHint: {x: -66.059, y: 0, z: 0}
+  m_Father: {fileID: 7798577034985232297}
+  m_LocalEulerAnglesHint: {x: -68.884, y: -176.013, z: -0.257}
 --- !u!33 &7715338477617015460
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -454,6 +454,38 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2603152360560144893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7798577034985232297}
+  m_Layer: 0
+  m_Name: PitchPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7798577034985232297
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603152360560144893}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.012337469, y: -0.000000029802322, z: 0.0000000011641532, w: 0.99992394}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 181191995913907132}
+  m_Father: {fileID: 1790381620919618193}
+  m_LocalEulerAnglesHint: {x: -1.414, y: 0, z: 0}
 --- !u!1 &6404578062528597485
 GameObject:
   m_ObjectHideFlags: 0
