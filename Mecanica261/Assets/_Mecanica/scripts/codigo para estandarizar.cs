@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     public void Paused()
     {
         IsPaused = !IsPaused;
-        _player.GetComponent<player>().Pause();
+       // _player.GetComponent<player>().Pause();
         _pauseButton.gameObject.SetActive(true);
         if (IsPaused)
         {

@@ -1,16 +1,26 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
-public class Cañom : MonoBehaviour
+public class Turret : MonoBehaviour
 {
+    [Header("Dependencies")]
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
-    [SerializeField] private Transform _bulletPrefab;
+    [SerializeField] private GameObject _bulletPrefab;
 
     [Header("Yaw Settings")]
+    [SerializeField] private float _yawSpeed = 90f;
+    [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
+
+    [Header("Pitch Settings")]
     [SerializeField] private float _pitchSpeed = 90f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
+
+    public void FireProjectile()
+    {
+        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
+        currentBullet.GetComponent<IProjectile>()?.Fire();
+    }
 
     private void Update()
     {
@@ -24,7 +34,6 @@ public class Cañom : MonoBehaviour
         {
             FireProjectile();
         }
-
     }
 
     private void RotateYaw(float input)
@@ -36,9 +45,8 @@ public class Cañom : MonoBehaviour
 
     private void RotatePitch(float input)
     {
-        float pitchChange = input * _pitchSpeed * Time.deltaTime;   
-        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y); 
-        _pitchPivot
+        float pitchChange = input * _pitchSpeed * Time.deltaTime;
+        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
+        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
     }
 }
-
