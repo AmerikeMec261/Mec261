@@ -21,11 +21,11 @@ public class Turret : MonoBehaviour
     public void FireProjectile()
     {
         GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-        currentBullet.GetComponent<Projectile>()?.Fire();
+        currentBullet.GetComponent<IProjectile>()?.Fire();
 
     }
 
-    private void Upadate()
+    private void Update()
     {
         float yawInput = Input.GetKeyDown(KeyCode.A) ? -1f : Input.GetKeyDown(KeyCode.D) ? 1f : 0f;
         float pitchInput = Input.GetKeyDown(KeyCode.W) ? 1f : Input.GetKeyDown(KeyCode.S) ? -1f : 0f;
