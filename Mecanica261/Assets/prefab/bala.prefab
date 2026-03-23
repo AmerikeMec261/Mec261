@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2019704081394536337}
   - component: {fileID: 277976587092058687}
   - component: {fileID: 1598254636422242380}
+  - component: {fileID: -664270855087363482}
   m_Layer: 0
   m_Name: bala
   m_TagString: Untagged
@@ -156,3 +157,16 @@ MonoBehaviour:
   velocidadInicial: 20
   angulo: 45
   gravedad: 9.8
+--- !u!114 &-664270855087363482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3607115131239370192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3782093f3d26ab14c93b25e494753f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::bullet
+  _speed: 200
