@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1570312850824823239}
   - component: {fileID: 6684563006804172326}
   - component: {fileID: 2898003820313268454}
-  - component: {fileID: 3850707857071765570}
   - component: {fileID: 8361034109266545214}
+  - component: {fileID: 2271901713087366119}
   m_Layer: 0
   m_Name: Proyectile
   m_TagString: Untagged
@@ -114,23 +114,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3850707857071765570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8405396284614659364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7d9de9b2213c4f46b5fc0f0ed78507b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Cannonball
-  rb: {fileID: 8361034109266545214}
-  _velocity: 20
-  _angle: 45
-  direction: {x: 0, y: 0, z: 1}
-  _enabled: 0
 --- !u!54 &8361034109266545214
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -158,3 +141,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2271901713087366119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8405396284614659364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 705a046b08ce0f345993208a16f18e86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleBullet
+  _speed: 20
