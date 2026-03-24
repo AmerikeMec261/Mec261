@@ -27,8 +27,11 @@ public class Turret : MonoBehaviour
 
     private void Update()
     {
-        float yawInput = Input.GetKeyDown(KeyCode.A) ? -1f : Input.GetKeyDown(KeyCode.D) ? 1f : 0f;
-        float pitchInput = Input.GetKeyDown(KeyCode.W) ? 1f : Input.GetKeyDown(KeyCode.S) ? -1f : 0f;
+        float yawInput = Input.GetKey(KeyCode.A) ? -1f :
+                 Input.GetKey(KeyCode.D) ? 1f : 0f;
+
+        float pitchInput = Input.GetKey(KeyCode.W) ? 1f :
+                           Input.GetKey(KeyCode.S) ? -1f : 0f;
 
         RotateYaw(yawInput);
         RotationPitch(pitchInput);
@@ -39,11 +42,14 @@ public class Turret : MonoBehaviour
         }
     }
 
+    private float currentYaw = 0f;
+
     private void RotateYaw(float input)
     {
-        float yawChange = input* _yawSpeed * Time.deltaTime;
-        float newYam = Mathf.Clamp(_yawPivot.localEulerAngles.y + yawChange, _yawLimits.x, _yawLimits.y);
+        currentYaw += input * _yawSpeed * Time.deltaTime;
+        currentYaw = Mathf.Clamp(currentYaw, _yawLimits.x, _yawLimits.y);
 
+        _yawPivot.localEulerAngles = new Vector3(0f, currentYaw, 0f);
     }
 
     private void RotationPitch(float input)
