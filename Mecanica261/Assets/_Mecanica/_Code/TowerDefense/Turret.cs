@@ -16,12 +16,6 @@ public class Turret : MonoBehaviour
     [SerializeField] private float _pitchSpeed = 90f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
-    public void FireProjectile()
-    {
-        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-        currentBullet.GetComponent<IProjectile>()?.Fire();
-    }
-
     private void Update()
     {
         float yawInput = Input.GetKey(KeyCode.A) ? -1f : Input.GetKey(KeyCode.D) ? 1f : 0f;
@@ -34,6 +28,20 @@ public class Turret : MonoBehaviour
         {
             FireProjectile();
         }
+    }
+
+    public void AimAtTarget(Vector3 targetPosition)
+    {
+        Vector3 directionToTarget = targetPosition - _yawPivot.position;
+        float targetYaw = Mathf.Atan2(directionToTarget.x, directionToTarget.z) * Mathf.Rad2Deg;
+        YawTurret(targetYaw);
+        PitchTurret(CalculateFireAngle(Vector3.Distance(transform.position, targetPosition)));
+    }
+
+    private void FireProjectile()
+    {
+        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
+        currentBullet.GetComponent<IProjectile>()?.Fire();
     }
 
     private void RotateYaw(float input)
@@ -49,4 +57,38 @@ public class Turret : MonoBehaviour
         float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
         _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
     }
+
+    private void YawTurret(float angleToRotateTo)
+    {
+        float currentYaw = _yawPivot.localEulerAngles.y;
+        float targetYaw = Mathf.Clamp(angleToRotateTo, _yawLimits.x, _yawLimits.y);
+        float newYaw = Mathf.MoveTowardsAngle(currentYaw, targetYaw, _yawSpeed * Time.deltaTime);
+        _yawPivot.localEulerAngles = new Vector3(_yawPivot.localEulerAngles.x, newYaw, _yawPivot.localEulerAngles.z);
+    }
+
+    private void PitchTurret(float angleToRotateTo)
+    {
+        float currentPitch = _pitchPivot.localEulerAngles.x;
+        float targetPitch = Mathf.Clamp(angleToRotateTo, _pitchLimits.x, _pitchLimits.y);
+        float newPitch = Mathf.MoveTowardsAngle(currentPitch, targetPitch, _pitchSpeed * Time.deltaTime);
+        _pitchPivot.localEulerAngles = new Vector3(newPitch, _pitchPivot.localEulerAngles.y, _pitchPivot.localEulerAngles.z);
+    }
+
+    private float CalculateFireAngle(float distanceToTarget)
+    {
+        float angleOne = (Mathf.Asin( ( (9.81f * distanceToTarget) / Mathf.Pow(_bulletPrefab.GetComponent<IProjectile>().GetSpeed(), 2))) * Mathf.Rad2Deg)/ 2;
+        float angleTwo = (180 - Mathf.Asin(((9.81f * distanceToTarget) / Mathf.Pow(_bulletPrefab.GetComponent<IProjectile>().GetSpeed(), 2))) * Mathf.Rad2Deg) / 2;
+
+        Debug.Log($"Angle One: {angleOne}, Angle Two: {angleTwo}");
+
+        if (angleOne > angleTwo)
+        {
+            return angleOne;
+        }
+        else
+        {
+            return angleTwo;
+        }
+    }
+
 }

@@ -10,4 +10,9 @@ public class SimpleBullet : MonoBehaviour, IProjectile
     {
         GetComponent<Rigidbody>().linearVelocity = transform.forward * _speed;
     }
+
+    public float GetSpeed()
+    {
+        return _speed;
+    }
 }
