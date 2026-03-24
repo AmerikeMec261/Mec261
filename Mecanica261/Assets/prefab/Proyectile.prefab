@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6684563006804172326}
   - component: {fileID: 2898003820313268454}
   - component: {fileID: 8361034109266545214}
-  - component: {fileID: 2271901713087366119}
+  - component: {fileID: 8687179720596029244}
   m_Layer: 0
   m_Name: Proyectile
   m_TagString: Untagged
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2271901713087366119
+--- !u!114 &8687179720596029244
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8405396284614659364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 705a046b08ce0f345993208a16f18e86, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c7d73d5cfd30464bbe745fe7a63b770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleBullet
   _speed: 20

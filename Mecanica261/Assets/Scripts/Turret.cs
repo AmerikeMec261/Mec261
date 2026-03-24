@@ -7,7 +7,7 @@ public class Turret : MonoBehaviour
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private GameObject _bulletPrefab;
-
+    
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 90f;
     [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
@@ -15,6 +15,15 @@ public class Turret : MonoBehaviour
     [Header("Pitch Settings")]
     [SerializeField] private float _pitchSpeed = 90f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
+
+    [Header("Rotation")]
+    [SerializeField] private float _rotationVelocity = 90f;
+
+    public void RotateTurret(float pitch,float yaw)
+    {
+        Quaternion rotation = Quaternion.Euler(pitch,yaw,0f);
+    }
+
 
     public void FireProjectile()
     {
