@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+// CorregidoEnClase
 public class ParabolicShot : MonoBehaviour
 {
     [Header("Dependencies")]
@@ -13,7 +13,7 @@ public class ParabolicShot : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-        Debug.Log("presionarspace");
+        Debug.Log("Touhspace");
             PresionaLanzar();
         }
     }
