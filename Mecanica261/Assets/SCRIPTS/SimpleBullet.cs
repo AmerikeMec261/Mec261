@@ -3,7 +3,7 @@ using UnityEngine;
 public class SimpleBullet : MonoBehaviour,IProjectile
 {
     [Header("Settings")]
-    [SerializeField] private float _speed = 25f;
+    [SerializeField] private float _speed = 20f;
 
     public void Fire()
     {
