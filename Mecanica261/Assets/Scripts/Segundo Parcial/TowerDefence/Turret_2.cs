@@ -41,22 +41,33 @@ public class Turret_2 : MonoBehaviour
         }
     }
 
-    private void RotateYaw(float input)
+    private void AutoAim()
     {
-        float yawChange = input * _yawSpeed * Time.deltaTime;
-        float newYaw = Mathf.Clamp(_yawPivot.localEulerAngles.y + yawChange, _yawLimits.x, _yawLimits.y);
+        Vector3 origin = _bulletSpawn.position;
+        Vector3 targetPos = _target.position;
 
-        _yawPivot.localEulerAngles = new Vector3(0f, newYaw, 0f);
+        // yaw
+        Vector3 dir = targetPos - _yawPivot.position;
+        dir.y = 0;
+
+        if (dir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(dir);
+            float yaw = ClampAngle(targetRot.eulerAngles.y, _yawLimits.x, _yawLimits.y);
+            _yawPivot.localEulerAngles = new Vector3(0f, yaw, 0f);
+        }
+
+        // PITCH (TIRO PARABOLICO)
+        if (SolveBallisticAngleFull(origin, targetPos, _projectileSpeed, out float angle))
+        {
+            float angleDeg = angle * Mathf.Rad2Deg;
+            float clampedPitch = Mathf.Clamp(angleDeg, _pitchLimits.x, _pitchLimits.y);
+            Vector3 current = _yawPivot.localEulerAngles;
+            _yawPivot.localEulerAngles = new Vector3(-clampedPitch, current.y, 0f);
+        }
     }
 
-    private void RotatePitch(float input)
-    {
-        float pitchChange = input * _pitchSpeed * Time.deltaTime;
-        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.x + pitchChange, _pitchLimits.x, _pitchLimits.y);
-
-        _pitchPivot.localEulerAngles = new Vector3(newPitch, 0f, 0f);
-    }
-
+    //ANGULO DE TIRO HORIZONTAL
     private bool SolveBallisticAngle(Vector3 origin, Vector3 target, float speed, out float angle)
     {
         float g = Physics.gravity.magnitude;
@@ -82,30 +93,37 @@ public class Turret_2 : MonoBehaviour
         return true;
     }
 
-    private void AutoAim()
+    //TIRO PARABOLICO CON ALTURA DE OBJETIVO
+    private bool SolveBallisticAngleFull(Vector3 origin, Vector3 target, float speed, out float angle)
     {
-        Vector3 targetPos = _target.position;
+        float g = Physics.gravity.magnitude;
 
-        // YAW
-        Vector3 dir = targetPos - _yawPivot.position;
-        dir.y = 0;
+        Vector3 flat = new Vector3(target.x - origin.x, 0, target.z - origin.z);
+        float x = flat.magnitude;
 
-        if (dir.sqrMagnitude > 0.001f)
+        float deltaY = target.y - origin.y;
+
+        float v2 = speed * speed;
+        float v4 = v2 * v2;
+
+        float inside = v4 - g * (g * x * x + 2 * deltaY * v2);
+
+        if (inside < 0f)
         {
-            Quaternion targetRot = Quaternion.LookRotation(dir);
-            float clampedYaw = ClampAngle(targetRot.eulerAngles.y, _yawLimits.x, _yawLimits.y);
-
-            _yawPivot.localEulerAngles = new Vector3(0f, clampedYaw, 0f);
+            angle = 0f;
+            return false;
         }
 
-        // PITCH
-        if (SolveBallisticAngle(_bulletSpawn.position, targetPos, _projectileSpeed, out float angle))
-        {
-            float pitchDeg = angle * Mathf.Rad2Deg;
-            float clampedPitch = Mathf.Clamp(pitchDeg, _pitchLimits.x, _pitchLimits.y);
-            _pitchPivot.localEulerAngles = new Vector3(-clampedPitch, 0f, 0f);
-        }
+        float sqrt = Mathf.Sqrt(inside);
+
+        float low = Mathf.Atan((v2 - sqrt) / (g * x));
+        float high = Mathf.Atan((v2 + sqrt) / (g * x));
+
+        angle = _useHighArc ? high : low;
+
+        return true;
     }
+
     private float ClampAngle(float angle, float min, float max)
     {
         angle = NormalizeAngle(angle);

@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[RequireComponent (typeof(Rigidbody))]
-public class SimpleBullet : MonoBehaviour , IProjectile
+[RequireComponent(typeof(Rigidbody))]
+public class SimpleBullet : MonoBehaviour, IProjectile
 {
     [Header("Setting")]
     [SerializeField] private float _speed = 20f;
