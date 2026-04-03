@@ -1,8 +1,12 @@
 using UnityEngine;
 
 public interface IProjectile
-{
-    public void Fire();
+{   
+    float Speed { get; }
+    float Damage { get; }
+    void Fire();
+
+    void DealDamage(float amount);
 
 
 }
