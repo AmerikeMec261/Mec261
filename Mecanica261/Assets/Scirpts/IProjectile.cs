@@ -1,4 +1,7 @@
 public interface IProjectile
 {
-    public void Fire();
+    float Speed { get; }
+    float Damage { get; }
+    void Fire();
+    void DealDamage(IDamageable traget);
 }
