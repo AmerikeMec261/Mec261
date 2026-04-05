@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IEnemy 
+public interface Enemy 
 {
     float Speed { get; }
     float Shield { get; }
