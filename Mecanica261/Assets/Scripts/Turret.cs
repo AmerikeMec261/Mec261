@@ -10,6 +10,15 @@ public class Turret : MonoBehaviour
     [Header("Crosshair")]
     [SerializeField] private Transform _crosshair;
 
+    [Header("Projectile")]
+    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Transform _spawnPoint;
+
+    [SerializeField] private GameObject _currentProjectilePrefab;
+
+    [SerializeField] private GameObject _simpleBulletPrefab;
+    [SerializeField] private GameObject _explosiveBulletPrefab;
+
     private Camera _camera;
 
     private void Start()
@@ -20,6 +29,15 @@ public class Turret : MonoBehaviour
     private void Update()
     {
         FollowMouse();
+
+        if (Input.GetMouseButtonDown(0))
+            FireProjectile();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            _currentProjectilePrefab = _simpleBulletPrefab;
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            _currentProjectilePrefab = _explosiveBulletPrefab;
     }
 
     private void FollowMouse()
@@ -31,13 +49,14 @@ public class Turret : MonoBehaviour
             Vector3 target = hit.point;
 
             // mover retícula
-            _crosshair.position = target;
+            _crosshair.position = target + Vector3.up * 0.02f;
+            
 
             // YAW (horizontal)
             Vector3 flatDirection = target - _yawPivot.position;
             flatDirection.y = 0;
 
-            _yawPivot.rotation = Quaternion.LookRotation(flatDirection);
+            _yawPivot.rotation = Quaternion.LookRotation(-flatDirection);
 
             // PITCH (vertical)
             Vector3 fullDirection = target - _pitchPivot.position;
@@ -46,9 +65,7 @@ public class Turret : MonoBehaviour
 
             float angle = CalculateHighAngle(distance, height, 20f);
 
-            Vector3 angles = _pitchPivot.localEulerAngles;
-            angles.x = -angle;
-            _pitchPivot.localEulerAngles = angles;
+            _pitchPivot.localRotation = Quaternion.Euler(2f, 0f, 0f);
         }
     }
     private float CalculateHighAngle(float distance, float height, float speed)
@@ -61,7 +78,10 @@ public class Turret : MonoBehaviour
 
         if (discriminant < 0)
         {
-            return 45f; // no hay solución, ángulo por defecto
+            Vector3 maxPoint = _yawPivot.position + _yawPivot.forward * _maxDistance;
+            _crosshair.position = maxPoint + Vector3.up * 0.02f;
+
+            return 45f;
         }
 
         float angle = Mathf.Atan(
@@ -71,4 +91,22 @@ public class Turret : MonoBehaviour
 
         return angle * Mathf.Rad2Deg;
     }
+
+    private void FireProjectile()
+    {
+        GameObject bullet = Instantiate(
+            _bulletPrefab,
+            _spawnPoint.position,
+            _spawnPoint.rotation
+        );
+
+        IProjectile projectile = bullet.GetComponent<IProjectile>();
+
+        if (projectile != null)
+        {
+            projectile.Fire();
+        }
+    }
+
+
 }
