@@ -1,64 +1,74 @@
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 
 public class Turret : MonoBehaviour
 {
-    [Header("Dependencies")]
+    [Header("Turret")]
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
-    [SerializeField] private Transform _bulletSpawn;
-    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private float _maxDistance = 20f;
 
-    [Header ("YawSettings")]
-    [SerializeField ] private float _yawSpeed = 90f;
-    [SerializeField ] private Vector2 _yawLimits = new Vector2 (-90f, 90f);
+    [Header("Crosshair")]
+    [SerializeField] private Transform _crosshair;
 
-    [Header("PichSettings")]
-    [SerializeField] private float _pitchSpeed = 90f;
-    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
+    private Camera _camera;
 
-    public void FireProjectile()
+    private void Start()
     {
-        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-        currentBullet.GetComponent<IProjectile>()?.Fire();
-
+        _camera = Camera.main;
     }
 
     private void Update()
     {
-        float yawInput = Input.GetKey(KeyCode.A) ? -1f :
-                 Input.GetKey(KeyCode.D) ? 1f : 0f;
+        FollowMouse();
+    }
 
-        float pitchInput = Input.GetKey(KeyCode.W) ? 1f :
-                           Input.GetKey(KeyCode.S) ? -1f : 0f;
+    private void FollowMouse()
+    {
+        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
-        RotateYaw(yawInput);
-        RotationPitch(pitchInput);
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            FireProjectile();
+            Vector3 target = hit.point;
+
+            // mover retícula
+            _crosshair.position = target;
+
+            // YAW (horizontal)
+            Vector3 flatDirection = target - _yawPivot.position;
+            flatDirection.y = 0;
+
+            _yawPivot.rotation = Quaternion.LookRotation(flatDirection);
+
+            // PITCH (vertical)
+            Vector3 fullDirection = target - _pitchPivot.position;
+            float distance = flatDirection.magnitude;
+            float height = fullDirection.y;
+
+            float angle = CalculateHighAngle(distance, height, 20f);
+
+            Vector3 angles = _pitchPivot.localEulerAngles;
+            angles.x = -angle;
+            _pitchPivot.localEulerAngles = angles;
         }
     }
-
-    private float currentYaw = 0f;
-
-    private void RotateYaw(float input)
+    private float CalculateHighAngle(float distance, float height, float speed)
     {
-        currentYaw += input * _yawSpeed * Time.deltaTime;
-        currentYaw = Mathf.Clamp(currentYaw, _yawLimits.x, _yawLimits.y);
+        float g = Physics.gravity.magnitude;
 
-        _yawPivot.localEulerAngles = new Vector3(0f, currentYaw, 0f);
+        float speedSquared = speed * speed;
+        float discriminant = (speedSquared * speedSquared) -
+                             g * (g * distance * distance + 2 * height * speedSquared);
+
+        if (discriminant < 0)
+        {
+            return 45f; // no hay solución, ángulo por defecto
+        }
+
+        float angle = Mathf.Atan(
+            (speedSquared + Mathf.Sqrt(discriminant)) /
+            (g * distance)
+        );
+
+        return angle * Mathf.Rad2Deg;
     }
-
-    private void RotationPitch(float input)
-    {
-        float pitchChange = input* _pitchSpeed * Time.deltaTime;
-        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
-        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
-
-    }
-
 }
-
