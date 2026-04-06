@@ -1,7 +1,7 @@
-public interface IProjectile 
+public interface IProjectile
 {
-
-    public void Fire();
-
-    public float GetSpeed();
+    float Speed { get; }
+    float Damage { get; }
+    void Fire();
+    void DoDamage();
 }
