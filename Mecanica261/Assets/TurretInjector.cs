@@ -1,49 +1,21 @@
 using UnityEngine;
 
-namespace Project.TurretSystem
+public class TurretInjector : MonoBehaviour
 {
-    public class TurretInjector : MonoBehaviour
+    [SerializeField] private Turret _turret;
+    [SerializeField] private Transform _target;
+
+    void Update()
     {
-        #region Variables
+        if (_turret == null || _target == null) return;
 
-        [SerializeField] private Turret _turret;
-        [SerializeField] private Transform _target;
+        
+        _turret.AimAt(_target.position);
 
-        #endregion Variables
-
-        #region Unity Methods
-
-        public void Fire(Vector3 targetPosition)
+        
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject bullet = Instantiate(
-                _bulletPrefab,
-                _bulletSpawn.position,
-                Quaternion.identity
-            );
-
-            if (!bullet.TryGetComponent<Rigidbody>(out Rigidbody rb)) return;
-
-            rb.useGravity = true;
-
-            Vector3 direction = targetPosition - _bulletSpawn.position;
-
-            float height = direction.y;
-            direction.y = 0;
-
-            float distance = direction.magnitude;
-
-            float gravity = Physics.gravity.y;
-
-            float angle = 45f * Mathf.Deg2Rad;
-
-            float velocity = Mathf.Sqrt(distance * -gravity / Mathf.Sin(2 * angle));
-
-            Vector3 velocityY = Vector3.up * velocity * Mathf.Sin(angle);
-            Vector3 velocityX = direction.normalized * velocity * Mathf.Cos(angle);
-
-            rb.linearVelocity = velocityX + velocityY;
+            _turret.Fire(_target.position);
         }
-
-        #endregion Unity Methods
     }
 }

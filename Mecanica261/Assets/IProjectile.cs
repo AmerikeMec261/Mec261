@@ -1,4 +1,8 @@
 public interface IProjectile
 {
-    public void Fire();
+    float Damage { get; }
+    float Speed { get; }
+
+    void Shoot(UnityEngine.Vector3 direction);
+    void DealDamage(UnityEngine.GameObject target);
 }

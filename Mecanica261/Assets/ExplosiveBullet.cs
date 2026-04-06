@@ -1,12 +1,14 @@
 using UnityEngine;
 
-public class SimpleBullet : MonoBehaviour, IProjectile
+public class ExplosiveBullet : MonoBehaviour, IProjectile
 {
     [SerializeField] private float speed;
     public float Speed => speed;
 
     [SerializeField] private float damage;
     public float Damage => damage;
+
+    [SerializeField] private float explosionRadius;
 
     private Rigidbody rb;
 
@@ -22,11 +24,16 @@ public class SimpleBullet : MonoBehaviour, IProjectile
 
     public void DealDamage(GameObject target)
     {
-        IDamageable dmg = target.GetComponent<IDamageable>();
+        Collider[] hits = Physics.OverlapSphere(transform.position, explosionRadius);
 
-        if (dmg != null)
+        foreach (var hit in hits)
         {
-            dmg.TakeDamage(damage);
+            IDamageable dmg = hit.GetComponent<IDamageable>();
+
+            if (dmg != null)
+            {
+                dmg.TakeDamage(damage);
+            }
         }
 
         Destroy(gameObject);

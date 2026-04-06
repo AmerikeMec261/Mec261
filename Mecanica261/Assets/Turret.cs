@@ -1,80 +1,79 @@
 using UnityEngine;
 
-namespace Project.TurretSystem
+public class Turret : MonoBehaviour
 {
-    public class Turret : MonoBehaviour
+    [Header("Referencias")]
+    [SerializeField] private Transform yawPivot;
+    [SerializeField] private Transform pitchPivot;
+    [SerializeField] private Transform bulletSpawn;
+
+    [Header("Proyectil")]
+    [SerializeField] private GameObject currentBulletPrefab;
+
+    [Header("Disparo")]
+    [SerializeField] private float shootForce = 20f;
+
+    
+    public void AimAt(Vector3 targetPosition)
     {
-        #region Variables
+        Vector3 direction = targetPosition - yawPivot.position;
 
-        [Header("Dependencies")]
-        [SerializeField] private Transform _yawPivot;
-        [SerializeField] private Transform _pitchPivot;
-        [SerializeField] private Transform _bulletSpawn;
-        [SerializeField] private GameObject _bulletPrefab;
+        
+        Vector3 flatDirection = new Vector3(direction.x, 0f, direction.z);
 
-        [Header("Settings")]
-        [SerializeField] private float _bulletSpeed = 20f;
-
-        #endregion Variables
-
-        #region Methods
-
-       
-        public void SetRotation(float yaw, float pitch)
+        if (flatDirection != Vector3.zero)
         {
-            _yawPivot.localRotation = Quaternion.Euler(0f, yaw, 0f);
-            _pitchPivot.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+            yawPivot.rotation = Quaternion.LookRotation(flatDirection);
         }
 
         
-        public float CalculateLaunchAngle(float distance)
+        float distance = flatDirection.magnitude;
+        float height = direction.y;
+
+        float angle = Mathf.Atan2(height, distance) * Mathf.Rad2Deg;
+
+        pitchPivot.localRotation = Quaternion.Euler(-angle, 0f, 0f);
+    }
+
+    
+    public void Fire(Vector3 targetPosition)
+    {
+        GameObject bulletObj = Instantiate(
+            currentBulletPrefab,
+            bulletSpawn.position,
+            Quaternion.identity
+        );
+
+        
+        IProjectile projectile = bulletObj.GetComponent<IProjectile>();
+
+        if (projectile == null)
         {
-            float gravity = Physics.gravity.magnitude;
-
-            float value = (distance * gravity) / (_bulletSpeed * _bulletSpeed);
-
-            
-            if (value > 1f)
-            {
-                Debug.LogWarning("No hay solución para ese disparo");
-                return 45f;
-            }
-
-            float angle = Mathf.Asin(value) * Mathf.Rad2Deg * 0.5f;
-
-            return angle;
+            Debug.LogError("El prefab no tiene IProjectile");
+            return;
         }
 
         
-        public void AimAt(Vector3 targetPosition)
-        {
-            Vector3 direction = targetPosition - _yawPivot.position;
+        Vector3 direction = targetPosition - bulletSpawn.position;
 
-            float yaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        float height = direction.y;
+        direction.y = 0;
 
-            float distance = new Vector2(direction.x, direction.z).magnitude;
+        float distance = direction.magnitude;
 
-            float pitch = CalculateLaunchAngle(distance);
+        float gravity = Physics.gravity.y;
 
-            SetRotation(yaw, pitch);
-        }
+        
+        float angle = 45f * Mathf.Deg2Rad;
 
-        public void Fire(Vector3 targetPosition)
-        {
-            GameObject bullet = Instantiate(
-                _bulletPrefab,
-                _bulletSpawn.position,
-                Quaternion.identity
-            );
+        float velocity = Mathf.Sqrt(distance * -gravity / Mathf.Sin(2 * angle));
 
-            if (!bullet.TryGetComponent<Rigidbody>(out Rigidbody rb)) return;
+        Vector3 velocityY = Vector3.up * velocity * Mathf.Sin(angle);
+        Vector3 velocityX = direction.normalized * velocity * Mathf.Cos(angle);
 
-            
-            Vector3 direction = (targetPosition - _bulletSpawn.position).normalized;
+        Vector3 finalDirection = (velocityX + velocityY).normalized;
 
-            rb.linearVelocity = direction * _bulletSpeed;
-        }
-
-        #endregion Methods
+        
+        projectile.Shoot(finalDirection);
     }
 }
