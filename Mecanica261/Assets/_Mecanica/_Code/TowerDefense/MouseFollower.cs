@@ -5,6 +5,7 @@ public class MouseFollower : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private RectTransform _targetScope;
     [SerializeField] private Camera _targetCamera;
+    [SerializeField] private SecondCameraController _cameraController;
 
     [Header("Settings")]
     [SerializeField] private LayerMask _terrainLayer;
@@ -22,5 +23,7 @@ public class MouseFollower : MonoBehaviour
             _targetScope.position = targetPosition;
             _targetScope.rotation = targetRotation;
         }
+
+        _cameraController.UpdateCameraPosition(_targetScope.position);
     }
 }

@@ -76,6 +76,14 @@ PrefabInstance:
       propertyPath: _waypointReachDistance
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8279469490606202819, guid: 63cd8daef5811bf488d88d10c5cbd2cc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279469490606202819, guid: 63cd8daef5811bf488d88d10c5cbd2cc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

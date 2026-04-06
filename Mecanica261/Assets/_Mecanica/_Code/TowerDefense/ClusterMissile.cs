@@ -3,6 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ClusterMissile : MonoBehaviour, IProjectile
 {
+    [Header("Dependencies")]
+    [SerializeField] private GameObject _explosionVFXPrefab;
+    [SerializeField] private Vector3 _explosionScale = Vector3.one;
+
     [Header("Settings")]
     [SerializeField] private float _speed = 20f;
     [SerializeField] private float _damage = 10f;
@@ -71,6 +75,7 @@ public class ClusterMissile : MonoBehaviour, IProjectile
 
     private void OnCollisionEnter(Collision collision)
     {
+        SpawnExplosionVFX(collision);
         DoDamage();
         Destroy(gameObject);
     }
@@ -95,6 +100,26 @@ public class ClusterMissile : MonoBehaviour, IProjectile
         }
 
         DrawDebugSphere(transform.position, _explosionRadius, 5f);
+    }
+
+    private void SpawnExplosionVFX(Collision collision)
+    {
+        if (_explosionVFXPrefab == null) { return; }
+
+        ContactPoint contactPoint = collision.GetContact(0);
+        Quaternion effectRotation = Quaternion.LookRotation(contactPoint.normal);
+        GameObject explosionVFXInstance = Instantiate(_explosionVFXPrefab, contactPoint.point, effectRotation);
+        explosionVFXInstance.transform.localScale = _explosionScale;
+
+        ParticleSystem particleSystem = explosionVFXInstance.GetComponent<ParticleSystem>();
+
+        if (particleSystem != null)
+        {
+            Destroy(explosionVFXInstance, particleSystem.main.duration + particleSystem.main.startLifetime.constantMax);
+            return;
+        }
+
+        Destroy(explosionVFXInstance, 5f);
     }
 
     private void DrawDebugSphere(Vector3 center, float radius, float duration)
