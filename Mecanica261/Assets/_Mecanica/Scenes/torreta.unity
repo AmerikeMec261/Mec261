@@ -405,7 +405,7 @@ Transform:
   m_GameObject: {fileID: 1125707681}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13, y: 2.85, z: 0}
+  m_LocalPosition: {x: 13, y: 1.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -563,7 +563,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -712,7 +712,8 @@ MonoBehaviour:
   _yamPivot: {fileID: 2082455778}
   _pitchPivot: {fileID: 2089238008}
   _bulletSpawn: {fileID: 540354246}
-  _bulletPrefab: {fileID: 1797069612783768706, guid: bb4f6358ec30ab947a145d63ed0ce1b8, type: 3}
+  balaSimple: {fileID: 1175415884928354899, guid: d8255d3dc4a1e8b4c8928bdc782c9d5f, type: 3}
+  balaExplosiva: {fileID: 1797069612783768706, guid: bb4f6358ec30ab947a145d63ed0ce1b8, type: 3}
   _yawSpeed: 90
   _yawLimits: {x: -180, y: 180}
   _pitchSpeed: 90

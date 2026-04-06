@@ -6,7 +6,12 @@ public class Turret : MonoBehaviour
     [SerializeField] private Transform _yamPivot;
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
-    [SerializeField] private GameObject _bulletPrefab;
+
+    [Header("Balas")]
+    [SerializeField] private GameObject balaSimple;
+    [SerializeField] private GameObject balaExplosiva;
+
+    private GameObject balaActual;
 
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 90f;
@@ -16,9 +21,14 @@ public class Turret : MonoBehaviour
     [SerializeField] private float _pitchSpeed = 90f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
+    private void Start()
+    {
+        balaActual = balaSimple;
+    }
+
     public void FireProjectile()
     {
-        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
+        GameObject currentBullet = Instantiate(balaActual, _bulletSpawn.position, _bulletSpawn.rotation);
         currentBullet.GetComponent<IProjectile>()?.Fire();
     }
 
@@ -29,6 +39,16 @@ public class Turret : MonoBehaviour
 
         RotateYaw(yawInput);
         RotatePitch(pitchInput);
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            balaActual = balaSimple;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            balaActual = balaExplosiva;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
