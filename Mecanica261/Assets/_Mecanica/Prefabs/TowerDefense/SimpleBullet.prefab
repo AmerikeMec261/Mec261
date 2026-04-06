@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1607378504725774956}
   - component: {fileID: 6970281673089127442}
   - component: {fileID: 484684396030199674}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 6981576024034313575}
   - component: {fileID: 788074280585707536}
   - component: {fileID: 189957233722144790}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SimpleBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!114 &788074280585707536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleBullet
   _speed: 20
+  _damage: 10
 --- !u!135 &189957233722144790
 SphereCollider:
   m_ObjectHideFlags: 0
