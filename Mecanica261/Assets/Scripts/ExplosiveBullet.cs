@@ -7,16 +7,16 @@ public class ExplosiveBullet : MonoBehaviour, IProjectile
     [SerializeField] private float _damage = 40f;
     [SerializeField] private float _radius = 5f;
 
-    private Rigidbody _rb;
+    private Rigidbody _rigidbodyb;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+        _rigidbodyb = GetComponent<Rigidbody>();
     }
 
     public void Fire()
     {
-        _rb.AddForce(transform.forward * _speed, ForceMode.Impulse);
+        _rigidbodyb.AddForce(transform.forward * _speed, ForceMode.Impulse);
     }
 
     public void DealDamage()

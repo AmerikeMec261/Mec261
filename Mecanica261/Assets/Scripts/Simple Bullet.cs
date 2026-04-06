@@ -1,29 +1,28 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+public class SimpleBullet : MonoBehaviour, IProjectile
+{
+    [Header("Settings")]
+    [SerializeField] private float _speed = 20f;
+    [SerializeField] private float _damage = 20f;
 
-public class SimpleBullet : MonoBehaviour,IProjectile
-     {
-        [Header("Setings")]
-        [SerializeField] private float _speed = 20f;
-        [SerializeField] private float _damage = 20f;
-
-    private Rigidbody rigidbody;
+    private Rigidbody _rigidbody;
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
+
     public void Fire()
-        {
-            GetComponent<Rigidbody>().linearVelocity = transform.forward * _speed;
-        }
-    
+    {
+        _rigidbody.AddForce(transform.forward * _speed, ForceMode.Impulse);
+    }
 
     public void DealDamage()
-     {
-        Debug.Log("Damage" + _damage);
-     }
+    {
+        Debug.Log("Damage: " + _damage);
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -37,8 +36,4 @@ public class SimpleBullet : MonoBehaviour,IProjectile
         DealDamage();
         Destroy(gameObject);
     }
-
 }
-
-
-

@@ -1,15 +1,18 @@
 using UnityEngine;
+using TMPro;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
     [Header("Enemy Stats")]
     [SerializeField] private float _health = 100f;
-    [SerializeField] private float _shield = 0f;
     [SerializeField] private float _speed = 2f;
 
     [Header("Movement")]
     [SerializeField] private Transform _pointA;
     [SerializeField] private Transform _pointB;
+
+
+    [SerializeField] private TextMeshPro _lifeText;
 
     private Transform _currentTarget;
 
@@ -40,6 +43,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         _health -= damage;
+        _lifeText .text = _health.ToString();
 
         Debug.Log(gameObject.name + " vida restante: " + _health);
 

@@ -11,19 +11,19 @@ public class Turret : MonoBehaviour
     [SerializeField] private Transform _crosshair;
 
     [Header("Projectile")]
-    [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _spawnPoint;
-
-    [SerializeField] private GameObject _currentProjectilePrefab;
 
     [SerializeField] private GameObject _simpleBulletPrefab;
     [SerializeField] private GameObject _explosiveBulletPrefab;
+
+    private GameObject _currentProjectilePrefab;
 
     private Camera _camera;
 
     private void Start()
     {
         _camera = Camera.main;
+        _currentProjectilePrefab = _simpleBulletPrefab;
     }
 
     private void Update()
@@ -31,13 +31,21 @@ public class Turret : MonoBehaviour
         FollowMouse();
 
         if (Input.GetMouseButtonDown(0))
+        {
             FireProjectile();
+        }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
             _currentProjectilePrefab = _simpleBulletPrefab;
+            Debug.Log("Bala simple seleccionada");
+        }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.E))
+        {
             _currentProjectilePrefab = _explosiveBulletPrefab;
+            Debug.Log("Bala explosiva seleccionada");
+        }
     }
 
     private void FollowMouse()
@@ -48,17 +56,13 @@ public class Turret : MonoBehaviour
         {
             Vector3 target = hit.point;
 
-            // mover retícula
             _crosshair.position = target + Vector3.up * 0.02f;
             
-
-            // YAW (horizontal)
             Vector3 flatDirection = target - _yawPivot.position;
             flatDirection.y = 0;
 
             _yawPivot.rotation = Quaternion.LookRotation(-flatDirection);
 
-            // PITCH (vertical)
             Vector3 fullDirection = target - _pitchPivot.position;
             float distance = flatDirection.magnitude;
             float height = fullDirection.y;
@@ -95,7 +99,7 @@ public class Turret : MonoBehaviour
     private void FireProjectile()
     {
         GameObject bullet = Instantiate(
-            _bulletPrefab,
+           _currentProjectilePrefab,
             _spawnPoint.position,
             _spawnPoint.rotation
         );
