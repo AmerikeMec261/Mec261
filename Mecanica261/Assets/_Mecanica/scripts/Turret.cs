@@ -45,8 +45,25 @@ public class Turret : MonoBehaviour
 
     private void RotatePitch(float input)
     {
+        float pitchActual = _pitchPivot.localEulerAngles.z;
+
+        if (pitchActual > 180f)
+        {
+            pitchActual -= 360f;
+        }
+
         float pitchChange = input * _pitchSpeed * Time.deltaTime;
-        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
-        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
+        float newPitch = Mathf.Clamp(pitchActual + pitchChange, _pitchLimits.x, _pitchLimits.y);
+
+        if (newPitch < 0f)
+        {
+            newPitch += 360f;
+        }
+
+        _pitchPivot.localEulerAngles = new Vector3(
+            _pitchPivot.localEulerAngles.x,
+            _pitchPivot.localEulerAngles.y,
+            newPitch
+        );
     }
 }
