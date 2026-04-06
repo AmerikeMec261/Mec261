@@ -16,20 +16,16 @@ public class torreta : MonoBehaviour
 
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 120f;
-    [SerializeField] private Vector2 _yawLimits = new Vector2(-180f, 180f);
-    [Tooltip("Ajusta este valor (ej. 90, -90, 180) si la torreta mira hacia un lado en lugar de al frente.")]
+    [SerializeField] private Vector2 _yawLimits = new Vector2(-180f, 180f);    
     [SerializeField] private float _yawOffset = 0f;
 
     [Header("Pitch Settings")]
     [SerializeField] private float _pitchSpeed = 90f;
-    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
-    [Tooltip("Ajusta este valor si el cañón queda muy arriba o muy abajo visualmente.")]
-    [SerializeField] private float _pitchOffset = 0f;
-    [Tooltip("If true, uses the higher parabolic arc. If false, uses the direct, lower arc.")]
+    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);    
+    [SerializeField] private float _pitchOffset = 0f;    
     [SerializeField] private bool _useHighAngle = false;
 
-    [Header("Ballistics Settings")]
-    [Tooltip("Initial velocity (V0) of the projectile in units/second.")]
+    [Header("Ballistics Settings")]    
     [SerializeField] private float _projectileVelocity = 20f;
 
     private Vector3 _tragetPosition;
@@ -43,7 +39,7 @@ public class torreta : MonoBehaviour
         UpdateAutoPitch();
         UpdateReticle();
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             FireProjectile();
         }

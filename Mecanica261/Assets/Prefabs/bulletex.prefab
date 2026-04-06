@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3923539177745967766}
   - component: {fileID: 5586777948015608624}
   - component: {fileID: 4114289017469046143}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: bulletex
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,3 +126,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::explosivebullet
   _speed: 60
+  _damage: 50
+  _explosionRadius: 5

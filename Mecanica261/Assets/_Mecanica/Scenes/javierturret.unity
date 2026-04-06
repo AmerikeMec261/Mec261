@@ -1010,7 +1010,7 @@ Transform:
   m_GameObject: {fileID: 512087235}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.48, y: 0.08, z: 0}
+  m_LocalPosition: {x: 17.48, y: 0.1, z: 0}
   m_LocalScale: {x: 0.21335, y: 0.21335, z: 0.21335}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1185,7 +1185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 657676938}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bulletspawn
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -1201,7 +1201,7 @@ Transform:
   m_GameObject: {fileID: 657676937}
   serializedVersion: 2
   m_LocalRotation: {x: 0.681998, y: -0, z: -0, w: -0.73135406}
-  m_LocalPosition: {x: 0.00000023841858, y: 1.1060011, z: 0}
+  m_LocalPosition: {x: 0, y: 1.188, z: 0.006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1369,8 +1369,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055770555}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.69488, y: -0, z: 107.16453}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 20.69488, y: 0, z: 107.16453}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1399,7 +1399,7 @@ MonoBehaviour:
   _reticle: {fileID: 512087239}
   _yawSpeed: 120
   _yawLimits: {x: -180, y: 180}
-  _yawOffset: 0
+  _yawOffset: 90
   _pitchSpeed: 90
   _pitchLimits: {x: -10, y: 90}
   _pitchOffset: 0
