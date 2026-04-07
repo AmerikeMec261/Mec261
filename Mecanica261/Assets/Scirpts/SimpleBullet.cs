@@ -26,6 +26,7 @@ public class SimpleBullet : MonoBehaviour, IProjectile
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log($"La bala chocó con: {collision.gameObject.name}");
         IDamageable damageableTarget = collision.gameObject.GetComponent<IDamageable>();
 
         if (damageableTarget != null)

@@ -153,5 +153,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b588760027b86149a61950d4e2315fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleBullet
-  _speed: 100
+  _speed: 20
   _damage: 25

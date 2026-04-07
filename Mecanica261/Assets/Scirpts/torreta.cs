@@ -57,6 +57,19 @@ public class torreta : MonoBehaviour
         currentBullet.GetComponent<IProjectile>()?.Fire();
     }
 
+    private float GetBulletSpeed()
+    {
+        if (_bulletPrefab != null)
+        {
+            IProjectile projectile = _bulletPrefab.GetComponent<IProjectile>();
+            if (projectile != null)
+            {
+                return projectile.Speed;
+            }
+        }
+        return 20f; 
+    }
+
     public bool CalculateFiringAngles(float distance, out float lowAngle, out float highAngle)
     {
         lowAngle = 0f;

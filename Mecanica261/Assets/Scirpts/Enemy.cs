@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable, IEnemyStats
 {
     [Header("Enemy stats")]
     [SerializeField] private float _health = 100f;
@@ -48,9 +48,19 @@ public class Enemy : MonoBehaviour
         if (_pointA == null || _pointB == null) return;
         transform.position = Vector3.MoveTowards(transform.position, _currentTarget.position, _speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, _currentTarget.position) < 0.1f)
-        {
-            _currentTarget = _currentTarget = _pointA ? _pointB : _pointA;
+        Vector2 currentPosXZ = new Vector2(transform.position.x, transform.position.z);
+        Vector2 targetPosXZ = new Vector2(_currentTarget.position.x, _currentTarget.position.z);
+
+        if (Vector2.Distance(currentPosXZ, targetPosXZ) < 0.5f)
+        {            
+            if (_currentTarget == _pointA)
+            {
+                _currentTarget = _pointB;
+            }
+            else
+            {
+                _currentTarget = _pointA;
+            }
         }
     }
 
