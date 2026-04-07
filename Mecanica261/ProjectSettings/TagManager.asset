@@ -3,13 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
+<<<<<<< HEAD
   tags:
   - Pelota
+=======
+  tags: []
+>>>>>>> PatricioFuentes
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
