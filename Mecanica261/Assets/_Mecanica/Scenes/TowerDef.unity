@@ -358,7 +358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1a923e5fdcfc0d42a52122187d7c9a8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.2
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1a923e5fdcfc0d42a52122187d7c9a8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -366,7 +366,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1a923e5fdcfc0d42a52122187d7c9a8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 69.74893
+      value: 43.49
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1a923e5fdcfc0d42a52122187d7c9a8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -407,6 +407,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f1a923e5fdcfc0d42a52122187d7c9a8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1637740349}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f1a923e5fdcfc0d42a52122187d7c9a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1637740353}
   m_SourcePrefab: {fileID: 100100000, guid: f1a923e5fdcfc0d42a52122187d7c9a8, type: 3}
 --- !u!4 &1162982358 stripped
 Transform:
@@ -771,10 +774,11 @@ MonoBehaviour:
   _pitchPivot: {fileID: 1162982358}
   _bulletSpawn: {fileID: 1717374657}
   _bulletPrefab: {fileID: 5386888651161711413, guid: bcf9889e923d2fd478c8c24dde5872b4, type: 3}
-  _yawSpeed: 4500
-  _yawLimits: {x: -90, y: 90}
-  _pitchSpeed: 4500
+  _target: {fileID: 1637740352}
+  _autoAimEnabled: 0
+  _manualSpeed: 90
   _pitchLimits: {x: -10, y: 90}
+  _autoRotationSpeed: 5
 --- !u!54 &1500039071
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -828,6 +832,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.025587836, y: 0.025587833, z: 0.023}
   m_Center: {x: 0, y: 0, z: -0.0005000018}
+--- !u!4 &1637740352 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f1a923e5fdcfc0d42a52122187d7c9a8, type: 3}
+  m_PrefabInstance: {fileID: 1063870850}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1637740353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637740345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab088cc5d4b65604ea8e3f1795a4d968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CestaController
+  _health: 100
+  _shield: 50
+  _speed: 2
+  _range: 5
 --- !u!1 &1717374656
 GameObject:
   m_ObjectHideFlags: 0

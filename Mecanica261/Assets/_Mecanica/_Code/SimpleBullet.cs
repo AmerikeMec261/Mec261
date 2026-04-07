@@ -1,13 +1,31 @@
 using UnityEngine;
+using static IDamage;
 
 [RequireComponent(typeof(Rigidbody))]
 public class SimpleBullet : MonoBehaviour, IProjectile
 {
-    [Header("Setting")]
+    [Header("Settings")]
     [SerializeField] private float _speed = 20f;
 
-    public void Fire()
+    private float _damage; 
+    public void SetDamage(float amount)
     {
-      GetComponent<Rigidbody>().linearVelocity = transform.forward * _speed;
+        _damage = amount;
+    }
+
+    public void Fire()
+    {       
+        GetComponent<Rigidbody>().linearVelocity = transform.forward * _speed;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IDamageable victim = other.GetComponent<IDamageable>();
+
+        if (victim != null)
+        {            
+            victim.TakeDamage(_damage);
+            Destroy(gameObject);
+        }
     }
 }

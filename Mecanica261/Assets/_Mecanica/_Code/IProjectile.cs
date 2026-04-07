@@ -2,5 +2,6 @@ using UnityEngine;
 
 public interface IProjectile
 {
-    public void Fire();
+    void Fire();
+    void SetDamage(float amount); 
 }

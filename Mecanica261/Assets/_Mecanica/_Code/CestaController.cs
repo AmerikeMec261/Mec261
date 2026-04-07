@@ -1,9 +1,14 @@
 using UnityEngine;
+using static IDamage;
 
-public class CestaController : MonoBehaviour
+public class CestaController : MonoBehaviour, IDamageable
 {
-    [SerializeField] private float _speed = 0.5f;     
-    [SerializeField] private float _range = 2.0f;     
+    [Header("Stats")]
+    [SerializeField] private float _health = 100f;
+    [SerializeField] private float _shield = 50f;
+    [SerializeField] private float _speed = 2.0f;
+    [SerializeField] private float _range = 5.0f;
+
     private Vector3 _startPosition;
     private bool _goingRight = true;
 
@@ -14,31 +19,53 @@ public class CestaController : MonoBehaviour
 
     private void Update()
     {
-        float step = _speed * Time.deltaTime;
+        Move();
+    }
 
+    private void Move()
+    {
+        float step = _speed * Time.deltaTime;
         if (_goingRight)
         {
-            
             transform.position += Vector3.right * step;
+            if (transform.position.x >= _startPosition.x + _range) _goingRight = false;
+        }
+        else
+        {
+            transform.position += Vector3.left * step;
+            if (transform.position.x <= _startPosition.x) _goingRight = true;
+        }
+    }
 
-           
-            if (transform.position.x >= _startPosition.x + _range)
+    // Metodo del daño recibido ante la bala
+    public void TakeDamage(float amount)
+    {
+        if (_shield > 0)
+        {
+            _shield -= amount;
+            if (_shield < 0)
             {
-                _goingRight = false;
+                _health += _shield;
+                _shield = 0;
             }
         }
         else
         {
-            
-            transform.position += Vector3.left * step;
-
-            
-            float minX = _startPosition.x; 
-            if (transform.position.x <= minX)
-            {
-                _goingRight = true;
-            }
+            _health -= amount;
         }
+
+        Debug.Log($"{gameObject.name} - Vida: {_health} | Escudo: {_shield}");
+        
+        if (_health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Enemigo destruido");
+        Destroy(gameObject);
     }
 }
 
