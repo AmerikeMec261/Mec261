@@ -9,18 +9,11 @@ public class SimpleBullet : MonoBehaviour, IProjectile
     [SerializeField] private float _speed = 40f;
     [SerializeField] private float _damage = 20f;
 
-    private Rigidbody _rigidbody;
-
     public float Speed => _speed;
 
     #endregion Variables
 
     #region Unity Methods
-
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -29,7 +22,6 @@ public class SimpleBullet : MonoBehaviour, IProjectile
         if (target != null)
         {
             target.DealDamage(_damage);
-            Debug.Log("Impact hit: " + collision.gameObject.name);
         }
 
         Destroy(gameObject);

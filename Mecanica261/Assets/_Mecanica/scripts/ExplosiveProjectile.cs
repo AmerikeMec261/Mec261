@@ -11,18 +11,13 @@ public class ExplosiveProjectile : MonoBehaviour, IProjectile
     [Tooltip("Radio de la explosión")]
     [SerializeField] private float _explosionRadius = 3f;
 
-    private Rigidbody _rigidbody;
     private bool _hasExploded = false;
+
     public float Speed => _speed;
 
     #endregion Variables
 
     #region Unity Methods
-
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
