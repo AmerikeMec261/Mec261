@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3490284531238332685}
   - component: {fileID: 4873630610088981823}
   - component: {fileID: 3398229661469258550}
-  - component: {fileID: 760640524850967013}
+  - component: {fileID: 7820491809985382658}
   m_Layer: 0
   m_Name: BALA
   m_TagString: Untagged
@@ -108,7 +108,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &760640524850967013
+--- !u!114 &7820491809985382658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,5 +153,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3782093f3d26ab14c93b25e494753f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::bullet
-  _speed: 2
+  _speed: 20
   _damage: 10

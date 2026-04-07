@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 
-public class bulletExplosivo : MonoBehaviour
+public class bulletExplosivo : MonoBehaviour, IProjectile
 {
 
    [Header("Settings")]
@@ -12,12 +12,12 @@ public class bulletExplosivo : MonoBehaviour
  
     public float Speed  => _speed;
     public float Damage => _damage;
- 
+
     public void Fire()
     {
-        GetComponent<Rigidbody>().linearVelocity = transform.forward * _speed;
+        
     }
- 
+
     public void DealDamage(IDamageable target)
     {
         target.TakeDamage(_damage);

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1295695286175962396}
   - component: {fileID: 7295321250803875228}
   - component: {fileID: 3812601855814034628}
-  - component: {fileID: 135346015151242438}
+  - component: {fileID: -7745663841354538449}
   m_Layer: 0
   m_Name: balaboom
   m_TagString: Untagged
@@ -108,7 +108,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &135346015151242438
+--- !u!114 &-7745663841354538449
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,6 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58cb904144979d147ba34af02f1c3a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::bulletExplosivo
-  _speed: 1.5
+  _speed: 15
   _damage: 25
   _radioExplosion: 5

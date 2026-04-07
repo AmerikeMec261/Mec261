@@ -6,73 +6,85 @@ public class tower : MonoBehaviour
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
-    [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private Camera _camara;
     [SerializeField] private Transform _reticula;
 
-    [Header("Configuracion Yaw")]
-    [SerializeField] private float _yawSpeed = 90f;
-    [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
+    [Header("Municion")]
+    [SerializeField] private GameObject[] _bulletPrefabs;
 
-    [Header("Configuracion Pitch")]
-    [SerializeField] private float _pitchSpeed = 90f;
-    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
-
-    [Header("Reticula")]
-    [SerializeField] private float _maxRange = 30f;
-
-    public void FireProjectile()
-    {
-        GameObject bala = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-        bala.GetComponent<IProjectile>()?.Fire();
-    }
-
-    public void CambiarPrefab(GameObject nuevoPrefab)
-    {
-        _bulletPrefab = nuevoPrefab;
-    }
+    [Header("Configuracion Mortero")]
+    [SerializeField] private float _fuerzaMortero = 15f;
+    [SerializeField] private float _maxRange = 1000f;
+    [SerializeField] private LayerMask _capasApuntado;
 
     private void Update()
     {
-        SeguirMouse();
-        ActualizarReticula();
+        MoverReticulaAlMouse();
+        ApuntarTorreta();
 
         if (Input.GetKeyDown(KeyCode.Space))
+        {
             FireProjectile();
+        }
     }
 
-    private void SeguirMouse()
+    private void FireProjectile()
     {
-        Ray rayo = _camara.ScreenPointToRay(Input.mousePosition);
-        Plane piso = new Plane(Vector3.up, Vector3.zero);
+        int indiceAleatorio = Random.Range(0, _bulletPrefabs.Length);
 
-        if (!piso.Raycast(rayo, out float distancia))
-            return;
+        GameObject go = Instantiate(_bulletPrefabs[indiceAleatorio], _bulletSpawn.position, _bulletSpawn.rotation);
 
-        Vector3 puntoMouse = rayo.GetPoint(distancia);
+        Rigidbody rb = go.GetComponent<Rigidbody>();
+        IProjectile proyectil = go.GetComponent<IProjectile>();
 
-        Vector3 direccion = puntoMouse - _yawPivot.position;
-        direccion.y = 0f;
+        if (rb != null && proyectil != null)
+        {
+            rb.useGravity = true;
 
-        float anguloYaw = Mathf.Atan2(direccion.x, direccion.z) * Mathf.Rad2Deg;
-        anguloYaw = Mathf.Clamp(anguloYaw, _yawLimits.x, _yawLimits.y);
-        _yawPivot.localEulerAngles = new Vector3(0f, anguloYaw, 0f);
+            Vector3 velocidadFinal = CalcularMortero(_bulletSpawn.position, _reticula.position, _fuerzaMortero);
 
-        float distanciaH = direccion.magnitude;
-        float alturaY = _bulletSpawn.position.y - puntoMouse.y;
+            rb.linearVelocity = velocidadFinal;
 
-        float anguloPitch = Mathf.Atan2(alturaY, distanciaH) * Mathf.Rad2Deg;
-        anguloPitch = Mathf.Clamp(anguloPitch, _pitchLimits.x, _pitchLimits.y);
-        _pitchPivot.localEulerAngles = new Vector3(anguloPitch, 0f, 0f);
+            proyectil.Fire();
+        }
     }
 
-    private void ActualizarReticula()
+    private Vector3 CalcularMortero(Vector3 origen, Vector3 destino, float v)
     {
-        Ray rayo = new Ray(_bulletSpawn.position, _bulletSpawn.forward);
+        Vector3 diff = destino - origen;
+        float x = new Vector2(diff.x, diff.z).magnitude;
+        float y = diff.y;
+        float g = Physics.gravity.magnitude;
 
-        if (Physics.Raycast(rayo, out RaycastHit golpe, _maxRange))
-            _reticula.position = golpe.point;
+        float v2 = v * v;
+        float raiz = v2 * v2 - g * (g * x * x + 2 * y * v2);
+
+        if (raiz < 0) return diff.normalized * v;
+
+        float angulo = Mathf.Atan((v2 + Mathf.Sqrt(raiz)) / (g * x));
+
+        Vector3 dir = diff;
+        dir.y = 0;
+        Vector3 velFinal = dir.normalized * v * Mathf.Cos(angulo);
+        velFinal.y = v * Mathf.Sin(angulo);
+
+        return velFinal;
+    }
+
+    private void MoverReticulaAlMouse()
+    {
+        Ray rayoMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(rayoMouse, out RaycastHit hit, _maxRange, _capasApuntado))
+            _reticula.position = hit.point;
         else
-            _reticula.position = _bulletSpawn.position + _bulletSpawn.forward * _maxRange;
+            _reticula.position = rayoMouse.GetPoint(_maxRange / 10);
+    }
+
+    private void ApuntarTorreta()
+    {
+        Vector3 targetYaw = _reticula.position;
+        targetYaw.y = _yawPivot.position.y;
+        _yawPivot.LookAt(targetYaw);
+
+        _pitchPivot.LookAt(_reticula.position);
     }
 }
