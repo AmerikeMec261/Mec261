@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private float _speed = 3f;
     [SerializeField] private float _shield = 0f;
 
-    [Header("Patol")]
+    [Header("Patrol")]
     [SerializeField] private Transform _ponitA;
     [SerializeField] private Transform _ponitB;
 

@@ -7,36 +7,63 @@ public class Torreta : MonoBehaviour
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
-    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private GameObject _normalBullet;
+    [SerializeField] private GameObject _explosiveBullet;
 
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 90f;
     [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
+    
 
     [Header("Pitch Settings")]
     [SerializeField] private float _pitchSpeed = 90f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
-    private float _currentYaw = 0f;
+    [Header("Reticle")]
+    [SerializeField] private GameObject _reticle;
+    [SerializeField] private float _maxRange = 50f;
+    [SerializeField] private LayerMask _ground;
+
+    private GameObject _currentBullet;
+    private GameObject _reticleInstance;
     private float _currentPitch = 0f;
+    private Vector3 _targetPoint;
+
+    private void Start()
+    {
+        _currentBullet=_normalBullet;
+        if (_reticle != null)
+            _reticleInstance=Instantiate(_reticle);
+    }
 
     public void FireProjectile()
     {
-        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
+        GameObject currentBullet = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
         IProjectile projectile = currentBullet.GetComponent<IProjectile>();
 
-        if (projectile != null)
-        {
-            Vector3 launchVelocity = _bulletSpawn.forward * projectile.Speed;
-            projectile.Fire(launchVelocity);
-        }
+        if (projectile == null) return;
+
+        Vector3 flat = new Vector3(_targetPoint.x - _bulletSpawn.position.x, 0f, _targetPoint.z - _bulletSpawn.position.z);
+        float t = flat.magnitude / projectile.Speed;
+
+        Vector3 velocity = flat.normalized * projectile.Speed;
+        velocity.y = (_targetPoint.y - _bulletSpawn.position.y) / t + 0.5f * Mathf.Abs(Physics.gravity.y) * t;
+
+        projectile.Fire(velocity);
+
+
 
     }
 
     private void Update()
     {
         RotateMouse();
+        UpdateReticle();
 
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            _currentBullet=_currentBullet==_normalBullet?_explosiveBullet:_normalBullet;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -61,42 +88,36 @@ public class Torreta : MonoBehaviour
 
     private void RotateMouse()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+        Vector3 yawDirection = _targetPoint - _yawPivot.position;
+        yawDirection.y = 0f;
 
-        if (Physics.Raycast(ray, out hit))
+        if (yawDirection != Vector3.zero)
         {
-            Vector3 targetPoint = hit.point;
+            Quaternion targetYaw = Quaternion.LookRotation(yawDirection);
+            _yawPivot.rotation = Quaternion.Lerp(_yawPivot.rotation, targetYaw, _yawSpeed * Time.deltaTime);
+        }
 
-            Vector3 direction = hit.point - transform.position;
-            direction.y = 0f;
+        Vector3 localTarget = _pitchPivot.InverseTransformPoint(_targetPoint);
+        float targetPitch = -Mathf.Atan2(localTarget.y, localTarget.z) * Mathf.Rad2Deg;
+        _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
 
-            if (direction != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                _yawPivot.rotation = Quaternion.Lerp(
-                    _yawPivot.rotation, targetRotation, _yawSpeed * Time.deltaTime);
+        _pitchPivot.localRotation = Quaternion.Lerp(
+            _pitchPivot.localRotation,
+            Quaternion.Euler(_currentPitch, 0f, 0f),
+            _pitchSpeed * Time.deltaTime);
+    }
 
+    private void UpdateReticle()
+    {
+        if (_reticleInstance == null) return;
 
+        Ray ray=Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            }
-
-
-            float horizontalDistance = direction.magnitude;
-            float heightDifference = hit.point.y - _pitchPivot.position.y;
-            float targetPitch = -Mathf.Atan2(heightDifference, horizontalDistance) * Mathf.Rad2Deg;
-            _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
-            _pitchPivot.localEulerAngles = new Vector3(_currentPitch, 0f, 0f);
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                Debug.Log($"Se impacto:{hit.collider.name}");
-
-            }
-            else
-            {
-                Debug.Log("Fallaste");
-            }
+        if (Physics.Raycast(ray,out RaycastHit hit, _maxRange,_ground))
+        {
+            _targetPoint = hit.point;
+            _reticleInstance.transform.position = _targetPoint + Vector3.up * 0.02f;
+            _reticleInstance.transform.rotation = Quaternion.Euler(90f,0f,0f);
         }
     }
 }

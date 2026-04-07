@@ -1,25 +1,22 @@
-
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-
-public class SimpleBullet : MonoBehaviour, IProjectile
-{ 
+[RequireComponent (typeof(Rigidbody))]
+public class ExplosiveBullet : MonoBehaviour, IProjectile
+{
 
     [Header("Settings")]
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _damage = 10f;
+    [SerializeField] private float _range = 3f;
 
     private Rigidbody _rb;
-    private Collider _collider;
 
-    public float Speed => _speed;
+    public float Speed => _speed; 
     public float Damage => _damage;
 
-    private void Awake()
+    public void Awake()
     {
-        _rb = GetComponent<Rigidbody>(); 
-        _collider = GetComponent<Collider>();
+        _rb = GetComponent<Rigidbody>();
     }
 
     public void Fire(Vector3 launchVelocity)
@@ -27,11 +24,6 @@ public class SimpleBullet : MonoBehaviour, IProjectile
         _rb.linearVelocity = launchVelocity;
     }
 
-    public void IgnoreCollider(Collider ownercollider)
-    {
-        if (_collider != null && ownercollider != null)
-            Physics.IgnoreCollision(_collider,ownercollider);
-    }
     public void DealDamage(Collider other)
     {
         if (other.TryGetComponent<IDamageable>(out IDamageable damageable))
@@ -42,7 +34,11 @@ public class SimpleBullet : MonoBehaviour, IProjectile
 
     private void OnCollisionEnter(Collision collision)
     {
-        DealDamage(collision.collider);
+        Collider[] hits = Physics.OverlapSphere(transform.position, _range);
+        foreach (Collider hit in hits)
+        {
+           DealDamage(hit);
+        }
         Destroy(gameObject);
     }
 }
