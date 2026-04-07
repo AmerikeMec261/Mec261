@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class SimpleBullet : MonoBehaviour, IProjectile
 {
-    [SerializeField] private float speed;
-    public float Speed => speed;
-
-    [SerializeField] private float damage;
-    public float Damage => damage;
-
     private Rigidbody rb;
 
-    void Awake()
+    [SerializeField] private float damage = 20f;
+    [SerializeField] private float speed = 25f;
+
+    public float Damage => damage;
+    public float Speed => speed;
+
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
@@ -20,20 +20,22 @@ public class SimpleBullet : MonoBehaviour, IProjectile
         rb.linearVelocity = velocity;
     }
 
-    public void DealDamage(GameObject target)
+    private void OnCollisionEnter(Collision collision)
     {
-        IDamageable dmg = target.GetComponent<IDamageable>();
-
-        if (dmg != null)
-        {
-            dmg.TakeDamage(damage);
-        }
-
+        DealDamage(collision.gameObject);
         Destroy(gameObject);
     }
 
-    void OnCollisionEnter(Collision collision)
+    public void DealDamage(GameObject target)
     {
-        DealDamage(collision.gameObject);
+        if (target.TryGetComponent<IDamageable>(out IDamageable damageable))
+        {
+            damageable.TakeDamage(damage);
+        }
+    }
+
+    private void Start()
+    {
+        Destroy(gameObject, 5f);
     }
 }

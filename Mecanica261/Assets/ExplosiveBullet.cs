@@ -2,45 +2,65 @@ using UnityEngine;
 
 public class ExplosiveBullet : MonoBehaviour, IProjectile
 {
-    [SerializeField] private float speed;
-    public float Speed => speed;
-
-    [SerializeField] private float damage;
-    public float Damage => damage;
-
-    [SerializeField] private float explosionRadius;
-
     private Rigidbody rb;
 
-    void Awake()
+    [Header("Stats")]
+    [SerializeField] private float damage = 50f;
+    [SerializeField] private float speed = 25f;
+
+    [Header("Explosion")]
+    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float explosionForce = 500f;
+
+    
+    public float Damage => damage;
+    public float Speed => speed;
+
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
     public void Shoot(Vector3 velocity)
     {
-        rb.AddForce(velocity, ForceMode.Impulse);
+        rb.linearVelocity = velocity;
     }
 
-    public void DealDamage(GameObject target)
+    private void OnCollisionEnter(Collision collision)
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, explosionRadius);
+        Explode();
+    }
 
-        foreach (var hit in hits)
+    private void Explode()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+
+        foreach (Collider nearby in colliders)
         {
-            IDamageable dmg = hit.GetComponent<IDamageable>();
-
-            if (dmg != null)
+            
+            if (nearby.TryGetComponent<Rigidbody>(out Rigidbody nearbyRb))
             {
-                dmg.TakeDamage(damage);
+                nearbyRb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
             }
+
+            
+            DealDamage(nearby.gameObject);
         }
 
         Destroy(gameObject);
     }
 
-    void OnCollisionEnter(Collision collision)
+    
+    public void DealDamage(GameObject target)
     {
-        DealDamage(collision.gameObject);
+        if (target.TryGetComponent<IDamageable>(out IDamageable damageable))
+        {
+            damageable.TakeDamage(damage);
+        }
+    }
+
+    private void Start()
+    {
+        Destroy(gameObject, 5f);
     }
 }

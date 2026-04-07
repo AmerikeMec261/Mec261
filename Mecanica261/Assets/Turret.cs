@@ -6,18 +6,16 @@ public class Turret : MonoBehaviour
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
-    [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _reticle;
 
-    [Header("Yaw Settings")]
-    [SerializeField] private float _yawSpeed = 90f;
-    [SerializeField] private Vector2 _yawLimits = new Vector2(-180f, 180f);
+    [Header("Bullet Prefabs")]
+    [SerializeField] private GameObject _simpleBulletPrefab;
+    [SerializeField] private GameObject _explosiveBulletPrefab;
 
-    [Header("Pitch Settings")]
-    [SerializeField] private float _pitchSpeed = 90f;
-    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 60f);
+    private GameObject _currentBullet;
 
-    [Header("Reticle Settings")]
+    [Header("Settings")]
+    [SerializeField] private float _bulletSpeed = 25f;
     [SerializeField] private float _maxRange = 50f;
 
     private Camera _mainCamera;
@@ -25,101 +23,89 @@ public class Turret : MonoBehaviour
     private void Start()
     {
         _mainCamera = Camera.main;
+        _currentBullet = _simpleBulletPrefab;
     }
 
     private void Update()
     {
-        AimAtMouse();
+        Aim();
         UpdateReticle();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0))
         {
-            FireProjectile();
+            Shoot();
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SwitchBullet();
         }
     }
 
-    private void AimAtMouse()
+    
+    private void Aim()
     {
-        Ray mouseRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (!Physics.Raycast(mouseRay, out RaycastHit hit)) return;
+        if (Physics.Raycast(ray, out RaycastHit hit, _maxRange))
+        {
+            Vector3 direction = hit.point - _yawPivot.position;
 
-        Vector3 direction = hit.point - _yawPivot.position;
+            
+            Vector3 flatDirection = new Vector3(direction.x, 0, direction.z);
+            if (flatDirection != Vector3.zero)
+            {
+                _yawPivot.rotation = Quaternion.LookRotation(flatDirection);
+            }
 
-        float targetYaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        float clampedYaw = Mathf.Clamp(targetYaw, _yawLimits.x, _yawLimits.y);
-        _yawPivot.localEulerAngles = new Vector3(0f, clampedYaw, 0f);
-
-        float horizontalDistance = new Vector3(direction.x, 0f, direction.z).magnitude;
-        float targetPitch = -Mathf.Atan2(direction.y, horizontalDistance) * Mathf.Rad2Deg;
-        float clampedPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
-        _pitchPivot.localEulerAngles = new Vector3(clampedPitch, 0f, 0f);
+            
+            Vector3 localDirection = _yawPivot.InverseTransformDirection(direction);
+            float angle = Mathf.Atan2(localDirection.y, localDirection.z) * Mathf.Rad2Deg;
+            _pitchPivot.localRotation = Quaternion.Euler(-angle, 0, 0);
+        }
     }
 
+    
     private void UpdateReticle()
     {
         if (_reticle == null) return;
 
-        Ray bulletRay = new Ray(_bulletSpawn.position, _bulletSpawn.forward);
+        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(bulletRay, out RaycastHit hit, _maxRange))
+        if (Physics.Raycast(ray, out RaycastHit hit, _maxRange))
         {
             _reticle.position = hit.point;
         }
-        else
+    }
+
+    
+    private void Shoot()
+    {
+        GameObject bullet = Instantiate(_currentBullet, _bulletSpawn.position, Quaternion.identity);
+
+        Vector3 targetPoint = _reticle.position;
+        Vector3 direction = (targetPoint - _bulletSpawn.position).normalized;
+
+        Vector3 velocity = direction * _bulletSpeed;
+
+        if (bullet.TryGetComponent<IProjectile>(out IProjectile projectile))
         {
-            _reticle.position = _bulletSpawn.position + _bulletSpawn.forward * _maxRange;
+            projectile.Shoot(velocity);
         }
     }
 
-    private void FireProjectile()
+    
+    private void SwitchBullet()
     {
-        GameObject bulletObj = Instantiate(
-            _bulletPrefab,
-            _bulletSpawn.position,
-            _bulletSpawn.rotation
-        );
-
-        IProjectile projectile = bulletObj.GetComponent<IProjectile>();
-
-        if (projectile == null)
+        if (_currentBullet == _simpleBulletPrefab)
         {
-            Debug.LogError("El prefab no tiene IProjectile");
-            return;
+            _currentBullet = _explosiveBulletPrefab;
+            Debug.Log("Bala explosiva");
         }
-
-        Vector3 start = _bulletSpawn.position;
-        Vector3 target = _reticle.position;
-
-        Vector3 toTarget = target - start;
-
-        float gravity = Mathf.Abs(Physics.gravity.y);
-
-        float height = toTarget.y;
-
-        Vector3 toTargetXZ = new Vector3(toTarget.x, 0, toTarget.z);
-        float distance = toTargetXZ.magnitude;
-
-        Vector3 directionXZ = toTargetXZ.normalized;
-
-        float angle = 45f * Mathf.Deg2Rad;
-
-        float velocitySquared = (gravity * distance * distance) /
-            (2 * (distance * Mathf.Tan(angle) - height) * Mathf.Pow(Mathf.Cos(angle), 2));
-
-        if (velocitySquared <= 0)
+        else
         {
-            Debug.Log("No hay solución balística");
-            return;
+            _currentBullet = _simpleBulletPrefab;
+            Debug.Log("Bala normal");
         }
-
-        float velocity = Mathf.Sqrt(velocitySquared);
-
-        Vector3 velocityY = Vector3.up * velocity * Mathf.Sin(angle);
-        Vector3 velocityX = directionXZ * velocity * Mathf.Cos(angle);
-
-        Vector3 finalVelocity = velocityX + velocityY;
-
-        projectile.Shoot(finalVelocity);
     }
 }
