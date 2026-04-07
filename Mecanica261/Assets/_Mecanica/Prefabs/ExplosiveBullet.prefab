@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5214084883277995978}
   - component: {fileID: 8797605976391420045}
   - component: {fileID: 5225228796013395229}
-  - component: {fileID: 6392627485028384392}
+  - component: {fileID: 6758983171863687080}
   m_Layer: 0
   m_Name: ExplosiveBullet
   m_TagString: Untagged
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6392627485028384392
+--- !u!114 &6758983171863687080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,6 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e200b0c6fdf7e614da9e36548a337e3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExplosiveBullet
-  _speed: 15
-  _damage: 40
-  _radius: 15
+  velocidad: 15
+  damagee: 40
+  radio: 5

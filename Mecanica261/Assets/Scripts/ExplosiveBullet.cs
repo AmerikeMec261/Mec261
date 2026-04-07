@@ -1,27 +1,27 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class ExplosiveBullet : MonoBehaviour, IProjectile
-{
-    [SerializeField] private float _speed = 15f;
-    [SerializeField] private float _damage = 40f;
-    [SerializeField] private float _radius = 5f;
 
-    private Rigidbody _rigidbodyb;
+{
+    [SerializeField] private float velocidad = 15f;
+    [SerializeField] private float damagee = 40f;
+    [SerializeField] private float radio = 5f;
+
+    private Rigidbody _rigidbody;
 
     private void Awake()
     {
-        _rigidbodyb = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     public void Fire()
     {
-        _rigidbodyb.AddForce(transform.forward * _speed, ForceMode.Impulse);
+        _rigidbody.AddForce(transform.forward * velocidad, ForceMode.Impulse);
     }
 
-    public void DealDamage()
+    public void Impact()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, _radius);
+        Collider[] hits = Physics.OverlapSphere(transform.position, radio);
 
         foreach (Collider hit in hits)
         {
@@ -29,16 +29,14 @@ public class ExplosiveBullet : MonoBehaviour, IProjectile
 
             if (enemy != null)
             {
-                enemy.TakeDamage(_damage);
+                enemy.DamageEnemy(damagee);
             }
         }
-
-        Debug.Log("Explosión: " + _damage);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        DealDamage();
+        Impact();
         Destroy(gameObject);
     }
 }

@@ -3,50 +3,38 @@ using TMPro;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
-    [Header("Enemy Stats")]
+    [Header("Ajustes del Enemigo")]
     [SerializeField] private float _health = 100f;
     [SerializeField] private float _speed = 2f;
 
-    [Header("Movement")]
-    [SerializeField] private Transform _pointA;
-    [SerializeField] private Transform _pointB;
+    [Header("Los puntos donde se mueve el enemigo")]
+    [SerializeField] private Transform _puntotuno;
+    [SerializeField] private Transform _puntodos;
+    [SerializeField] private TextMeshPro _Text;
 
-
-    [SerializeField] private TextMeshPro _lifeText;
-
-    private Transform _currentTarget;
+    private Transform _Target;
 
     private void Start()
     {
-        _currentTarget = _pointB;
+        _Target = _puntodos;
     }
-
     private void Update()
     {
         MoveEnemy();
     }
-
     private void MoveEnemy()
     {
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            _currentTarget.position,
-            _speed * Time.deltaTime
-        );
+        transform.position = Vector3.MoveTowards(transform.position,_Target.position,_speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, _currentTarget.position) < 0.1f)
+        if (Vector3.Distance(transform.position, _Target.position) < 0.1f)
         {
-            _currentTarget = _currentTarget == _pointA ? _pointB : _pointA;
+            _Target = _Target == _puntotuno ? _puntodos : _puntotuno;
         }
     }
-
-    public void TakeDamage(float damage)
+    public void DamageEnemy(float damage)
     {
         _health -= damage;
-        _lifeText .text = _health.ToString();
-
-        Debug.Log(gameObject.name + " vida restante: " + _health);
-
+        _Text.text = _health.ToString();
         if (_health <= 0)
         {
             Destroy(gameObject);

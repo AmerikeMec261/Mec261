@@ -3,27 +3,29 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     [Header("Turret")]
-    [SerializeField] private Transform _yawPivot;
-    [SerializeField] private Transform _pitchPivot;
-    [SerializeField] private float _maxDistance = 20f;
+    [SerializeField] private Transform _pivotHorizontal;
+    [SerializeField] private Transform _pivotVertical;
+    [SerializeField] private float _distance = 20f;
 
     [Header("Crosshair")]
-    [SerializeField] private Transform _crosshair;
+    [SerializeField] private Transform _mira;
 
     [Header("Projectile")]
-    [SerializeField] private Transform _spawnPoint;
+    [SerializeField] private Transform _spawn;
+    [SerializeField] private GameObject _BulletPrefab;
+    [SerializeField] private GameObject _explosiveBullet;
 
-    [SerializeField] private GameObject _simpleBulletPrefab;
-    [SerializeField] private GameObject _explosiveBulletPrefab;
+    [SerializeField] private float Angulo = 95f;
+    [SerializeField] private float VelocidadMouse = 18f;
 
-    private GameObject _currentProjectilePrefab;
+    private GameObject _currentProjectile;
 
     private Camera _camera;
 
     private void Start()
     {
         _camera = Camera.main;
-        _currentProjectilePrefab = _simpleBulletPrefab;
+        _currentProjectile = _BulletPrefab;
     }
 
     private void Update()
@@ -37,15 +39,20 @@ public class Turret : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            _currentProjectilePrefab = _simpleBulletPrefab;
-            Debug.Log("Bala simple seleccionada");
+            _currentProjectile = _BulletPrefab;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            _currentProjectilePrefab = _explosiveBulletPrefab;
-            Debug.Log("Bala explosiva seleccionada");
+            _currentProjectile = _explosiveBullet;
         }
+    }
+
+    private void FireProjectile()
+    {
+        GameObject bullet = Instantiate( _currentProjectile, _spawn.position, _spawn.rotation);
+
+        bullet.GetComponent<IProjectile>()?.Fire();
     }
 
     private void FollowMouse()
@@ -56,61 +63,40 @@ public class Turret : MonoBehaviour
         {
             Vector3 target = hit.point;
 
-            _crosshair.position = target + Vector3.up * 0.02f;
+            _mira.position = target + Vector3.up * 0.02f;
             
-            Vector3 flatDirection = target - _yawPivot.position;
+            Vector3 flatDirection = target - _pivotHorizontal.position;
             flatDirection.y = 0;
 
-            _yawPivot.rotation = Quaternion.LookRotation(-flatDirection);
+            _pivotHorizontal.rotation = Quaternion.LookRotation(-flatDirection);
 
-            Vector3 fullDirection = target - _pitchPivot.position;
-            float distance = flatDirection.magnitude;
-            float height = fullDirection.y;
+            Vector3 fullDirection = target - _pivotVertical.position;
+            float dis = flatDirection.magnitude;
+            float alt = fullDirection.y;
 
-            float angle = CalculateHighAngle(distance, height, 20f);
+            float angle = CalculateHighAngle(dis, alt, VelocidadMouse);
 
-            _pitchPivot.localRotation = Quaternion.Euler(2f, 0f, 0f);
+            _pivotVertical.localRotation = Quaternion.Euler(Angulo - angle, 0f, 0f); //Si le pongo mas de 95 grados volteas a ver mas el cielo pero ya no se ve naatural//
         }
     }
+
     private float CalculateHighAngle(float distance, float height, float speed)
     {
-        float g = Physics.gravity.magnitude;
+        float gravity = Physics.gravity.magnitude;
 
         float speedSquared = speed * speed;
-        float discriminant = (speedSquared * speedSquared) -
-                             g * (g * distance * distance + 2 * height * speedSquared);
+        float discriminant = (speedSquared * speedSquared) - gravity * (gravity * distance * distance + 2 * height * speedSquared);
 
         if (discriminant < 0)
         {
-            Vector3 maxPoint = _yawPivot.position + _yawPivot.forward * _maxDistance;
-            _crosshair.position = maxPoint + Vector3.up * 0.02f;
+            Vector3 maxPoint = _pivotHorizontal.position + _pivotHorizontal.forward * _distance;
+            _mira.position = maxPoint + Vector3.up * 0.02f;
 
             return 45f;
         }
 
-        float angle = Mathf.Atan(
-            (speedSquared + Mathf.Sqrt(discriminant)) /
-            (g * distance)
-        );
+        float angle = Mathf.Atan((speedSquared + Mathf.Sqrt(discriminant)) /(gravity * distance));
 
         return angle * Mathf.Rad2Deg;
     }
-
-    private void FireProjectile()
-    {
-        GameObject bullet = Instantiate(
-           _currentProjectilePrefab,
-            _spawnPoint.position,
-            _spawnPoint.rotation
-        );
-
-        IProjectile projectile = bullet.GetComponent<IProjectile>();
-
-        if (projectile != null)
-        {
-            projectile.Fire();
-        }
-    }
-
-
 }
