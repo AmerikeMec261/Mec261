@@ -5,9 +5,7 @@ public class Turret : MonoBehaviour
     #region Variables
 
     [Header("Dependencies")]
-    [Tooltip("Pivot horizontal de la torreta.")]
     [SerializeField] private Transform _yawPivot;
-    [Tooltip("Pivot vertical del cañón.")]
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private Transform _targetPoint;
@@ -16,147 +14,37 @@ public class Turret : MonoBehaviour
     [SerializeField] private GameObject _simpleBullet;
     [SerializeField] private GameObject _explosiveProjectile;
 
-    [Header("Yaw Settings")]
-    [Tooltip("Límites de rotación horizontal.")]
+    [Header("Limits")]
     [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
-
-    [Header("Pitch Settings")]
-    [Tooltip("Límites de rotación vertical.")]
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 80f);
 
     [Header("Target Area")]
-    [SerializeField] private Vector2 _targetXLimits = new Vector2(-15f, 15f);
-    [SerializeField] private Vector2 _targetZLimits = new Vector2(3f, 25f);
-    [Tooltip("Altura fija del objetivo.")]
+    [SerializeField] private Vector2 _targetXLimits;
+    [SerializeField] private Vector2 _targetZLimits;
     [SerializeField] private float _targetY = 0f;
 
     private GameObject _currentBullet;
-    private Vector3 _yawInitialRotation;
-    private Vector3 _pitchInitialRotation;
 
-    #endregion Variables
+    #endregion
 
     #region Unity Methods
 
     private void Start()
     {
         _currentBullet = _simpleBullet;
-
-        _yawInitialRotation = _yawPivot.localEulerAngles;
-        _pitchInitialRotation = _pitchPivot.localEulerAngles;
     }
 
     private void Update()
     {
-        UpdateTargetPoint();
+        UpdateTarget();
         RotateYaw();
         RotatePitch();
-        ChangeBulletType();
-        HandleFireInput();
-    }
 
-    #endregion Unity Methods
-
-    #region Methods
-
-    public void FireProjectile()
-    {
-        GameObject projectileObject = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
-
-        IProjectile projectile = projectileObject.GetComponent<IProjectile>();
-
-        if (projectile == null)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            return;
+            Fire();
         }
 
-        projectile.Fire();
-    }
-
-    private void UpdateTargetPoint()
-    {
-        float normalizedMouseX = (Input.mousePosition.x / Screen.width) * 2f - 1f;
-        float normalizedMouseY = (Input.mousePosition.y / Screen.height) * 2f - 1f;
-
-        float targetX = Mathf.Lerp(_targetXLimits.x, _targetXLimits.y, (normalizedMouseX + 1f) * 0.5f);
-        float targetZ = Mathf.Lerp(_targetZLimits.x, _targetZLimits.y, (normalizedMouseY + 1f) * 0.5f);
-
-        Vector3 targetPosition = new Vector3(
-            _yawPivot.position.x + targetX,
-            _targetY,
-            _yawPivot.position.z + targetZ
-        );
-
-        _targetPoint.position = targetPosition;
-    }
-
-    private void RotateYaw()
-    {
-        Vector3 directionToTarget = _targetPoint.position - _yawPivot.position;
-        directionToTarget.y = 0f;
-
-        if (directionToTarget == Vector3.zero)
-        {
-            return;
-        }
-
-        float yawAngle = Mathf.Atan2(directionToTarget.x, directionToTarget.z) * Mathf.Rad2Deg - 90f;
-        float clampedYawAngle = Mathf.Clamp(yawAngle, _yawLimits.x, _yawLimits.y);
-
-        _yawPivot.localEulerAngles = new Vector3(
-            _yawInitialRotation.x,
-            _yawInitialRotation.y + clampedYawAngle,
-            _yawInitialRotation.z
-        );
-    }
-
-    private void RotatePitch()
-    {
-        IProjectile currentProjectile = _currentBullet.GetComponent<IProjectile>();
-
-        if (currentProjectile == null)
-        {
-            return;
-        }
-
-        float speed = currentProjectile.Speed;
-        float gravity = Mathf.Abs(Physics.gravity.y);
-
-        Vector3 startPosition = _bulletSpawn.position;
-        Vector3 flatDirectionToTarget = _targetPoint.position - startPosition;
-        flatDirectionToTarget.y = 0f;
-
-        float horizontalDistance = flatDirectionToTarget.magnitude;
-        float deltaY = _targetPoint.position.y - startPosition.y;
-
-        if (horizontalDistance <= 0.01f)
-        {
-            return;
-        }
-
-        float speedSquared = speed * speed;
-        float speedFourth = speedSquared * speedSquared;
-
-        float sqrtValueContent = speedFourth - gravity * (gravity * horizontalDistance * horizontalDistance + 2f * deltaY * speedSquared);
-
-        if (sqrtValueContent < 0f)
-        {
-            return;
-        }
-
-        float sqrtValue = Mathf.Sqrt(sqrtValueContent);
-        float highAngle = Mathf.Atan((speedSquared + sqrtValue) / (gravity * horizontalDistance)) * Mathf.Rad2Deg;
-        float clampedPitchAngle = Mathf.Clamp(highAngle, _pitchLimits.x, _pitchLimits.y);
-
-        _pitchPivot.localEulerAngles = new Vector3(
-            _pitchInitialRotation.x - clampedPitchAngle,
-            _pitchInitialRotation.y,
-            _pitchInitialRotation.z
-        );
-    }
-
-    private void ChangeBulletType()
-    {
         if (Input.GetKeyDown(KeyCode.S))
         {
             _currentBullet = _simpleBullet;
@@ -168,15 +56,105 @@ public class Turret : MonoBehaviour
         }
     }
 
-    private void HandleFireInput()
+    #endregion
+
+    #region Methods
+
+    private void UpdateTarget()
     {
-        if (!Input.GetKeyDown(KeyCode.Space))
+        float x = Mathf.Lerp(_targetXLimits.x, _targetXLimits.y, Input.mousePosition.x / Screen.width);
+        float z = Mathf.Lerp(_targetZLimits.x, _targetZLimits.y, Input.mousePosition.y / Screen.height);
+
+        _targetPoint.position = new Vector3(
+            _yawPivot.position.x + x,
+            _targetY,
+            _yawPivot.position.z + z
+        );
+    }
+
+    private void RotateYaw()
+    {
+        Vector3 dir = _targetPoint.position - _yawPivot.position;
+        dir.y = 0f;
+
+        float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg - 90f;
+        angle = Mathf.Clamp(angle, _yawLimits.x, _yawLimits.y);
+
+        _yawPivot.localEulerAngles = new Vector3(0f, angle, 0f);
+    }
+
+    private void RotatePitch()
+    {
+        IProjectile projectile = _currentBullet.GetComponent<IProjectile>();
+        if (projectile == null) return;
+
+        float speed = projectile.Speed;
+        float g = Mathf.Abs(Physics.gravity.y);
+
+        Vector3 dir = _targetPoint.position - _bulletSpawn.position;
+        Vector3 flat = dir; flat.y = 0f;
+
+        float x = flat.magnitude;
+        float y = dir.y;
+
+        float v2 = speed * speed;
+
+        float inside = v2 * v2 - g * (g * x * x + 2 * y * v2);
+
+        if (inside < 0f) return;
+
+        float sqrt = Mathf.Sqrt(inside);
+
+     
+        float angle = Mathf.Atan((v2 - sqrt) / (g * x)) * Mathf.Rad2Deg;
+
+        angle = Mathf.Clamp(angle, _pitchLimits.x, _pitchLimits.y);
+
+        _pitchPivot.localEulerAngles = new Vector3(-angle, 0f, 0f);
+    }
+
+    private void Fire()
+    {
+        GameObject obj = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
+
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        IProjectile projectile = obj.GetComponent<IProjectile>();
+
+        if (rb == null || projectile == null) return;
+
+        float speed = projectile.Speed;
+        float g = Mathf.Abs(Physics.gravity.y);
+
+        Vector3 dir = _targetPoint.position - _bulletSpawn.position;
+        Vector3 flat = dir; flat.y = 0f;
+
+        float x = flat.magnitude;
+        float y = dir.y;
+
+        float v2 = speed * speed;
+
+        float inside = v2 * v2 - g * (g * x * x + 2 * y * v2);
+
+        if (inside < 0f)
         {
+            Destroy(obj);
             return;
         }
 
-        FireProjectile();
+        float sqrt = Mathf.Sqrt(inside);
+        float angle = Mathf.Atan((v2 - sqrt) / (g * x));
+
+        float vx = Mathf.Cos(angle) * speed;
+        float vy = Mathf.Sin(angle) * speed;
+
+        Vector3 velocity =
+            flat.normalized * vx +
+            Vector3.up * vy;
+
+        rb.linearVelocity = velocity;
+
+        projectile.Fire();
     }
 
-    #endregion Methods
+    #endregion
 }

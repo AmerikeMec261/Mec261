@@ -13,7 +13,6 @@ public class ExplosiveProjectile : MonoBehaviour, IProjectile
 
     private Rigidbody _rigidbody;
     private bool _hasExploded = false;
-
     public float Speed => _speed;
 
     #endregion Variables
@@ -43,7 +42,6 @@ public class ExplosiveProjectile : MonoBehaviour, IProjectile
 
     public void Fire()
     {
-        _rigidbody.linearVelocity = transform.forward * _speed;
     }
 
     private void Explode()

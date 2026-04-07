@@ -6,10 +6,11 @@ public class SimpleBullet : MonoBehaviour, IProjectile
     #region Variables
 
     [Header("Settings")]
-    [SerializeField] private float _speed = 20f;
+    [SerializeField] private float _speed = 40f;
     [SerializeField] private float _damage = 20f;
 
     private Rigidbody _rigidbody;
+
     public float Speed => _speed;
 
     #endregion Variables
@@ -40,8 +41,6 @@ public class SimpleBullet : MonoBehaviour, IProjectile
 
     public void Fire()
     {
-        _rigidbody.linearVelocity = transform.forward * _speed;
-
         Destroy(gameObject, 3f);
     }
 
