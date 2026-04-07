@@ -29,7 +29,7 @@ public class Turret : MonoBehaviour
 
        AimWithMouse();
 
-        if (Input.GetKeyDown(0))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             FireProjectile();
         }
@@ -54,17 +54,17 @@ public class Turret : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit))
         {
             Vector3 target = hit.point;
             Vector3 direction = target - _yawPivot.position;
             direction.y = 0;
 
-            Quaternion yawRotation = Quaternion.LookRotation(direction);
+            Quaternion yawRotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0, -90, 0);
             _yawPivot.rotation = yawRotation;
 
             Vector3 fullDir = target - _pitchPivot.position;
-            Quaternion pitchRotation = Quaternion.LookRotation(fullDir);
+            Quaternion pitchRotation = Quaternion.LookRotation(fullDir) * Quaternion.Euler(0, -90, 0);
             _pitchPivot.rotation = pitchRotation;
         }
     }
