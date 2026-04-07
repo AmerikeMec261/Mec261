@@ -1,4 +1,6 @@
 public interface IProjectile
 {
-    public void Fire();
+    float Speed { get; }
+
+    void Fire();
 }

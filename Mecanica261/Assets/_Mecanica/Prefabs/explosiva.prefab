@@ -153,6 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999c3957f6ed3e44a9385501063b1b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProyectilExplosivo
-  velocidad: 20
-  impacto: 30
-  radioExplosion: 3
+  _speed: 20
+  _impact: 30
+  _explosionRadius: 3
