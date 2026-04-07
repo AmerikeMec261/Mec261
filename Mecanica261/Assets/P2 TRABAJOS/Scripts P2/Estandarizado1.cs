@@ -5,21 +5,26 @@ using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
-public class GameManagerEjercicio : MonoBehaviour
+public class Estandarizado1 : MonoBehaviour
 {
     [Header("Statics")]
     public static int score = 0;
     public static bool isPaused;
     public static bool isDead;
 
-  
 
+    [Header("GameObjects")]
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _ground;
+
+    [Header("Canvas")]
     [SerializeField] private Canvas _tutorialCanvas;
     [SerializeField] private Canvas _gameOverCanvas;
     [SerializeField] private Canvas _scoreCanvas;
+
+    [Header("Ui Buttons")]
     [SerializeField] private Button _pauseButton;
-    [SerializeField] private GameObject _ground;
+    
 
     public void Awake()
     {
@@ -97,7 +102,7 @@ public class GameManagerEjercicio : MonoBehaviour
         _scoreCanvas.gameObject.SetActive(false);
         float fullspeed = 0;
         //HandleAnimatorSpeed(npeed);
-        float noSpeed = 1;
+        //float noSpeed = 1;
         HandleAnimatorSpeed(fullspeed);
         SaveScore();
     }
@@ -107,9 +112,10 @@ public class GameManagerEjercicio : MonoBehaviour
         if (!PlayerPrefs.HasKey("HighScore"))
         {
             PlayerPrefs.SetInt("HighScore", 0);
+            PlayerPrefs.Save();
         }
 
-        PlayerPrefs.Save();
+        
     }
 
     public void Restart()
