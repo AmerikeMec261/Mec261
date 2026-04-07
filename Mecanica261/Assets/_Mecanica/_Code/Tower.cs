@@ -15,18 +15,18 @@ public class Tower : MonoBehaviour
 
     [Header("Pitch Settings")]
     [SerializeField] private float _pitchSpeed = 90f;
-    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
+    [SerializeField] private Vector2 _pitchLimits = new Vector2(-90f, 90f);
 
     public void FireProjectile()
     {
         GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-        currentBullet.GetComponent<IProjectile>()?.Fire();
+        currentBullet.GetComponent<SimpleBullet>()?.Fire(_bulletSpawn);
     }
 
     private void Update()
     {
-        float yawInput = Input.GetKeyDown(KeyCode.A) ? -1f : Input.GetKeyDown(KeyCode.D) ? 1f : 0f;
-        float pitchInput = Input.GetKeyDown(KeyCode.W) ? 1f : Input.GetKeyDown(KeyCode.S) ? -1f : 0f;
+        float yawInput = Input.GetKeyDown(KeyCode.A) ? -5f : Input.GetKeyDown(KeyCode.D) ? 5f : 0f;
+        float pitchInput = Input.GetKeyDown(KeyCode.W) ? 5f : Input.GetKeyDown(KeyCode.S) ? -5f : 0f;
 
         RotateYaw(yawInput);
         RotatePitch(pitchInput);
