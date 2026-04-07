@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6684563006804172326}
   - component: {fileID: 2898003820313268454}
   - component: {fileID: 8361034109266545214}
-  - component: {fileID: 8687179720596029244}
+  - component: {fileID: 2353538033663116204}
   m_Layer: 0
   m_Name: Proyectile
   m_TagString: Untagged
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8687179720596029244
+--- !u!114 &2353538033663116204
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,3 +154,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleBullet
   _speed: 20
+  _damage: 10

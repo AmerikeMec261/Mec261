@@ -1,6 +1,10 @@
 using UnityEngine;
-using System.Collections.Generic;
+
 public interface IProjectile
 {
-    public void Fire();
+    float Damage { get; }
+    float Speed { get; }
+
+    void Fire(Vector3 launchVelocity);
+    void DealDamage(Collider other);
 }
