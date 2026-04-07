@@ -13,13 +13,34 @@ public class SimpleBullet : MonoBehaviour, IProjectile
 
 
     public void Fire()
-    {
-        GetComponent<Rigidbody>().linearVelocity = transform.forward * _speed;
-        Destroy(gameObject, 3f);
+    { Rigidbody rb = GetComponent<Rigidbody>();
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.AddForce(transform.forward * _speed , ForceMode.Impulse);
     }
 
     public void DealDamage(float amount)
     {
         Debug.Log($"Bala normal hizo {amount} de damagge");
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log($"Golpeé a: {collision.gameObject.name}");
+
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            damageable.ReciveDamage(_damage);
+            DealDamage(_damage);
+        }
+        else
+        {
+            Debug.Log("No tiene IDamageable");
+        }
+        Destroy(gameObject);
+
+
+     
     }
 }

@@ -1,6 +1,6 @@
  using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
+[RequireComponent(typeof(Rigidbody))]
 public class ExplosiveBullet : MonoBehaviour, IProjectile
 {
     [Header("Settings")]
@@ -13,8 +13,10 @@ public class ExplosiveBullet : MonoBehaviour, IProjectile
 
     public void Fire()
     {
-        GetComponent<Rigidbody>().linearVelocity = transform.forward * _speed;
-        Destroy(gameObject, 3f);
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.AddForce(-transform.forward * _speed, ForceMode.Impulse);
     }
 
     public void DealDamage(float amount)
@@ -48,5 +50,8 @@ public class ExplosiveBullet : MonoBehaviour, IProjectile
         Destroy(gameObject);
 
     }
+
+   
+    
 
 }
