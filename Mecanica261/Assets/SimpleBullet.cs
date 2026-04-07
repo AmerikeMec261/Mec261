@@ -15,9 +15,9 @@ public class SimpleBullet : MonoBehaviour, IProjectile
         rb = GetComponent<Rigidbody>();
     }
 
-    public void Shoot(Vector3 direction)
+    public void Shoot(Vector3 velocity)
     {
-        rb.AddForce(direction * speed, ForceMode.Impulse);
+        rb.linearVelocity = velocity;
     }
 
     public void DealDamage(GameObject target)

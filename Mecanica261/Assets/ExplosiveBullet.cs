@@ -17,9 +17,9 @@ public class ExplosiveBullet : MonoBehaviour, IProjectile
         rb = GetComponent<Rigidbody>();
     }
 
-    public void Shoot(Vector3 direction)
+    public void Shoot(Vector3 velocity)
     {
-        rb.AddForce(direction * speed, ForceMode.Impulse);
+        rb.AddForce(velocity, ForceMode.Impulse);
     }
 
     public void DealDamage(GameObject target)

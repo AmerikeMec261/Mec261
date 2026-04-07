@@ -1,50 +1,85 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    [Header("Referencias")]
-    [SerializeField] private Transform yawPivot;
-    [SerializeField] private Transform pitchPivot;
-    [SerializeField] private Transform bulletSpawn;
+    [Header("Dependencies")]
+    [SerializeField] private Transform _yawPivot;
+    [SerializeField] private Transform _pitchPivot;
+    [SerializeField] private Transform _bulletSpawn;
+    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Transform _reticle;
 
-    [Header("Proyectil")]
-    [SerializeField] private GameObject currentBulletPrefab;
+    [Header("Yaw Settings")]
+    [SerializeField] private float _yawSpeed = 90f;
+    [SerializeField] private Vector2 _yawLimits = new Vector2(-180f, 180f);
 
-    [Header("Disparo")]
-    [SerializeField] private float shootForce = 20f;
+    [Header("Pitch Settings")]
+    [SerializeField] private float _pitchSpeed = 90f;
+    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 60f);
 
-    
-    public void AimAt(Vector3 targetPosition)
+    [Header("Reticle Settings")]
+    [SerializeField] private float _maxRange = 50f;
+
+    private Camera _mainCamera;
+
+    private void Start()
     {
-        Vector3 direction = targetPosition - yawPivot.position;
-
-        
-        Vector3 flatDirection = new Vector3(direction.x, 0f, direction.z);
-
-        if (flatDirection != Vector3.zero)
-        {
-            yawPivot.rotation = Quaternion.LookRotation(flatDirection);
-        }
-
-        
-        float distance = flatDirection.magnitude;
-        float height = direction.y;
-
-        float angle = Mathf.Atan2(height, distance) * Mathf.Rad2Deg;
-
-        pitchPivot.localRotation = Quaternion.Euler(-angle, 0f, 0f);
+        _mainCamera = Camera.main;
     }
 
-    
-    public void Fire(Vector3 targetPosition)
+    private void Update()
+    {
+        AimAtMouse();
+        UpdateReticle();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            FireProjectile();
+        }
+    }
+
+    private void AimAtMouse()
+    {
+        Ray mouseRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (!Physics.Raycast(mouseRay, out RaycastHit hit)) return;
+
+        Vector3 direction = hit.point - _yawPivot.position;
+
+        float targetYaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        float clampedYaw = Mathf.Clamp(targetYaw, _yawLimits.x, _yawLimits.y);
+        _yawPivot.localEulerAngles = new Vector3(0f, clampedYaw, 0f);
+
+        float horizontalDistance = new Vector3(direction.x, 0f, direction.z).magnitude;
+        float targetPitch = -Mathf.Atan2(direction.y, horizontalDistance) * Mathf.Rad2Deg;
+        float clampedPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
+        _pitchPivot.localEulerAngles = new Vector3(clampedPitch, 0f, 0f);
+    }
+
+    private void UpdateReticle()
+    {
+        if (_reticle == null) return;
+
+        Ray bulletRay = new Ray(_bulletSpawn.position, _bulletSpawn.forward);
+
+        if (Physics.Raycast(bulletRay, out RaycastHit hit, _maxRange))
+        {
+            _reticle.position = hit.point;
+        }
+        else
+        {
+            _reticle.position = _bulletSpawn.position + _bulletSpawn.forward * _maxRange;
+        }
+    }
+
+    private void FireProjectile()
     {
         GameObject bulletObj = Instantiate(
-            currentBulletPrefab,
-            bulletSpawn.position,
-            Quaternion.identity
+            _bulletPrefab,
+            _bulletSpawn.position,
+            _bulletSpawn.rotation
         );
 
-        
         IProjectile projectile = bulletObj.GetComponent<IProjectile>();
 
         if (projectile == null)
@@ -53,27 +88,38 @@ public class Turret : MonoBehaviour
             return;
         }
 
-        
-        Vector3 direction = targetPosition - bulletSpawn.position;
+        Vector3 start = _bulletSpawn.position;
+        Vector3 target = _reticle.position;
 
-        float height = direction.y;
-        direction.y = 0;
+        Vector3 toTarget = target - start;
 
-        float distance = direction.magnitude;
+        float gravity = Mathf.Abs(Physics.gravity.y);
 
-        float gravity = Physics.gravity.y;
+        float height = toTarget.y;
 
-        
+        Vector3 toTargetXZ = new Vector3(toTarget.x, 0, toTarget.z);
+        float distance = toTargetXZ.magnitude;
+
+        Vector3 directionXZ = toTargetXZ.normalized;
+
         float angle = 45f * Mathf.Deg2Rad;
 
-        float velocity = Mathf.Sqrt(distance * -gravity / Mathf.Sin(2 * angle));
+        float velocitySquared = (gravity * distance * distance) /
+            (2 * (distance * Mathf.Tan(angle) - height) * Mathf.Pow(Mathf.Cos(angle), 2));
+
+        if (velocitySquared <= 0)
+        {
+            Debug.Log("No hay solución balística");
+            return;
+        }
+
+        float velocity = Mathf.Sqrt(velocitySquared);
 
         Vector3 velocityY = Vector3.up * velocity * Mathf.Sin(angle);
-        Vector3 velocityX = direction.normalized * velocity * Mathf.Cos(angle);
+        Vector3 velocityX = directionXZ * velocity * Mathf.Cos(angle);
 
-        Vector3 finalDirection = (velocityX + velocityY).normalized;
+        Vector3 finalVelocity = velocityX + velocityY;
 
-        
-        projectile.Shoot(finalDirection);
+        projectile.Shoot(finalVelocity);
     }
 }
