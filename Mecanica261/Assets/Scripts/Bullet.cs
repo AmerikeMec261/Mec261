@@ -16,7 +16,8 @@ public class SimpleBullet : MonoBehaviour, IProjectile
     { Rigidbody rb = GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.AddForce(transform.forward * _speed , ForceMode.Impulse);
+     //  rb.AddForce(transform.forward * _speed , ForceMode.Impulse);
+     rb.linearVelocity= transform.forward*Speed;
     }
 
     public void DealDamage(float amount)
