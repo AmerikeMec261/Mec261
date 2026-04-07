@@ -2,51 +2,77 @@ using UnityEngine;
 
 public class tower : MonoBehaviour
 {
-    [Header("Dependencies")]
-    [SerializeField] private Transform _yamPivot;
+    [Header("Dependencias")]
+    [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Camera _camara;
+    [SerializeField] private Transform _reticula;
 
-    [Header("Yaw Settings")]
+    [Header("Configuracion Yaw")]
     [SerializeField] private float _yawSpeed = 90f;
     [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
 
-    [Header("Pitch Settings")]
+    [Header("Configuracion Pitch")]
     [SerializeField] private float _pitchSpeed = 90f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
+    [Header("Reticula")]
+    [SerializeField] private float _maxRange = 30f;
+
     public void FireProjectile()
     {
-        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-        currentBullet.GetComponent<IProjectile>()?.Fire();
+        GameObject bala = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
+        bala.GetComponent<IProjectile>()?.Fire();
+    }
+
+    public void CambiarPrefab(GameObject nuevoPrefab)
+    {
+        _bulletPrefab = nuevoPrefab;
     }
 
     private void Update()
     {
-        float yawInput = Input.GetKey(KeyCode.A) ? -1f : Input.GetKey(KeyCode.D) ? 1f : 0f;
-        float pitchInput = Input.GetKey(KeyCode.W) ? -1f : Input.GetKey(KeyCode.S) ? 1f : 0f;
-
-        RotateYaw(yawInput);
-        RotatePitch(pitchInput);
+        SeguirMouse();
+        ActualizarReticula();
 
         if (Input.GetKeyDown(KeyCode.Space))
-        {
             FireProjectile();
-        }
     }
 
-    private void RotateYaw(float input)
+    private void SeguirMouse()
     {
-        float yawChange = input * _yawSpeed * Time.deltaTime;
-        float newYaw = Mathf.Clamp(_yamPivot.localEulerAngles.y + yawChange, _yawLimits.x, _yawLimits.y);
-        _yamPivot.localEulerAngles = new Vector3(_yamPivot.localEulerAngles.x, newYaw, _yamPivot.localEulerAngles.z);
+        Ray rayo = _camara.ScreenPointToRay(Input.mousePosition);
+        Plane piso = new Plane(Vector3.up, Vector3.zero);
+
+        if (!piso.Raycast(rayo, out float distancia))
+            return;
+
+        Vector3 puntoMouse = rayo.GetPoint(distancia);
+
+        Vector3 direccion = puntoMouse - _yawPivot.position;
+        direccion.y = 0f;
+
+        float anguloYaw = Mathf.Atan2(direccion.x, direccion.z) * Mathf.Rad2Deg;
+        anguloYaw = Mathf.Clamp(anguloYaw, _yawLimits.x, _yawLimits.y);
+        _yawPivot.localEulerAngles = new Vector3(0f, anguloYaw, 0f);
+
+        float distanciaH = direccion.magnitude;
+        float alturaY = _bulletSpawn.position.y - puntoMouse.y;
+
+        float anguloPitch = Mathf.Atan2(alturaY, distanciaH) * Mathf.Rad2Deg;
+        anguloPitch = Mathf.Clamp(anguloPitch, _pitchLimits.x, _pitchLimits.y);
+        _pitchPivot.localEulerAngles = new Vector3(anguloPitch, 0f, 0f);
     }
 
-    private void RotatePitch(float input)
+    private void ActualizarReticula()
     {
-        float pitchChange = input * _pitchSpeed * Time.deltaTime;
-        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
-        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
+        Ray rayo = new Ray(_bulletSpawn.position, _bulletSpawn.forward);
+
+        if (Physics.Raycast(rayo, out RaycastHit golpe, _maxRange))
+            _reticula.position = golpe.point;
+        else
+            _reticula.position = _bulletSpawn.position + _bulletSpawn.forward * _maxRange;
     }
 }

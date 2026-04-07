@@ -2,11 +2,13 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 
-public class bullet : MonoBehaviour
+public class bulletExplosivo : MonoBehaviour
 {
+
    [Header("Settings")]
-    [SerializeField] private float _speed  = 20f;
-    [SerializeField] private float _damage = 10f;
+    [SerializeField] private float _speed          = 15f;
+    [SerializeField] private float _damage         = 25f;
+    [SerializeField] private float _radioExplosion = 5f;
  
     public float Speed  => _speed;
     public float Damage => _damage;
@@ -23,16 +25,21 @@ public class bullet : MonoBehaviour
  
     public void OnHit()
     {
+        Collider[] objetivos = Physics.OverlapSphere(transform.position, _radioExplosion);
+ 
+        foreach (Collider col in objetivos)
+        {
+            IDamageable objetivo = col.GetComponent<IDamageable>();
+ 
+            if (objetivo != null)
+                DealDamage(objetivo);
+        }
+ 
         Destroy(gameObject);
     }
  
     private void OnCollisionEnter(Collision collision)
     {
-        IDamageable objetivo = collision.gameObject.GetComponent<IDamageable>();
- 
-        if (objetivo != null)
-            DealDamage(objetivo);
- 
         OnHit();
     }
 }
