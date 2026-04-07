@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7408131064108734708}
   - component: {fileID: 5558430723304565054}
   - component: {fileID: 1319475281592825346}
-  - component: {fileID: 7186729993106132200}
+  - component: {fileID: 6864050062340183540}
   m_Layer: 0
-  m_Name: Goblin
+  m_Name: Goblin 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 46.1677, y: 0, z: -10.25884}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -115,7 +115,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7186729993106132200
+--- !u!114 &6864050062340183540
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,11 +124,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5396340039475657220}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a65ad3f0eee8764ab5f249eeb7eeae3, type: 3}
+  m_Script: {fileID: 11500000, guid: 502121b6a9453d148914578079ca3fe8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FastEnemy
-  _maxHealth: 30
+  m_EditorClassIdentifier: Assembly-CSharp::MidEnemy
+  _maxHealth: 100
   _shield: 0
-  _movementSpeed: 7
+  _movementSpeed: 3
   _pointA: {fileID: 0}
   _pointB: {fileID: 0}

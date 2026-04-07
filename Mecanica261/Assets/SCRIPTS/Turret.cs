@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
+
     [Header("Dependencies")]
-    [SerializeField] private Transform _yamPivot;
+    [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Transform _reticle;
 
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 90f;
@@ -14,39 +16,65 @@ public class Turret : MonoBehaviour
 
     [Header("Pitch Settings")]
     [SerializeField] private float _pitchSpeed = 90f;
-    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
+    [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 60f);
 
-    public void FireProjectile()
+    [Header("Reticle Settings")]
+    [SerializeField] private float _maxRange = 50f;
+
+    private Camera _mainCamera;
+
+    private void Start()
     {
-        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-        currentBullet.GetComponent<IProjectile>()?.Fire();
+        _mainCamera = Camera.main;
     }
 
     private void Update()
     {
-        float yawInput = Input.GetKey(KeyCode.A) ? -1f : Input.GetKey(KeyCode.D) ? 1f : 0f;
-        float pitchInput = Input.GetKey(KeyCode.W) ? -1f : Input.GetKey(KeyCode.S) ? 1f : 0f;
+        AimAtMouse();
+        UpdateReticle();
 
-        RotateYaw(yawInput);
-        RotatePitch(pitchInput);
+        if (Input.GetKeyDown(KeyCode.Space)) { FireProjectile(); }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+    private void AimAtMouse()
+    {
+        Ray mouseRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (!Physics.Raycast(mouseRay, out RaycastHit hit)) { return; }
+
+        Vector3 direction = hit.point - _yawPivot.position;
+
+        // Yaw: horizontal angle using Atan2
+        float targetYaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        float clampedYaw = Mathf.Clamp(targetYaw, _yawLimits.x, _yawLimits.y);
+        _yawPivot.localEulerAngles = new Vector3(0f, clampedYaw, 0f);
+
+        // Pitch: vertical angle using Atan2
+        float horizontalDistance = new Vector3(direction.x, 0f, direction.z).magnitude;
+        float targetPitch = -Mathf.Atan2(direction.y, horizontalDistance) * Mathf.Rad2Deg;
+        float clampedPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
+        _pitchPivot.localEulerAngles = new Vector3(clampedPitch, 0f, 0f);
+    }
+
+    private void UpdateReticle()
+    {
+        if (_reticle == null) { return; }
+
+        Ray bulletRay = new Ray(_bulletSpawn.position, _bulletSpawn.forward);
+
+        if (Physics.Raycast(bulletRay, out RaycastHit hit, _maxRange))
         {
-            FireProjectile();
+            _reticle.position = hit.point;
+        }
+        else
+        {
+            _reticle.position = _bulletSpawn.position + _bulletSpawn.forward * _maxRange;
         }
     }
 
-    private void RotateYaw(float input)
+    private void FireProjectile()
     {
-        float yawChange = input * _yawSpeed * Time.deltaTime;
-        float newYaw = Mathf.Clamp(_yamPivot.localEulerAngles.y + yawChange, _yawLimits.x, _yawLimits.y);
-        _yamPivot.localEulerAngles = new Vector3(_yamPivot.localEulerAngles.x, newYaw, _yamPivot.localEulerAngles.z);
-    }
-
-    private void RotatePitch(float input)
-    {
-        float pitchChange = input * _pitchSpeed * Time.deltaTime;
-        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
-        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
+        GameObject spawnedBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
+        spawnedBullet.GetComponent<IProjectile>()?.Fire();
     }
 }
