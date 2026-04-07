@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: d02278f3f2ac6914f8e470b20377d6bf
+guid: a10b32e3ca674df4599b79a1f4d26f69
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
@@ -56,6 +56,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -105,10 +108,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 73141
-  packageName: Rockets, Missiles & Bombs - Cartoon Low Poly Pack
-  packageVersion: 1.2
-  assetPath: Assets/BTM_Assets/BTM_Rockets_Missiles_Bombs/Models/RMB_31.fbx
-  uploadId: 737420

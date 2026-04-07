@@ -27,10 +27,9 @@ public class Turret : MonoBehaviour
         float yawInput = Input.GetKeyDown(KeyCode.A) ? -1f : Input.GetKeyDown(KeyCode.D) ? 1f : 0f;
         float pitchInput = Input.GetKeyDown(KeyCode.W) ? 1f : Input.GetKeyDown(KeyCode.S) ? -1f : 0f;
 
-        RotateYaw(yawInput);
-        RotatePitch(pitchInput);
+       AimWithMouse();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(0))
         {
             FireProjectile();
         }
@@ -48,5 +47,25 @@ public class Turret : MonoBehaviour
         float pitchChange = input * _pitchSpeed * Time.deltaTime;
         float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
         _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
+    }
+
+    private void AimWithMouse()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (physics.Raycast(ray, out hit))
+        {
+            Vector3 target = hit.point;
+            Vector3 direction = target - _yawPivot.position;
+            direction.y = 0;
+
+            Quaternion yawRotation = Quaternion.LookRotation(direction);
+            _yawPivot.rotation = yawRotation;
+
+            Vector3 fullDir = target - _pitchPivot.position;
+            Quaternion pitchRotation = Quaternion.LookRotation(fullDir);
+            _pitchPivot.rotation = pitchRotation;
+        }
     }
 }
