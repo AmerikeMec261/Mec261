@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour //El codigo no está estandarizado. //No hace uso de interfaces
 {
     public float speed = 2f;
     public int health = 10;

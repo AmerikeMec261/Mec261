@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+public class Tower : MonoBehaviour //El codigo no está estandarizado.
 {
     public float range = 5f;
     public float firerate = 1f;
@@ -21,7 +21,7 @@ public class Tower : MonoBehaviour
 
         foreach (GameObject e in enemies)
         {
-            float d = Vector3.Distance(transform.position, e.transform.position);
+            float d = Vector3.Distance(transform.position, e.transform.position); //No uses abreviaciones
             if (d < nearestDist && d <= range)
             {
                 nearest = e;
