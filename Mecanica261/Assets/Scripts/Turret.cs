@@ -8,15 +8,15 @@ public class Turret : MonoBehaviour
     [SerializeField] private float _distance = 20f;
 
     [Header("Crosshair")]
-    [SerializeField] private Transform _mira;
+    [SerializeField] private Transform _mira; //falta estandarización
 
     [Header("Projectile")]
     [SerializeField] private Transform _spawn;
     [SerializeField] private GameObject _BulletPrefab;
     [SerializeField] private GameObject _explosiveBullet;
 
-    [SerializeField] private float Angulo = 95f;
-    [SerializeField] private float VelocidadMouse = 18f;
+    [SerializeField] private float Angulo = 95f; //falta estandarización
+    [SerializeField] private float VelocidadMouse = 18f; //falta estandarización
 
     private GameObject _currentProjectile;
 
@@ -71,12 +71,13 @@ public class Turret : MonoBehaviour
             _pivotHorizontal.rotation = Quaternion.LookRotation(-flatDirection);
 
             Vector3 fullDirection = target - _pivotVertical.position;
-            float dis = flatDirection.magnitude;
-            float alt = fullDirection.y;
+            float dis = flatDirection.magnitude; //No usar abreviaciones
+            float alt = fullDirection.y; //No usar abreviaciones
 
             float angle = CalculateHighAngle(dis, alt, VelocidadMouse);
 
-            _pivotVertical.localRotation = Quaternion.Euler(Angulo - angle, 0f, 0f); //Si le pongo mas de 95 grados volteas a ver mas el cielo pero ya no se ve naatural//
+            _pivotVertical.localRotation = Quaternion.Euler(Angulo - angle, 0f, 0f); //Si le pongo mas de 95 grados volteas a ver mas el cielo pero ya no se ve naatural 
+            //Utiliza MathF.Clamp para limitar el ángulo a un rango específico, por ejemplo, entre 0 y 90 grados, para evitar que la torreta apunte hacia abajo o hacia arriba de manera poco realista.
         }
     }
 
@@ -100,3 +101,4 @@ public class Turret : MonoBehaviour
         return angle * Mathf.Rad2Deg;
     }
 }
+//Trabajo en clase: estandarizar y quitar abrevaciones

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class ExplosiveBullet : MonoBehaviour, IProjectile
+public class ExplosiveBullet : MonoBehaviour, IProjectile //falta estandarización
 
 {
-    [SerializeField] private float velocidad = 15f;
+    [SerializeField] private float velocidad = 15f; 
     [SerializeField] private float damagee = 40f;
     [SerializeField] private float radio = 5f;
 

@@ -8,9 +8,9 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private float _speed = 2f;
 
     [Header("Los puntos donde se mueve el enemigo")]
-    [SerializeField] private Transform _puntotuno;
-    [SerializeField] private Transform _puntodos;
-    [SerializeField] private TextMeshPro _Text;
+    [SerializeField] private Transform _puntotuno; //falta estandarización
+    [SerializeField] private Transform _puntodos; //falta estandarización
+    [SerializeField] private TextMeshPro _Text; //texto de qué? 
 
     private Transform _Target;
 
