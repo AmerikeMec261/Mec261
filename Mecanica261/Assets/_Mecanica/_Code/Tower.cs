@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Tower : MonoBehaviour
+public class Tower : MonoBehaviour // La torreta ya no debe de funcionar con A y W. Debe seguir a la posición del mouse. 
 {
     [Header("Dependences")]
     [SerializeField] private Transform _yawPivot;
@@ -50,4 +50,4 @@ public class Tower : MonoBehaviour
         float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
         _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
     }
-}
+} //Trabajo en clase: Agregar lo solicitado para el exámen. 
