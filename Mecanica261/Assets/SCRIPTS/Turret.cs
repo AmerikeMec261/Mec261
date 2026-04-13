@@ -25,7 +25,7 @@ public class Turret : MonoBehaviour
 
     private void Start()
     {
-        _mainCamera = Camera.main;
+        _mainCamera = Camera.main; // Porqué se hace esto? 
     }
 
     private void Update()
@@ -76,4 +76,4 @@ public class Turret : MonoBehaviour
         GameObject spawnedBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
         spawnedBullet.GetComponent<IProjectile>()?.Fire();
     }
-}
+} // Trabajo en clase: usar la fórmula vista en clase para el cálculo del disparo. 

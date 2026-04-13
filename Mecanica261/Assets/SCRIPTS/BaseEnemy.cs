@@ -3,7 +3,7 @@ using UnityEngine;
 public class BaseEnemy : MonoBehaviour, IEnemy, IDamageable
 {
     [Header("Stats")]
-    [SerializeField] private float _maxHealth = 100f;
+    [SerializeField] private float _maxHealth = 100f; // porqué es max health? 
     [SerializeField] private float _shield = 0f;
     [SerializeField] private float _movementSpeed = 3f;
 
