@@ -18,7 +18,7 @@ public class Tower1 : MonoBehaviour
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
     [Header("Reticula")]
-    [SerializeField] private  Transform _reticula;
+    [SerializeField] private  Transform _reticula; //Inglés
 
     [Header("Bullet")]
     [SerializeField] private GameObject _explosivePrefab;
@@ -100,7 +100,7 @@ public class Tower1 : MonoBehaviour
 
             float horizontalDistance = direction.magnitude;
             float heightDifference = hit.point.y - _pitchPivot.position.y;
-            float targetPitch = Mathf.Atan2(heightDifference, horizontalDistance) * Mathf.Rad2Deg;
+            float targetPitch = Mathf.Atan2(heightDifference, horizontalDistance) * Mathf.Rad2Deg; // No es la formula completa que vimos en clase. 
             _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
             _pitchPivot.localEulerAngles = new Vector3(_currentPitch, 0f, 0f);
 
@@ -120,7 +120,5 @@ public class Tower1 : MonoBehaviour
             if (_reticula != null)
                 _reticula.position = new Vector3(hit.point.x, hit.point.y + 0.01f, hit.point.z);
         }
-
-
     }
-}
+} // Ejercicio en clase: usar la fórmula que vimos en clase y hacer que la torreta sube y baje su pitch
