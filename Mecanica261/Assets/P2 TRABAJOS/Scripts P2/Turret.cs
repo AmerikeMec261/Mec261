@@ -265,4 +265,4 @@ public class Turret : MonoBehaviour
         float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
         _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
     }
-}
+}// trabajo en clase: eliminar por completo los comentarios. El codigo debe ser "auto comentado" es decir que el codigo se entienda por si solo sin necesidad de los comentarios.
