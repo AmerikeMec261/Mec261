@@ -20,12 +20,6 @@ public class ExplosiveBullet : MonoBehaviour, IProjectile
     {
         rb = GetComponent<Rigidbody>();
     }
-
-    public void Shoot(Vector3 velocity)
-    {
-        rb.linearVelocity = velocity;
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         Explode();

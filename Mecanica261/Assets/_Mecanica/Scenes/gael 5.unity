@@ -1508,7 +1508,7 @@ MonoBehaviour:
   _reticle: {fileID: 87957207}
   _simpleBulletPrefab: {fileID: 8329536398444648658, guid: 5829037016508544fb8755c00c083e3f, type: 3}
   _explosiveBulletPrefab: {fileID: 8329536398444648658, guid: 8c38b050b26e3de46a45aa601728a919, type: 3}
-  _bulletSpeed: 25
+  _bulletSpeed: 10
   _maxRange: 100
 --- !u!4 &1796954141
 Transform:

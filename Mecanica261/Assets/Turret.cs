@@ -78,23 +78,54 @@ public class Turret : MonoBehaviour
         }
     }
 
-    
+
     private void Shoot()
     {
         GameObject bullet = Instantiate(_currentBullet, _bulletSpawn.position, Quaternion.identity);
 
-        Vector3 targetPoint = _reticle.position;
-        Vector3 direction = (targetPoint - _bulletSpawn.position).normalized;
+        if (!bullet.TryGetComponent<Rigidbody>(out Rigidbody rb)) return;
 
-        Vector3 velocity = direction * _bulletSpeed;
+        Vector3 start = _bulletSpawn.position;
+        Vector3 target = _reticle.position;
 
-        if (bullet.TryGetComponent<IProjectile>(out IProjectile projectile))
+        Vector3 direction = target - start;
+
+        float x = new Vector3(direction.x, 0, direction.z).magnitude; 
+        float y = direction.y; 
+
+        float g = Mathf.Abs(Physics.gravity.y); 
+        float v = _bulletSpeed; 
+
+        float v2 = v * v;
+        float v4 = v2 * v2;
+
+        float insideSqrt = v4 - g * (g * x * x + 2 * y * v2);
+
+        
+        if (insideSqrt < 0)
         {
-            projectile.Shoot(velocity); //La bala no necesita una direccion. El barril del cañon determina la direccion del disparo parabólico.
+            Debug.Log("No hay solución balística");
+            return;
         }
+
+        float sqrt = Mathf.Sqrt(insideSqrt);
+
+        
+        float angle = Mathf.Atan((v2 - sqrt) / (g * x));
+
+        
+        Vector3 dir = new Vector3(direction.x, 0, direction.z).normalized;
+
+        
+        Vector3 velocity =
+            dir * v * Mathf.Cos(angle) +
+            Vector3.up * v * Mathf.Sin(angle);
+
+        
+        rb.linearVelocity = velocity;
     }
 
-    
+
     private void SwitchBullet()
     {
         if (_currentBullet == _simpleBulletPrefab)

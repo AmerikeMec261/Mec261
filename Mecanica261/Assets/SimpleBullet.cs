@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SimpleBullet : MonoBehaviour, IProjectile
 {
-    private Rigidbody rb; //no usar abreviaciones
+    private Rigidbody rigidbody; //no usar abreviaciones
 
     [SerializeField] private float damage = 20f;
     [SerializeField] private float speed = 25f;
@@ -12,14 +12,8 @@ public class SimpleBullet : MonoBehaviour, IProjectile
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
     }
-
-    public void Shoot(Vector3 velocity)
-    {
-        rb.linearVelocity = velocity;
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         DealDamage(collision.gameObject);
