@@ -33,7 +33,7 @@ public class Torreta : MonoBehaviour
     {
         _currentBullet=_normalBullet;
         if (_reticle != null)
-            _reticleInstance=Instantiate(_reticle);
+            _reticleInstance=Instantiate(_reticle); // porqué instancias la reticula?  Debería estar en la escena y solo moverlo.  
     }
 
     public void FireProjectile()
@@ -44,10 +44,10 @@ public class Torreta : MonoBehaviour
         if (projectile == null) return;
 
         Vector3 flat = new Vector3(_targetPoint.x - _bulletSpawn.position.x, 0f, _targetPoint.z - _bulletSpawn.position.z);
-        float t = flat.magnitude / projectile.Speed;
+        float t = flat.magnitude / projectile.Speed; // No Usar abreaviaciones
 
         Vector3 velocity = flat.normalized * projectile.Speed;
-        velocity.y = (_targetPoint.y - _bulletSpawn.position.y) / t + 0.5f * Mathf.Abs(Physics.gravity.y) * t;
+        velocity.y = (_targetPoint.y - _bulletSpawn.position.y) / t + 0.5f * Mathf.Abs(Physics.gravity.y) * t; // No es la formula completa que vimos en clase
 
         projectile.Fire(velocity);
 
@@ -97,11 +97,11 @@ public class Torreta : MonoBehaviour
             _yawPivot.rotation = Quaternion.Lerp(_yawPivot.rotation, targetYaw, _yawSpeed * Time.deltaTime);
         }
 
-        Vector3 localTarget = _pitchPivot.InverseTransformPoint(_targetPoint);
+        Vector3 localTarget = _pitchPivot.InverseTransformPoint(_targetPoint); 
         float targetPitch = -Mathf.Atan2(localTarget.y, localTarget.z) * Mathf.Rad2Deg;
         _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
 
-        _pitchPivot.localRotation = Quaternion.Lerp(
+        _pitchPivot.localRotation = Quaternion.Lerp( // porqué los saltos de línea?  Esto suele ser residuo de GPT.
             _pitchPivot.localRotation,
             Quaternion.Euler(_currentPitch, 0f, 0f),
             _pitchSpeed * Time.deltaTime);
@@ -120,4 +120,4 @@ public class Torreta : MonoBehaviour
             _reticleInstance.transform.rotation = Quaternion.Euler(90f,0f,0f);
         }
     }
-}
+}  //Trabajo en clase: Usar la formula completa que vimos en clase y usarla para el pitch de la torreta. Poner enemigos a diferentes alturas y hacer que repitan su ruta. 
