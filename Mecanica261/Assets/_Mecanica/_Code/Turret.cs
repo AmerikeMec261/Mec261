@@ -21,8 +21,8 @@ public class Turret : MonoBehaviour
     [Header("Modes")]
     [SerializeField] private bool _autoAimEnabled = false; // Presiona 'T' para cambiar de modo
 
-    [Header("Reticula")]
-    [SerializeField] private Transform _reticula; //inglés
+    [Header("Reticle")]
+    [SerializeField] private Transform _reticle; //inglés
 
     [Header("Auto Settings")]
     [SerializeField] private float _autoRotationSpeed = 5f;
@@ -40,7 +40,7 @@ public class Turret : MonoBehaviour
 
         if (_autoAimEnabled && _target != null)
         {
-            AutoAim();
+        
         }
         else
         {
@@ -57,27 +57,6 @@ public class Turret : MonoBehaviour
         // El disparo manual
         if (Input.GetKeyDown(KeyCode.Space)) FireProjectile();
     }  
-
-    private void AutoAim()
-    {
-        Vector3 direction = _target.position - transform.position;
-
-        // Yaw y Pitch Automáticos
-        Vector3 planarDirection = Vector3.ProjectOnPlane(direction, Vector3.up);
-        Quaternion targetYaw = Quaternion.LookRotation(planarDirection);
-        _yawPivot.rotation = Quaternion.Slerp(_yawPivot.rotation, targetYaw, Time.deltaTime * _autoRotationSpeed);
-
-
-        Vector3 localTargetPos = _yawPivot.InverseTransformPoint(_target.position);
-        float angle = -Mathf.Atan2(localTargetPos.y, localTargetPos.z) * Mathf.Rad2Deg;
-        angle = Mathf.Clamp(angle, _pitchLimits.x, _pitchLimits.y);
-
-        Quaternion targetPitch = Quaternion.Euler(angle, 0, 0);
-        _pitchPivot.localRotation = Quaternion.Slerp(_pitchPivot.localRotation, targetPitch, Time.deltaTime * _autoRotationSpeed);
-
-        _currentYaw = _yawPivot.localEulerAngles.y;
-        _currentPitch = angle;
-    }
 
     public void FireProjectile()
     {
@@ -107,9 +86,9 @@ public class Turret : MonoBehaviour
             if (direction != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
-                Quaternion correctedRotation = targetRotation * Quaternion.Euler(0f, 180f, 0f);
+                Quaternion correctedRotation = targetRotation * Quaternion.Euler(0f, 100f, 0f);
                 _yawPivot.rotation = Quaternion.Lerp(
-                    _yawPivot.rotation, correctedRotation, _yawSpeed * Time.deltaTime);
+                _yawPivot.rotation, correctedRotation, _yawSpeed * Time.deltaTime);
 
             }
 
@@ -120,11 +99,11 @@ public class Turret : MonoBehaviour
             _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
             _pitchPivot.localEulerAngles = new Vector3(_currentPitch, 0f, 0f);
          
-            if (_reticula != null)
-                _reticula.position = new Vector3(hit.point.x, hit.point.y + 0.01f, hit.point.z);
+            if (_reticle != null)
+                _reticle.position = new Vector3(hit.point.x, hit.point.y + 0.01f, hit.point.z);
         }
 
 
     }
 
-} //Trabajo en clase: usar la formula que vimos en clase. 
+} //Trabajo en clase: usar la formula que vimos en clase.
