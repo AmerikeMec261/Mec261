@@ -22,7 +22,7 @@ public class CestaController : MonoBehaviour, IDamageable
         Move();
     }
 
-    private void Move()
+    private void Move() // Usa calculos con sin o puedes usar terniario. 
     {
         float step = _speed * Time.deltaTime;
         if (_goingRight)
@@ -54,7 +54,7 @@ public class CestaController : MonoBehaviour, IDamageable
             _health -= amount;
         }
 
-        Debug.Log($"{gameObject.name} - Vida: {_health} | Escudo: {_shield}");
+        Debug.Log($"{gameObject.name} - Vida: {_health} | Escudo: {_shield}"); // utiliza "this" para claridad
         
         if (_health <= 0)
         {

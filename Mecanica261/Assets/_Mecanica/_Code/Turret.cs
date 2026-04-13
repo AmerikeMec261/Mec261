@@ -12,7 +12,7 @@ public class Turret : MonoBehaviour
 
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 90f;
-    [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
+    [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f); //si ya no se usa para qué sigue aqui? 
 
     [Header("Pitch Settings")]
     [SerializeField] private float _pitchSpeed = 90f;
@@ -22,7 +22,7 @@ public class Turret : MonoBehaviour
     [SerializeField] private bool _autoAimEnabled = false; // Presiona 'T' para cambiar de modo
 
     [Header("Reticula")]
-    [SerializeField] private Transform _reticula;
+    [SerializeField] private Transform _reticula; //inglés
 
     [Header("Auto Settings")]
     [SerializeField] private float _autoRotationSpeed = 5f;
@@ -82,7 +82,7 @@ public class Turret : MonoBehaviour
     public void FireProjectile()
     {
         GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-        IProjectile projectile = currentBullet.GetComponent<IProjectile>();
+        IProjectile projectile = currentBullet.GetComponent<IProjectile>(); //la torreta no debe ser responsable de poner el daño, eso lo hace la bala, la torreta solo dispara, si quieres cambiar el daño de la bala hazlo en la bala no en la torreta.
         if (projectile != null)
         {
             projectile.SetDamage(20f);
@@ -127,4 +127,4 @@ public class Turret : MonoBehaviour
 
     }
 
-}
+} //Trabajo en clase: usar la formula que vimos en clase. 
