@@ -7,7 +7,7 @@ public class Tower1 : MonoBehaviour
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private GameObject _bulletPrefab;
-    
+
 
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 90f;
@@ -18,7 +18,7 @@ public class Tower1 : MonoBehaviour
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
     [Header("Reticula")]
-    [SerializeField] private  Transform _reticula; //Inglés
+    [SerializeField] private Transform _reticula;
 
     [Header("Bullet")]
     [SerializeField] private GameObject _explosivePrefab;
@@ -26,15 +26,19 @@ public class Tower1 : MonoBehaviour
     //private float _currentYaw = 0f;
     private float _currentPitch = 0f;
 
+    [Header("Target")]
+    [SerializeField] private string _enemyTag = "Enemy";
+    private Transform _enemyTarget;
+
     public void FireProjectile()
     {
         GameObject prefabToSpawn = _usingExplosive ? _explosivePrefab : _bulletPrefab;
-        if (prefabToSpawn == null )
+        if (prefabToSpawn == null)
         {
             Debug.Log("Prefab No Agsinado");
             return;
         }
-        GameObject currentBullet = Instantiate(prefabToSpawn, _bulletSpawn.position ,  _bulletSpawn.rotation);
+        GameObject currentBullet = Instantiate(prefabToSpawn, _bulletSpawn.position, _bulletSpawn.rotation);
         currentBullet.GetComponent<IProjectile>()?.Fire();
 
         Debug.DrawRay(transform.position, transform.forward * 5f, Color.red, 2f);
@@ -43,7 +47,7 @@ public class Tower1 : MonoBehaviour
     private void Update()
     {
         RotateMouse();
-       
+
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -74,51 +78,111 @@ public class Tower1 : MonoBehaviour
 
     private void RotateMouse()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+
+        if (_targetEnemy != null) {
+            GameObject enemyObj = GameObject.FindGameObjectWithTag(_enemyTag);
+            if (enemyObj != null)
+                _targetEnemy. = enemyObj.transform;
+            else;
+            return;
+
+            Vector3 targetPoint = _targetEnemy.transform.position;
 
 
-        int layerMask = LayerMask.GetMask("Default");
-        if (Physics.Raycast(ray, out hit))
-        {
-            Vector3 targetPoint = hit.point;
-
-            Vector3 direction = hit.point - transform.position;
-            direction.y = 0f;
+            Vector3 direction = targetPoint - transform.position;
+            direction.y = 0;
 
             if (direction != Vector3.zero)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                Quaternion correctedRotation = targetRotation * Quaternion.Euler(0f, 180f, 0f);
+                Quaternion targetYaw = Quaternion.LookRotation(direction);
+                Quaternion correctedYaw = targetYaw * Quaternion.Euler(0f, 180f, 0f);
                 _yawPivot.rotation = Quaternion.Lerp(
-                    _yawPivot.rotation, correctedRotation, _yawSpeed * Time.deltaTime);
-
-
-
+                    _yawPivot.rotation,
+                    correctedYaw,
+                    _yawSpeed * Time.deltaTime);
             }
 
+            float horizpntalDistance = direction.magnitude;
+            float heighDifference = targetPoint.y - _pitchPivot.position.y;
+            float targetPitch = Mathf.Atan2(heighDifference, horizpntalDistance ) * Mathf.Rad2Deg; 
 
-            float horizontalDistance = direction.magnitude;
-            float heightDifference = hit.point.y - _pitchPivot.position.y;
-            float targetPitch = Mathf.Atan2(heightDifference, horizontalDistance) * Mathf.Rad2Deg; // No es la formula completa que vimos en clase. 
-            _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
+            _currentPitch = Mathf.Clamp(targetPitch , _pitchLimits.x, _pitchLimits.y);
             _pitchPivot.localEulerAngles = new Vector3(_currentPitch, 0f, 0f);
+
+            if (_reticula != null)
+                _reticula.position = new Vector3(
+                    _targetEnemy.position.x,
+                    _targetEnemy.position.y + 0.01f,
+                    _targetEnemy.position.z);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // RaycastHit hit;
+
+
+            //int layerMask = LayerMask.GetMask("Default");
+            //if (Physics.Raycast(ray, out hit))
+            //{
+            //  Vector3 targetPoint = hit.point;
+
+            // Vector3 direction = hit.point - transform.position;
+            // direction.y = 0f;
+
+            // if (direction != Vector3.zero)
+            // {
+            //    Quaternion targetRotation = Quaternion.LookRotation(direction);
+            //    Quaternion correctedRotation = targetRotation * Quaternion.Euler(0f, 180f, 0f);
+            //   _yawPivot.rotation = Quaternion.Lerp(
+            //         _yawPivot.rotation, correctedRotation, _yawSpeed * Time.deltaTime);
+
+
+
+            //  }
+
+
+            //       float horizontalDistance = direction.magnitude;
+            //  float heightDifference = hit.point.y - _pitchPivot.position.y;
+            //    float targetPitch = Mathf.Atan2(heightDifference, horizontalDistance) * Mathf.Rad2Deg;
+            //        _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
+            //         _pitchPivot.localEulerAngles = new Vector3(_currentPitch, 0f, 0f);
 
 
             //int layerMask = -LayerMask.GetMask("Ignorado");
-           // if (Physics.Raycast(ray, out hit , Mathf.Infinity , layerMask))
-           // {
-            //    Debug.Log($"Raycast golpeó : {hit.collider.name}");
+            // if (Physics.Raycast(ray, out hit , Mathf.Infinity , layerMask))
+            // {
+            //    Debug.Log($"Raycast golpeï¿½ : {hit.collider.name}");
 
-          //  }
-           // else
+            //  }
+            // else
             //{
-         //       Debug.Log("No golpeo nada");
-           // }
+            //       Debug.Log("No golpeo nada");
+            // }
 
-           
-            if (_reticula != null)
-                _reticula.position = new Vector3(hit.point.x, hit.point.y + 0.01f, hit.point.z);
+
+            // if (_reticula != null)
+            //    _reticula.position = new Vector3(hit.point.x, hit.point.y + 0.01f, hit.point.z);
+        }
+
+
         }
     }
-} // Ejercicio en clase: usar la fórmula que vimos en clase y hacer que la torreta sube y baje su pitch
