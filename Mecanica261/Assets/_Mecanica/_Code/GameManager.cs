@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour //El codigo no está estandarizado.
 {
     public static GameManager Instance;
 
@@ -88,3 +88,6 @@ public class GameManager : MonoBehaviour
         livesText.text = "Vidas" + lives;
     }
 }
+
+
+//Trabajo en clase: Estandarizar el código y hacer uso de interfaces.

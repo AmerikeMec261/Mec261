@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour //El codigo no está estandarizado. //No hace uso de interfaces
 {
     public GameObject target;
     public float speed = 10f;

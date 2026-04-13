@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameUI : MonoBehaviour
+public class GameUI : MonoBehaviour //El codigo no está estandarizado.
 {
     public Button buyTowerButton;
     public GameObject towerPrefab;
@@ -35,7 +35,7 @@ public class GameUI : MonoBehaviour
         {
             Vector3 zero = Vector3.zero;
             GameObject t= Instantiate(towerPrefab,zero,Quaternion.identity);
-            t.transform.SetParent(towerParent);
+            t.transform.SetParent(towerParent); //No uses abreviaciones
             t.transform.localPosition = Vector3.zero;
         }
         else
