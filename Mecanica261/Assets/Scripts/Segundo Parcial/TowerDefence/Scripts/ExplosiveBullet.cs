@@ -40,11 +40,11 @@ public class ExplosiveBullet : MonoBehaviour, IProjectile
 
         foreach (Collider col in hits)
         {
-            IDamageable dmg = col.GetComponent<IDamageable>();
+            IDamageable damage = col.GetComponent<IDamageable>();
 
-            if (dmg != null)
+            if (damage != null)
             {
-                dmg.TakeDamage(_damage);
+                damage.TakeDamage(_damage);
             }
         }
         GameObject fx = Instantiate(_explosionVisual, transform.position, Quaternion.identity);

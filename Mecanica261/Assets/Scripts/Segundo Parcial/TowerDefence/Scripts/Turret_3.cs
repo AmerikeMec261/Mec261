@@ -18,7 +18,7 @@ public class Turret_3 : MonoBehaviour
     [SerializeField] private float _projectileSpeed = 30f;
     [SerializeField] private float _minDistance = 1f;
     [SerializeField] private bool _useHighArc = false;
-
+    
     private Vector3 _targetPoint;
     private bool _hasSolution;
 
@@ -33,14 +33,14 @@ public class Turret_3 : MonoBehaviour
         }
 
         // Cambiar de Bullet
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+       if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            _currentBulletIndex = 0;
+             _currentBulletIndex = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            _currentBulletIndex = 1;
+             _currentBulletIndex = 1;
         }
 
     }
@@ -49,54 +49,49 @@ public class Turret_3 : MonoBehaviour
     private void UpdateMouseTarget()
     {
         Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-
+        //RayCast es para detectar alguna collision
         if (Physics.Raycast(ray, out RaycastHit hit, 1000f, _groundLayer))
         {
             _targetPoint = hit.point;
         }
-        else
-        {
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
 
-            if (plane.Raycast(ray, out float enter))
-            {
-                _targetPoint = ray.GetPoint(enter);
-            }
-        }
+        //El otro iff porque era por si no encontraba un collider pero ahorita no necestio eso 
 
         if (_reticle != null)
+        {
             _reticle.position = _targetPoint;
+        }
     }
 
     private void Aim()
     {
-        Vector3 origin = _bulletSpawn.position;
+        Vector3 originPosition = _bulletSpawn.position;
 
-        Vector3 dir = _targetPoint - _yawPivot.position; //recuerda no usar abreviaciones
+        Vector3 directionToTarget = _targetPoint - _yawPivot.position;
 
-        Vector3 flatDir = new Vector3(dir.x, 0f, dir.z); //recuerda no usar abreviaciones
+        Vector3 horizontalDirection = new Vector3(directionToTarget.x, 0f, directionToTarget.z);
 
-        float distance = flatDir.magnitude;
+        float horizontalDistance = horizontalDirection.magnitude;
 
-        if (distance < _minDistance)
+        if (horizontalDistance < _minDistance)
         {
             return;
         }
 
         // yaw
-        if (flatDir.sqrMagnitude > 0.001f)
+        if (horizontalDirection.sqrMagnitude > 0.001f)
         {
-            Quaternion rot = Quaternion.LookRotation(flatDir); //recuerda no usar abreviaciones
-            _yawPivot.rotation = Quaternion.Euler(0f, rot.eulerAngles.y, 0f);
+            Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
+            _yawPivot.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
         }
 
         // pitch
-        _hasSolution = SolveBallisticAngle(origin, _targetPoint, _projectileSpeed, out float angle);
+        _hasSolution = SolveBallisticAngle(originPosition, _targetPoint, _projectileSpeed, out float launchAngle);
 
         if (_hasSolution)
         {
-            float angleDeg = angle * Mathf.Rad2Deg;
-            _pitchPivot.localEulerAngles = new Vector3(-angleDeg, 0f, 0f);
+            float launchAngleDegrees = launchAngle * Mathf.Rad2Deg;
+            _pitchPivot.localEulerAngles = new Vector3(-launchAngleDegrees, 0f, 0f);
         }
         else
         {
@@ -104,50 +99,61 @@ public class Turret_3 : MonoBehaviour
         }
     }
 
-    // El disparo 
+    // Disparo
     private void FireProjectile()
     {
-        GameObject bullet = Instantiate(_bulletPrefabs[_currentBulletIndex], _bulletSpawn.position, _bulletSpawn.rotation);
+        GameObject bulletInstance = Instantiate(
+            _bulletPrefabs[_currentBulletIndex],
+            _bulletSpawn.position,
+            _bulletSpawn.rotation
+        );
 
-        IProjectile proj = bullet.GetComponent<IProjectile>(); //recuerda no usar abreviaciones
+        IProjectile projectile = bulletInstance.GetComponent<IProjectile>();
 
-        if (proj != null) // puedes cambiar el null check por ? depues del GetComponent
+        if (projectile != null)
         {
-            proj.SetSpeed(_projectileSpeed);
-            proj.Fire();
+            projectile.SetSpeed(_projectileSpeed);
+            projectile.Fire();
         }
     }
 
     // Parabólico / Fórumla de la clase del Martess
-    private bool SolveBallisticAngle(Vector3 origin, Vector3 target, float speed, out float angle) //recuerda no usar abreviaciones
+    private bool SolveBallisticAngle(Vector3 originPosition, Vector3 targetPosition, float projectileSpeed, out float launchAngle)
     {
-        float g = Physics.gravity.magnitude;
+        float gravity = Physics.gravity.magnitude;
 
-        Vector3 flat = new Vector3(target.x - origin.x, 0, target.z - origin.z);
-        float x = flat.magnitude;
+        Vector3 horizontalVector = new Vector3(
+            targetPosition.x - originPosition.x,
+            0f,
+            targetPosition.z - originPosition.z
+        );
 
-        float deltaY = target.y - origin.y;
+        float horizontalDistance = horizontalVector.magnitude;
 
-        float v2 = speed * speed;
-        float v4 = v2 * v2;
+        float heightDifference = targetPosition.y - originPosition.y;
 
-        float inside = v4 - g * (g * x * x + 2 * deltaY * v2);
+        float speedSquared = projectileSpeed * projectileSpeed;
+        float speedFourth = speedSquared * speedSquared;
 
-        if (inside < 0f)
+        float discriminant = speedFourth - gravity * (gravity * horizontalDistance * horizontalDistance + 2 * heightDifference * speedSquared);
+
+        if (discriminant < 0f)
         {
-            angle = 0f;
+            launchAngle = 0f;
             return false;
         }
 
-        float sqrt = Mathf.Sqrt(inside);
+        float squareRoot = Mathf.Sqrt(discriminant);
 
-        float low = Mathf.Atan((v2 - sqrt) / (g * x));
-        float high = Mathf.Atan((v2 + sqrt) / (g * x));
+        float lowAngle = Mathf.Atan((speedSquared - squareRoot) / (gravity * horizontalDistance));
+        float highAngle = Mathf.Atan((speedSquared + squareRoot) / (gravity * horizontalDistance));
 
-        angle = _useHighArc ? high : low;
+        launchAngle = _useHighArc ? highAngle : lowAngle;
 
         return true;
     }
-
-    //Ejercicio en clase: cambia el método de arriba para no usar abrevaciones o varibales "mágicas", tienes que saber a qué se refiere X, G, etc. y poner nombres que lo reflejen. Por ejemplo, en vez de "x" podrías usar "horizontalDistance", en vez de "g" podrías usar "gravity", etc.
 }
+
+//Ejercicio en clase:
+//Cambia el método de arriba para no usar abrevaciones o varibales "mágicas", tienes que saber a qué se refiere X, G, etc. y poner nombres que lo reflejen.
+//Por ejemplo, en vez de "x" podrías usar "horizontalDistance", en vez de "g" podrías usar "gravity", etc.
