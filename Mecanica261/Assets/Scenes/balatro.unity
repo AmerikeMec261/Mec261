@@ -964,6 +964,7 @@ MonoBehaviour:
   _bulletSpawn: {fileID: 165885435}
   _normalBullet: {fileID: 9113438501568615916, guid: 18f0c8976f98ba446b79a70fc5453c2f, type: 3}
   _explosiveBullet: {fileID: 8405396284614659364, guid: e902258adf1039c4da57e36e68f99d14, type: 3}
+  _useHighArc: 1
   _yawSpeed: 90
   _yawLimits: {x: -90, y: 90}
   _pitchSpeed: 90
@@ -998,7 +999,7 @@ Transform:
   m_GameObject: {fileID: 444243867}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -33.440006, y: 2.39, z: 6.23}
+  m_LocalPosition: {x: -33.440006, y: 9.13, z: 6.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1246,7 +1247,7 @@ Transform:
   m_GameObject: {fileID: 1286398642}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.5, y: 0.4, z: -11.931}
+  m_LocalPosition: {x: -30.5, y: 7.1400003, z: -11.931}
   m_LocalScale: {x: 2.0579, y: 1, z: 3.7909}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1308,7 +1309,7 @@ Transform:
   m_GameObject: {fileID: 1444302555}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -28.2, y: 0.87, z: -28.4}
+  m_LocalPosition: {x: -28.2, y: 7.61, z: -28.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1614,7 +1615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3914403407424810168, guid: 4518a612395cdcc48bc8c125cf3a7ffc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.1600003
+      value: 8.900001
       objectReference: {fileID: 0}
     - target: {fileID: 3914403407424810168, guid: 4518a612395cdcc48bc8c125cf3a7ffc, type: 3}
       propertyPath: m_LocalPosition.z

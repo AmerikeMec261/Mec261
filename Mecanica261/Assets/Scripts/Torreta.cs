@@ -9,6 +9,7 @@ public class Torreta : MonoBehaviour
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private GameObject _normalBullet;
     [SerializeField] private GameObject _explosiveBullet;
+    [SerializeField] private bool _useHighArc = false;
 
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 90f;
@@ -43,16 +44,57 @@ public class Torreta : MonoBehaviour
 
         if (projectile == null) return;
 
-        Vector3 flat = new Vector3(_targetPoint.x - _bulletSpawn.position.x, 0f, _targetPoint.z - _bulletSpawn.position.z);
-        float t = flat.magnitude / projectile.Speed; // No Usar abreaviaciones
+        if (!SolveBallisticAngle(_bulletSpawn.position, _targetPoint, projectile.Speed, out float launchAngle))
+        {
+            Destroy(currentBullet);
+            return;
+        }
 
-        Vector3 velocity = flat.normalized * projectile.Speed;
-        velocity.y = (_targetPoint.y - _bulletSpawn.position.y) / t + 0.5f * Mathf.Abs(Physics.gravity.y) * t; // No es la formula completa que vimos en clase
+        Vector3 horizontalDirection = new Vector3(
+            _targetPoint.x - _bulletSpawn.position.x,
+            0f,
+            _targetPoint.z - _bulletSpawn.position.z
+        ).normalized;
+
+        Vector3 velocity = horizontalDirection * projectile.Speed * Mathf.Cos(launchAngle);
+        velocity.y = projectile.Speed * Mathf.Sin(launchAngle);
 
         projectile.Fire(velocity);
+    }
 
+    private bool SolveBallisticAngle(Vector3 originPosition, Vector3 targetPosition, float projectileSpeed, out float launchAngle)
+    {
+        float gravity = Physics.gravity.magnitude;
 
+        Vector3 horizontalVector = new Vector3(
+            targetPosition.x - originPosition.x,
+            0f,
+            targetPosition.z - originPosition.z
+        );
 
+        float horizontalDistance = horizontalVector.magnitude;
+
+        float heightDifference = targetPosition.y - originPosition.y;
+
+        float speedSquared = projectileSpeed * projectileSpeed;
+        float speedFourth = speedSquared * speedSquared;
+
+        float discriminant = speedFourth - gravity * (gravity * horizontalDistance * horizontalDistance + 2 * heightDifference * speedSquared);
+
+        if (discriminant < 0f)
+        {
+            launchAngle = 0f;
+            return false;
+        }
+
+        float squareRoot = Mathf.Sqrt(discriminant);
+
+        float lowAngle = Mathf.Atan((speedSquared - squareRoot) / (gravity * horizontalDistance));
+        float highAngle = Mathf.Atan((speedSquared + squareRoot) / (gravity * horizontalDistance));
+
+        launchAngle = _useHighArc ? highAngle : lowAngle;
+
+        return true;
     }
 
     private void Update()
@@ -97,14 +139,11 @@ public class Torreta : MonoBehaviour
             _yawPivot.rotation = Quaternion.Lerp(_yawPivot.rotation, targetYaw, _yawSpeed * Time.deltaTime);
         }
 
-        Vector3 localTarget = _pitchPivot.InverseTransformPoint(_targetPoint); 
+        Vector3 localTarget = _pitchPivot.InverseTransformPoint(_targetPoint); //El inverseTransformPoint calcula una posición relativa basandose en la posición, rotación, y escala del objeto, mientras que usar Vector3 -1 es una inversión matemática de los valores x,y,z
         float targetPitch = -Mathf.Atan2(localTarget.y, localTarget.z) * Mathf.Rad2Deg;
         _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
 
-        _pitchPivot.localRotation = Quaternion.Lerp( // porqué los saltos de línea?  Esto suele ser residuo de GPT.
-            _pitchPivot.localRotation,
-            Quaternion.Euler(_currentPitch, 0f, 0f),
-            _pitchSpeed * Time.deltaTime);
+        _pitchPivot.localRotation = Quaternion.Lerp( _pitchPivot.localRotation,Quaternion.Euler(_currentPitch, 0f, 0f),_pitchSpeed * Time.deltaTime); // porqué los saltos de línea?  Esto suele ser residuo de GPT.
     }
 
     private void UpdateReticle()
