@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemys : MonoBehaviour
+public class Enemys : MonoBehaviour // Falta usar interfaz
 {
     public float health = 100;
     public float speed = 3f;
@@ -29,7 +29,7 @@ public class Enemys : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision) // El enemigo no debe ser el encargado de collisionar con el proyectil, debe ser el proyectil el encargado de detectar la colisión con el enemigo.
     {
         if (collision.gameObject.name.Contains("Bullet") || collision.gameObject.tag == "Bullet")
         {

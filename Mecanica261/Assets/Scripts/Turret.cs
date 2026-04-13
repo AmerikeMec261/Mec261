@@ -97,4 +97,4 @@ public class Turret : MonoBehaviour
         _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
 
     }   
-}
+}// Trabajo en clase: usar la formula que vimos en clase para calcular el ángulo de disparo. 

@@ -3,13 +3,13 @@ using UnityEngine.InputSystem;
 
 public class Targeting : MonoBehaviour
 {
-    [Header("References")]
-    public GameObject targetPrefab;
+    [Header("References")] //Falta estandarización
+    public GameObject targetPrefab; 
     public Collider floorCollider;
     public Camera gameCamera;
 
-    [Header("Turret Setting")]
-    public Transform turretBarrel;
+    [Header("Turret Setting")] //Falta estandarización
+    public Transform turretBarrel; 
     public float rotationSpeed = 10f;
 
     private GameObject activeTarget;
@@ -45,7 +45,7 @@ public class Targeting : MonoBehaviour
 
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-            turretBarrel.rotation = Quaternion.Slerp(turretBarrel.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            turretBarrel.rotation = Quaternion.Slerp(turretBarrel.rotation, targetRotation, rotationSpeed * Time.deltaTime); //no modifiques el valor de la torreta desde otro script, debes hablar con la torreta misma. 
         }
     }
 }
