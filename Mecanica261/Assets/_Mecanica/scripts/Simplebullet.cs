@@ -17,7 +17,7 @@ public class SimpleBullet : MonoBehaviour, IProjectile
 
     private void OnCollisionEnter(Collision collision)
     {
-        Enemies target = collision.gameObject.GetComponent<Enemies>();
+        Enemies target = collision.gameObject.GetComponent<Enemies>(); //Aqui se debe usar Interfaz y no script. 
 
         target.Damage(_Damage);
    

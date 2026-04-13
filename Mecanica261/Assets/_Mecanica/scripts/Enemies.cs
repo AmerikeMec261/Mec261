@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using UnityEngine;
 
-public class Enemies : MonoBehaviour
+public class Enemies : MonoBehaviour //Le falta estandarización completa
 {
     public float health = 100f;
     public float speed = 10f;
@@ -22,7 +22,7 @@ public class Enemies : MonoBehaviour
 
         float movement = Mathf.PingPong(Time.time * speed, limit * 2) - limit;
 
-        transform.position = new Vector3(
+        transform.position = new Vector3( //Para qué el salto de línea? Respuesta consistente con GPT.
         initialposition.x,
          initialposition.y,
          initialposition.z + movement

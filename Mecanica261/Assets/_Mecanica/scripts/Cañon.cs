@@ -68,4 +68,4 @@ public class Turret : MonoBehaviour
             _pitchPivot.rotation = pitchRotation;
         }
     }
-}
+}// Trabajo en clase: usar la formula que vimos en clase para determinar el ángulo de disaparo. Resolver los comentarios.
