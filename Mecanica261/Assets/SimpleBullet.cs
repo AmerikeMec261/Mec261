@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SimpleBullet : MonoBehaviour, IProjectile
 {
-    private Rigidbody rb;
+    private Rigidbody rb; //no usar abreviaciones
 
     [SerializeField] private float damage = 20f;
     [SerializeField] private float speed = 25f;

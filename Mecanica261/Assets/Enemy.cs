@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (pointA == null || pointB == null) return;
 
-        transform.position = Vector3.MoveTowards(
+        transform.position = Vector3.MoveTowards( // por qué los saltos de línea? Esto es consistente con output de GPT.
             transform.position,
             target.position,
             speed * Time.deltaTime

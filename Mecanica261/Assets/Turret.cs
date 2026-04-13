@@ -22,7 +22,7 @@ public class Turret : MonoBehaviour
 
     private void Start()
     {
-        _mainCamera = Camera.main;
+        _mainCamera = Camera.main; // porqué necesitas esta referencia? 
         _currentBullet = _simpleBulletPrefab;
     }
 
@@ -90,7 +90,7 @@ public class Turret : MonoBehaviour
 
         if (bullet.TryGetComponent<IProjectile>(out IProjectile projectile))
         {
-            projectile.Shoot(velocity);
+            projectile.Shoot(velocity); //La bala no necesita una direccion. El barril del cañon determina la direccion del disparo parabólico.
         }
     }
 
@@ -108,4 +108,4 @@ public class Turret : MonoBehaviour
             Debug.Log("Bala normal");
         }
     }
-}
+}// Trabajo en clase: Usar la formula que vimos en clase para calcular el ángulo de disparo y resolver los comentarios
