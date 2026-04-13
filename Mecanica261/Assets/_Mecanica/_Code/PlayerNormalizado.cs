@@ -1,136 +1,59 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class PlayerNormalizado : MonoBehaviour
 {
-    #region Variables
+    [Header("Movement")]
+    public float _playerSpeed = 2.0f;
+    public float _jumpHeight = 1.5f;
+    public float _gravityValue = -9.81f;
 
-    [Header("Dependencies")]
-    [SerializeField] private Rigidbody2D _rigidbody;
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private Transform _groundCheck;
+    public CharacterController _controller;
+    private Vector3 _playerVelocity;
+    private bool _groundedPlayer;
 
-    [Header("Movement Settings")]
-    [Tooltip("Horizontal Movement Speed")]
-    [SerializeField] private float _moveSpeed = 5f;
-    [Tooltip("Jump Force Applied To The Player")]
-    [SerializeField] private float _JumpForce = 10f;
+    [Header("Input Actions")]
+    public InputActionReference _moveAction;
+    public InputActionReference _jumpAction;
 
-    [Header("Ground Settings")]
-    [Tooltip("Distance Used To Detect The Ground.")]
-    [SerializeField] private float _groundCheckDistance = 0.2f;
-    [Tooltip("Layer Considered As Ground")]
-    [SerializeField] private LayerMask _groundLayer;
-
-    [Header("Health Settings")]
-    [Tooltip("Player Health Points")]
-    [SerializeField] private int _health = 5;
-
-    private float _horizontalInput;
-    private bool _isGorunded;
-    private bool _isDead;
-
-    #endregion Variables
-
-    #region Unity Methods
-
-    private void Awake()
+    private void OnEnable()
     {
-        ValidateComponents();
+        _moveAction.action.Enable();
+        _jumpAction.action.Enable();
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        if (_isDead) return;
-
-        ReadInput();
-        CheckGround();
-        Jump();
+        _moveAction.action.Disable();
+        _jumpAction.action.Disable();
     }
 
-    private void FixedUpdate()
+    void Update()
     {
-        if (_isDead) return;
-
-        Move();
-    }
-
-    #endregion Unity Methods
-
-    #region Methods
-
-    private void ReadInput()
-    {
-        _horizontalInput = Input.GetAxisRaw("Horizontal");
-    }
-
-    private void Move()
-    {
-        _rigidbody.linearVelocity = new Vector2 (_horizontalInput * _moveSpeed, _rigidbody.linearVelocity.y);
-
-        if (_horizontalInput!=0f)
+        _groundedPlayer = _controller.isGrounded;
+        if (_groundedPlayer && _playerVelocity.y < 0 )
         {
-            _spriteRenderer.flipX = _horizontalInput<0f;
-        }
-    }
-
-    private void Jump()
-    {
-        if (!_isGorunded || !Input.GetKeyDown(KeyCode.Escape)) return;
-
-        _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, _JumpForce);
-    }
-
-    private void CheckGround()
-    {
-        _isGorunded = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _groundLayer);
-    }
-
-    public void ReceiveDamage(int damage)
-    {
-        if (_isDead) return ;
-        _health -= damage;
-
-        if(_health <= 0)
-        {
-            Die();
-        }
-    }
-
-    public void Die()
-    {
-        _isDead = true;
-        _rigidbody.linearVelocity = Vector2.zero;
-        _spriteRenderer.color= Color.yellow;
-        gameObject.SetActive(false);
-    }
-
-    private void ValidateComponents()
-    {
-        if(_rigidbody == null) _rigidbody = GetComponent<Rigidbody2D>();
-        if(_spriteRenderer==null) _spriteRenderer = GetComponent<SpriteRenderer>();
-        if(_groundCheck==null)
-        {
-            Debug.LogError("PlayerController2D:GroundCheck Transform no asignado", this);
-            enabled = false;
+            _playerVelocity.y = -2f;
         }
 
-        if (_rigidbody == null || _spriteRenderer==null)
+        Vector2 input=_moveAction.action.ReadValue<Vector2>();
+        Vector3 _move = new Vector3(input.x, 0, input.y);
+        _move = Vector3.ClampMagnitude(_move, 1f);
+
+        if (_move!=Vector3.zero)
         {
-            Debug.LogError("PlayerController2D: Faltan componentes requeridos (Rigidbody2D/SpriteRenderer)!",this);
-            enabled = false;
+            transform.forward = _move;
         }
+
+        if (_groundedPlayer && _jumpAction.action.WasPressedThisFrame()) 
+        { 
+            _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravityValue); 
+        }
+
+        _playerVelocity.y += _gravityValue*Time.deltaTime;
+
+        Vector3 _finalMove= _move*_playerSpeed+_playerVelocity.y*Vector3.up;
+        _controller.Move(_finalMove*Time.deltaTime);
     }
-
-    #endregion Methods
-
-    #region Unity Special Methods
-
-    private void OnDrawGizmosSelected()
-    {
-        if(_groundCheck==null) return;
-
-        Gizmos.color = Color.yellow;
-    }
-
-    #endregion Unity Special Methods
 }
