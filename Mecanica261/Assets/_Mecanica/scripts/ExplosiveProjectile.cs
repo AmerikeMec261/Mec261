@@ -35,7 +35,7 @@ public class ExplosiveProjectile : MonoBehaviour, IProjectile
 
     #region Methods
 
-    public void Fire()
+    public void Fire() // Falta la implementación de la interfaz.
     {
     }
 

@@ -31,7 +31,7 @@ public class SimpleBullet : MonoBehaviour, IProjectile
 
     #region Methods
 
-    public void Fire()
+    public void Fire() //No es la implementación correcta. La bala debe tomar la orientación del spawn y ser disparada hacia en frente. 
     {
         Destroy(gameObject, 3f);
     }

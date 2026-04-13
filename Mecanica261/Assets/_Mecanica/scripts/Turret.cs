@@ -62,10 +62,10 @@ public class Turret : MonoBehaviour
 
     private void UpdateTarget()
     {
-        float x = Mathf.Lerp(_targetXLimits.x, _targetXLimits.y, Input.mousePosition.x / Screen.width);
-        float z = Mathf.Lerp(_targetZLimits.x, _targetZLimits.y, Input.mousePosition.y / Screen.height);
+        float x = Mathf.Lerp(_targetXLimits.x, _targetXLimits.y, Input.mousePosition.x / Screen.width); //No usar abreviaciones
+        float z = Mathf.Lerp(_targetZLimits.x, _targetZLimits.y, Input.mousePosition.y / Screen.height); //No usar abreviaciones
 
-        _targetPoint.position = new Vector3(
+        _targetPoint.position = new Vector3( //El salto de linea para qué? Es consistente con respuestas de GPT.
             _yawPivot.position.x + x,
             _targetY,
             _yawPivot.position.z + z
@@ -74,7 +74,7 @@ public class Turret : MonoBehaviour
 
     private void RotateYaw()
     {
-        Vector3 dir = _targetPoint.position - _yawPivot.position;
+        Vector3 dir = _targetPoint.position - _yawPivot.position; //No usar abreviaciones
         dir.y = 0f;
 
         float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg - 90f;
@@ -83,7 +83,7 @@ public class Turret : MonoBehaviour
         _yawPivot.localEulerAngles = new Vector3(0f, angle, 0f);
     }
 
-    private void RotatePitch()
+    private void RotatePitch() //No usar abreviaciones
     {
         IProjectile projectile = _currentBullet.GetComponent<IProjectile>();
         if (projectile == null) return;
@@ -113,7 +113,7 @@ public class Turret : MonoBehaviour
         _pitchPivot.localEulerAngles = new Vector3(-angle, 0f, 0f);
     }
 
-    private void Fire()
+    private void Fire() //El calcular la trayectoria depende de otro método. La bala debe tomar la orientación del spawn y ser disparada hacia en frente. No hay necesidad de calcular el ángulo. //No usar abreviaciones
     {
         GameObject obj = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
 
@@ -157,4 +157,4 @@ public class Turret : MonoBehaviour
     }
 
     #endregion
-}
+} // Trabajo en clase: Quitar las abreviaciones. Utilizar el ángulo alto en lugar del bajo. Utilizar DRY para evitar repetir codigo. 

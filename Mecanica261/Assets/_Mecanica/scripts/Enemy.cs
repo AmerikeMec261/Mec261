@@ -39,13 +39,13 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void MoveEnemy()
     {
-        Vector3 targetPositionOnPlane = new Vector3(
+        Vector3 targetPositionOnPlane = new Vector3( //El salto de linea para qué? Es consistente con respuestas de GPT.
             _currentTarget.position.x,
             _rigidbody.position.y,
             _currentTarget.position.z
         );
 
-        Vector3 nextPosition = Vector3.MoveTowards(
+        Vector3 nextPosition = Vector3.MoveTowards( //El salto de linea para qué? Es consistente con respuestas de GPT.
             _rigidbody.position,
             targetPositionOnPlane,
             _speed * Time.fixedDeltaTime
