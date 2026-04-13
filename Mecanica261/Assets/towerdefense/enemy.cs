@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class enemy : MonoBehaviour, IDamageable, Ienemy
+public class enemy : MonoBehaviour, IDamageable, Ienemy //Todo debe estar en inglés.
 {
     [Header("Dependencias")]
     [SerializeField] private Transform _puntoA;
@@ -39,7 +39,7 @@ public class enemy : MonoBehaviour, IDamageable, Ienemy
 
     private void Moverse()
     {
-        Transform objetivo = _yendoAB ? _puntoB : _puntoA;
+        Transform objetivo = _yendoAB ? _puntoB : _puntoA; // porque necesitas el transform del objetivo? no puedes usar directamente el vector3 de la posición del objetivo?
 
         transform.position = Vector3.MoveTowards(transform.position, objetivo.position, _speed * Time.deltaTime);
 

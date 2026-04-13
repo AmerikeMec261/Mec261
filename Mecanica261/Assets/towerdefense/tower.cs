@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class tower : MonoBehaviour
+public class tower : MonoBehaviour //Todo debe estar en inglés. 
 {
     [Header("Dependencias")]
     [SerializeField] private Transform _yawPivot;
@@ -31,18 +31,18 @@ public class tower : MonoBehaviour
     {
         int indiceAleatorio = Random.Range(0, _bulletPrefabs.Length);
 
-        GameObject go = Instantiate(_bulletPrefabs[indiceAleatorio], _bulletSpawn.position, _bulletSpawn.rotation);
+        GameObject go = Instantiate(_bulletPrefabs[indiceAleatorio], _bulletSpawn.position, _bulletSpawn.rotation); // no usar abreviaciones
 
-        Rigidbody rb = go.GetComponent<Rigidbody>();
+        Rigidbody rb = go.GetComponent<Rigidbody>(); // no usar abreviaciones
         IProjectile proyectil = go.GetComponent<IProjectile>();
 
         if (rb != null && proyectil != null)
         {
-            rb.useGravity = true;
+            rb.useGravity = true; // no usar abreviaciones
 
             Vector3 velocidadFinal = CalcularMortero(_bulletSpawn.position, _reticula.position, _fuerzaMortero);
 
-            rb.linearVelocity = velocidadFinal;
+            rb.linearVelocity = velocidadFinal; // no usar abreviaciones
 
             proyectil.Fire();
         }
@@ -50,9 +50,9 @@ public class tower : MonoBehaviour
 
     private Vector3 CalcularMortero(Vector3 origen, Vector3 destino, float v)
     {
-        Vector3 diff = destino - origen;
-        float x = new Vector2(diff.x, diff.z).magnitude;
-        float y = diff.y;
+        Vector3 diff = destino - origen; // no usar abreviaciones
+        float x = new Vector2(diff.x, diff.z).magnitude; // no usar abreviaciones
+        float y = diff.y; // no usar abreviaciones
         float g = Physics.gravity.magnitude;
 
         float v2 = v * v;
@@ -67,13 +67,13 @@ public class tower : MonoBehaviour
         Vector3 velFinal = dir.normalized * v * Mathf.Cos(angulo);
         velFinal.y = v * Mathf.Sin(angulo);
 
-        return velFinal;
+        return velFinal; // no usar abreviaciones
     }
 
     private void MoverReticulaAlMouse()
     {
-        Ray rayoMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(rayoMouse, out RaycastHit hit, _maxRange, _capasApuntado))
+        Ray rayoMouse = Camera.main.ScreenPointToRay(Input.mousePosition); // no usar abreviaciones
+        if (Physics.Raycast(rayoMouse, out RaycastHit hit, _maxRange, _capasApuntado)) // qué se está evaluando aqui? como lo popdrias sustituir por un operador ternario? (si es que es posible) 
             _reticula.position = hit.point;
         else
             _reticula.position = rayoMouse.GetPoint(_maxRange / 10);
@@ -87,4 +87,4 @@ public class tower : MonoBehaviour
 
         _pitchPivot.LookAt(_reticula.position);
     }
-}
+}// Trabajo en clase: hacer los cambios de los comentarios (y todos los que apliquen) 
