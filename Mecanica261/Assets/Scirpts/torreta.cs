@@ -57,7 +57,7 @@ public class torreta : MonoBehaviour
         currentBullet.GetComponent<IProjectile>()?.Fire();
     }
 
-    private float GetBulletSpeed()
+    private float GetBulletSpeed() //remover codigo sin uso
     {
         if (_bulletPrefab != null)
         {
@@ -70,7 +70,7 @@ public class torreta : MonoBehaviour
         return 20f; 
     }
 
-    public bool CalculateFiringAngles(float distance, out float lowAngle, out float highAngle)
+    public bool CalculateFiringAngles(float distance, out float lowAngle, out float highAngle) //no está usando la formula completa de balística, solo la parte de ángulo, sin considerar la altura del objetivo ni la del cañón.
     {
         lowAngle = 0f;
         highAngle = 0f;
@@ -136,8 +136,8 @@ public class torreta : MonoBehaviour
             return;
         }
 
-        Quaternion desiredWorldRotation = Quaternion.LookRotation(directionToTarget);
-        Quaternion desiredLocalRotation = _yawPivot.parent != null
+        Quaternion desiredWorldRotation = Quaternion.LookRotation(directionToTarget); // para qué el salto de linea? Es consistente con respuestas de GPT.
+        Quaternion desiredLocalRotation = _yawPivot.parent != null 
             ? Quaternion.Inverse(_yawPivot.parent.rotation) * desiredWorldRotation
             : desiredWorldRotation;
 
@@ -195,3 +195,4 @@ public class torreta : MonoBehaviour
     }
     
 }
+//trabajo en clase: usar la formula correcta que vimos en clase.
