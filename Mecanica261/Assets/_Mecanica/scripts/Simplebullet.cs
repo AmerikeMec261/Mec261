@@ -22,6 +22,7 @@ public class SimpleBullet : MonoBehaviour, IProjectile
         target.Damage(_Damage);
    
     }
+    //Sirve más que nada para rendimiento, al no ver ese objeto en la camara se vuelve invisible al no verlo
     void OnBecameInvisible()
     {
         Destroy(gameObject);

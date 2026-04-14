@@ -67,5 +67,20 @@ public class Turret : MonoBehaviour
             Quaternion pitchRotation = Quaternion.LookRotation(fullDir) * Quaternion.Euler(0, -90, 0);
             _pitchPivot.rotation = pitchRotation;
         }
+        /*
+        private void Formula()
+    {
+        public float initialvelocity = 20f;
+
+        public float gravity = 9.81;
+
+        public transform spawnturret;
+
+        public transform objective;
+
+     float distance x = vector3.Distance(new Vector3 (TurretSpawn.position.x, 0, turretSpawn.position.z));
+        */
+
     }
-}// Trabajo en clase: usar la formula que vimos en clase para determinar el ángulo de disaparo. Resolver los comentarios.
+    }
+// Trabajo en clase: usar la formula que vimos en clase para determinar el ángulo de disaparo. Resolver los comentarios.
