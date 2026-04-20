@@ -79,6 +79,16 @@ public class Turret : MonoBehaviour
         public transform objective;
 
      float distance x = vector3.Distance(new Vector3 (TurretSpawn.position.x, 0, turretSpawn.position.z));
+
+        //Dif de altura 
+
+        (Delta y = Y_F - Y_0) float deltaY = objective.position.y - turretSpawn.position.y;
+
+        //Potencias
+
+        float v = initialVelocity;
+
+        float v2 = v * v;
         */
 
     }
