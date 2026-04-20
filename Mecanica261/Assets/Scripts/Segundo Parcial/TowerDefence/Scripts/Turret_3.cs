@@ -5,11 +5,13 @@ public class Turret_3 : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
-    [SerializeField] private Transform[] _bulletSpawns;
+    [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private GameObject[] _bulletPrefabs;
+    private int _currentBulletIndex = 0;
 
-    private int _currentBulletIndex = 0;  
-    private int _currentCannonIndex = 0;  
+    [Header("BulletsSpawn")]
+    [SerializeField] private Transform[] _bulletSpawns;
+    private int _currentSpawnIndex = 0;
 
     [Header("Mouse")]
     [SerializeField] private Camera _camera;
@@ -34,7 +36,6 @@ public class Turret_3 : MonoBehaviour
             FireProjectile();
         }
 
-        // cambiar tipo de bala
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             _currentBulletIndex = 0;
@@ -45,6 +46,23 @@ public class Turret_3 : MonoBehaviour
             _currentBulletIndex = 1;
         }
     }
+
+    //NEW
+    private Transform GetCurrentSpawn()
+    {
+        if (_bulletSpawns != null && _bulletSpawns.Length > 0) //verifica si el bulletSpawns tiene elementos
+        {
+            Transform spawn = _bulletSpawns[_currentSpawnIndex]; //usa el primer bulletSpawn (0)
+
+            if (spawn != null) //verifica si el spawnactual no existe
+            {
+                return spawn;
+            }
+        }
+
+        return _bulletSpawn; // si no hay errores, se ejecuta el spawn por defecto
+    }
+
 
     private void UpdateMouseTarget()
     {
@@ -63,8 +81,7 @@ public class Turret_3 : MonoBehaviour
 
     private void Aim()
     {
-
-        Vector3 originPosition = _yawPivot.position;
+        Vector3 originPosition = GetCurrentSpawn().position; //ahora agarra el current spawn en vez del spawn por defecto
 
         Vector3 directionToTarget = _targetPoint - _yawPivot.position;
         Vector3 horizontalDirection = new Vector3(directionToTarget.x, 0f, directionToTarget.z);
@@ -76,14 +93,12 @@ public class Turret_3 : MonoBehaviour
             return;
         }
 
-        // YAW
         if (horizontalDirection.sqrMagnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
             _yawPivot.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
         }
 
-        // PITCH
         _hasSolution = SolveBallisticAngle(originPosition, _targetPoint, _projectileSpeed, out float launchAngle);
 
         if (_hasSolution)
@@ -99,8 +114,7 @@ public class Turret_3 : MonoBehaviour
 
     private void FireProjectile()
     {
-
-        Transform currentSpawn = _bulletSpawns[_currentCannonIndex];
+        Transform currentSpawn = GetCurrentSpawn(); //obtiene el spawn actual
 
         GameObject bulletInstance = Instantiate(
             _bulletPrefabs[_currentBulletIndex],
@@ -116,13 +130,15 @@ public class Turret_3 : MonoBehaviour
             projectile.Fire();
         }
 
-        _currentCannonIndex++;
+        _currentSpawnIndex++; //aumenta el indice del currentspawn para la próxima vez que se dispare
 
-        if (_currentCannonIndex >= _bulletSpawns.Length)
+        if (_currentSpawnIndex >= _bulletSpawns.Length) //Si la bala actual es la última, se reinicia el indice para que sea un ciclo
         {
-            _currentCannonIndex = 0;
+            _currentSpawnIndex = 0;
         }
     }
+
+  
 
     private bool SolveBallisticAngle(Vector3 originPosition, Vector3 targetPosition, float projectileSpeed, out float launchAngle)
     {
@@ -158,6 +174,7 @@ public class Turret_3 : MonoBehaviour
         return true;
     }
 }
+
 //Ejercicio en clase:
 //Cambia el método de arriba para no usar abrevaciones o varibales "mágicas", tienes que saber a qué se refiere X, G, etc. y poner nombres que lo reflejen.
 //Por ejemplo, en vez de "x" podrías usar "horizontalDistance", en vez de "g" podrías usar "gravity", etc.
