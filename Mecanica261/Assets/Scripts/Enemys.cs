@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class Enemys : MonoBehaviour ,IEnemy , IDamageable
+/*public class Enemys : MonoBehaviour ,IEnemy , IDamageable
 {
     [Header("Settings")]
     [SerializeField] private float _speed = 5f;
@@ -54,4 +54,4 @@ public class Enemys : MonoBehaviour ,IEnemy , IDamageable
             Destroy(gameObject);
         }
     }
-}
+}*/

@@ -1,6 +1,6 @@
  using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+/*[RequireComponent(typeof(Rigidbody))]
 public class ExplosiveBullet : MonoBehaviour, IProjectile
 {
     [Header("Settings")]
@@ -55,4 +55,4 @@ public class ExplosiveBullet : MonoBehaviour, IProjectile
    
     
 
-}
+}*/

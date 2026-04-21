@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FastEnemy : Enemys
-{
+//public class FastEnemy : Enemys
+//{
    
-}
+//}

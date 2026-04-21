@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EstandarizadoPropio : MonoBehaviour
+/*public class EstandarizadoPropio : MonoBehaviour
 {
     public bool esJugador1 = false;
 
@@ -35,5 +35,5 @@ public class EstandarizadoPropio : MonoBehaviour
         nuevaPos.y = Mathf.Clamp(nuevaPos.y, minLimites.y, maxLimites.y);
         transform.position = nuevaPos;
     }
-}
+}*/
  // Este fue un codigo que hicimos en 2do semeste para un juego de pelota 2d , estaba desordenado y lo astandarizé

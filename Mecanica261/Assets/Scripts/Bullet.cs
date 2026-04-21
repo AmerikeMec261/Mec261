@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class SimpleBullet : MonoBehaviour, IProjectile
@@ -44,4 +44,4 @@ public class SimpleBullet : MonoBehaviour, IProjectile
 
      
     }
-}
+}*/
