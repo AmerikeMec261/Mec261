@@ -1,10 +1,11 @@
 using UnityEngine;
+using NaughtyAttributes;
 
 public class Turret_3 : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private Transform _yawPivot;
-    [SerializeField] private Transform _pitchPivot;
+    [SerializeField, Required] private Transform _pitchPivot; 
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private GameObject[] _bulletPrefabs;
     private int _currentBulletIndex = 0;
@@ -60,7 +61,7 @@ public class Turret_3 : MonoBehaviour
             }
         }
 
-        return _bulletSpawn; // si no hay errores, se ejecuta el spawn por defecto
+        return _bulletSpawn; // en caso de no tener bulletSpawns, se usa el spawn por defecto
     }
 
 
@@ -124,12 +125,10 @@ public class Turret_3 : MonoBehaviour
 
         IProjectile projectile = bulletInstance.GetComponent<IProjectile>();
 
-        if (projectile != null)
-        {
-            projectile.SetSpeed(_projectileSpeed);
-            projectile.Fire();
-        }
-
+        
+        projectile.SetSpeed(_projectileSpeed);
+        projectile.Fire();
+        
         _currentSpawnIndex++; //aumenta el indice del currentspawn para la próxima vez que se dispare
 
         if (_currentSpawnIndex >= _bulletSpawns.Length) //Si la bala actual es la última, se reinicia el indice para que sea un ciclo
