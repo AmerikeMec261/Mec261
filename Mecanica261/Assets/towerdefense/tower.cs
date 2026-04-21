@@ -40,7 +40,7 @@ public class tower : MonoBehaviour //Todo debe estar en inglés.
         {
             Rigibody.useGravity = true; // no usar abreviaciones
 
-            Vector3 velocidadFinal = CalcularMortero(_bulletSpawn.position, _reticula.position, _fuerzaMortero);
+            Vector3 velocidadFinal = CalcularMortero(_bulletSpawn.position, _reticula.position, _Mortarforce);
 
             Rigibody.linearVelocity = velocidadFinal; // no usar abreviaciones
 
@@ -58,7 +58,7 @@ public class tower : MonoBehaviour //Todo debe estar en inglés.
         float v2 = v * v;
         float root = v2 * v2 - g * (g * x * x + 2 * y * v2);
 
-        if (root < 0) return differential.normalized * v;
+        if (root < 0) return differential.normalized * v; // evita que un objeto desaparezca cuando el rayo no encuentra un calculo  devolviendolo a su posicion normalizada
 
         float angle = Mathf.Atan((v2 + Mathf.Sqrt(root)) / (g * x));
 
@@ -73,8 +73,8 @@ public class tower : MonoBehaviour //Todo debe estar en inglés.
     private void MoverReticulaAlMouse()
     {
         Ray rayMouse = Camera.main.ScreenPointToRay(Input.mousePosition); // no usar abreviaciones
-        if (Physics.Raycast(rayMouse, out RaycastHit hit, _maxRange, _capasApuntado)) // qué se está evaluando aqui? como lo popdrias sustituir por un operador ternario? (si es que es posible) 
-            _reticula.position = hit.point;
+        if (Physics.Raycast(rayMouse, out RaycastHit hit, _maxRange, _layersPoint)) // qué se está evaluando aqui? como lo popdrias sustituir por un operador ternario? (si es que es posible) 
+            _reticula.position = hit.point;                                         // calcula si el rayo que esta en la posicion del raton golpea un colisionador dentro de la especificaciones
         else
             _reticula.position = rayMouse.GetPoint(_maxRange / 10);
     }
