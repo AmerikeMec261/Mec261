@@ -2169,18 +2169,16 @@ MonoBehaviour:
   _volume: 1
   _waterDensity: 1000
   _shapeFactor: 0.7
-  _topPoint: {fileID: 0}
-  _bottomPoint: {fileID: 0}
+  _topPoint: {fileID: 1132893282}
+  _bottomPoint: {fileID: 121705899}
   _floatPoints:
   - {fileID: 128248305}
   - {fileID: 536385176}
   - {fileID: 1608570398}
   - {fileID: 753113575}
-  - {fileID: 1028892570}
-  - {fileID: 1132893282}
-  - {fileID: 121705899}
   - {fileID: 1814648001}
   - {fileID: 11522201}
+  - {fileID: 1028892570}
   _rigidbody: {fileID: 1580046124}
   Area: 0
   hulllHeight: 0
@@ -2381,7 +2379,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: fd66da828a007964ab17486b4c08369a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6237791579409569807, guid: fd66da828a007964ab17486b4c08369a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
