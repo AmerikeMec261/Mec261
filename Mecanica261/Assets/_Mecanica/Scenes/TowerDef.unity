@@ -290,15 +290,16 @@ MonoBehaviour:
   _waterLevel: 0
   _volume: 1
   _waterDensity: 1000
+  _waterDrag: 1
   _shapeFactor: 0
   _topPoint: {fileID: 0}
   _bottomPoint: {fileID: 0}
   _floatPoints: []
   _rigidbody: {fileID: 0}
-  area: 0
-  hullHeight: 0
-  hullVolume: 0
-  draft: 0
+  _area: 0
+  _hullHeight: 0
+  _hullVolume: 0
+  _draft: 0
 --- !u!54 &60345418
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1046,13 +1047,46 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3a5896e01f272944dac10675d5908e5f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1660590249}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3a5896e01f272944dac10675d5908e5f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1038538634}
   m_SourcePrefab: {fileID: 100100000, guid: 3a5896e01f272944dac10675d5908e5f, type: 3}
 --- !u!4 &1038538632 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3a5896e01f272944dac10675d5908e5f, type: 3}
   m_PrefabInstance: {fileID: 1038538631}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1038538633 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3a5896e01f272944dac10675d5908e5f, type: 3}
+  m_PrefabInstance: {fileID: 1038538631}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1038538634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038538633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 546778dae27c87541b317ae5b20a82f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleFloat
+  _waterLevel: 0
+  _volume: 1
+  _waterDensity: 1000
+  _waterDrag: 1
+  _shapeFactor: 0
+  _topPoint: {fileID: 0}
+  _bottomPoint: {fileID: 0}
+  _floatPoints: []
+  _rigidbody: {fileID: 0}
+  _area: 0
+  _hullHeight: 0
+  _hullVolume: 0
+  _draft: 0
 --- !u!1001 &1063870850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1572,15 +1606,16 @@ MonoBehaviour:
   _waterLevel: 0
   _volume: 1
   _waterDensity: 1000
+  _waterDrag: 1
   _shapeFactor: 0
   _topPoint: {fileID: 0}
   _bottomPoint: {fileID: 0}
   _floatPoints: []
   _rigidbody: {fileID: 0}
-  area: 0
-  hullHeight: 0
-  hullVolume: 0
-  draft: 0
+  _area: 0
+  _hullHeight: 0
+  _hullVolume: 0
+  _draft: 0
 --- !u!54 &1399046132
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1841,15 +1876,16 @@ MonoBehaviour:
   _waterLevel: 0
   _volume: 1
   _waterDensity: 1000
+  _waterDrag: 1
   _shapeFactor: 0
   _topPoint: {fileID: 0}
   _bottomPoint: {fileID: 0}
   _floatPoints: []
   _rigidbody: {fileID: 0}
-  area: 0
-  hullHeight: 0
-  hullVolume: 0
-  draft: 0
+  _area: 0
+  _hullHeight: 0
+  _hullVolume: 0
+  _draft: 0
 --- !u!54 &1782030350
 Rigidbody:
   m_ObjectHideFlags: 0
