@@ -15,7 +15,7 @@ public class SimpleFloat : MonoBehaviour
     [SerializeField] private Transform _topPoint;
     [SerializeField] private Transform _bottomPoint;
     [SerializeField] private List<Transform> _floatPoints;
-    [SerializeField] private Rigidbody _rigidbody;
+    private Rigidbody _rigidbody;
 
     [Header("Debug Settings")]
     [SerializeField] private float _area;
