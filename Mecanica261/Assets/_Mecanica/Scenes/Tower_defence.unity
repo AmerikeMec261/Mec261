@@ -269,9 +269,9 @@ MonoBehaviour:
   _bulletSpawn: {fileID: 826879781}
   _bulletPrefab: {fileID: 3208720161266455114, guid: 964f7b3f089aed240b1c710631a4a6f3, type: 3}
   _yawSpeed: 90
-  _yawLimits: {x: -90, y: 90}
+  _yawLimits: {x: -90, y: 90, z: -10}
   _pitchSpeed: 90
-  _pitchLimits: {x: -10, y: 90}
+  _pitchLimits: {x: -10, y: 90, z: -90}
 --- !u!65 &103719499
 BoxCollider:
   m_ObjectHideFlags: 0

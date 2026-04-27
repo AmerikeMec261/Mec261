@@ -11,11 +11,11 @@ public class Tower : MonoBehaviour // La torreta ya no debe de funcionar con A y
 
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 90f;
-    [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
+    [SerializeField] private Vector3 _yawLimits = new Vector3(-90f, 90f, 10f);
 
     [Header("Pitch Settings")]
     [SerializeField] private float _pitchSpeed = 90f;
-    [SerializeField] private Vector2 _pitchLimits = new Vector2(-90f, 90f);
+    [SerializeField] private Vector3 _pitchLimits = new Vector3(-10f, 90f, -90f);
 
     public void FireProjectile()
     {
@@ -25,11 +25,7 @@ public class Tower : MonoBehaviour // La torreta ya no debe de funcionar con A y
 
     private void Update()
     {
-        float yawInput = Input.GetKeyDown(KeyCode.A) ? -5f : Input.GetKeyDown(KeyCode.D) ? 5f : 0f;
-        float pitchInput = Input.GetKeyDown(KeyCode.W) ? 5f : Input.GetKeyDown(KeyCode.S) ? -5f : 0f;
-
-        RotateYaw(yawInput);
-        RotatePitch(pitchInput);
+        
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -37,17 +33,8 @@ public class Tower : MonoBehaviour // La torreta ya no debe de funcionar con A y
         }
     }
 
-    private void RotateYaw(float input)
+    private void RotationMouse()
     {
-        float yawChange = input * _yawSpeed * Time.deltaTime;
-        float newYaw = Mathf.Clamp(_yawPivot.localEulerAngles.y + yawChange, _yawLimits.x, _yawLimits.y);
-        _yawPivot.localEulerAngles = new Vector3(_yawPivot.localEulerAngles.x, newYaw, _yawPivot.localEulerAngles.z);
-    }
-
-    private void RotatePitch(float input)
-    {
-        float pitchChange = input * _pitchSpeed * Time.deltaTime;
-        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
-        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
+        
     }
 } //Trabajo en clase: Agregar lo solicitado para el exámen. 
