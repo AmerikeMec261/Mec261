@@ -28,19 +28,20 @@ public class CalculateArea : MonoBehaviour
     float Volumen { get => _hullvolumen; }
 
     [Header("Movimiento")]
-    [SerializeField] private float _draf;
-    float Draf { get => _draf; }
+    [SerializeField] private float _draft;
+    float Draf { get => _draft; }
 
 
     private void Awake()
     {
         _rigbody = GetComponent<Rigidbody>();
-
+        CalculateHullData();
     }
 
     private void FixedUpdate()
     {
         FloatShip();
+        OnDrawGizmos();
     }
     void FloatShip()
     {
@@ -60,14 +61,42 @@ public class CalculateArea : MonoBehaviour
             _rigbody.AddForceAtPosition(-velocity * _waterDrag * summersion, Point.position, ForceMode.Force);
         }
     }
-    private void Float()
+    private void CalculateHullData()
     {
-        float summersion = Mathf.Clamp01((_waterLevel - transform.position.y / 1f));
+        _area = CalculateArea1();
+        _hullheight = _topPoint.position.y - _bottomPoint.position.y;
+        _hullvolumen = _area * _hullheight * _shapeFactor;
 
-        if (summersion < 0f) return;
+        float requiredVolume = _rigbody.mass / _waterDensity;
+        _draft = requiredVolume / (_area * _shapeFactor);
+    }
 
-        float force = _waterDensity * summersion * Physics.gravity.magnitude;
+    private float CalculateArea1()
+    {
+        float area = 0f;
 
-        _rigbody.AddForce(Vector3.up * force, ForceMode.Force);
+        for (int i = 0; i < _floatPoint.Count; i++)
+        {
+            Vector3 current = transform.InverseTransformPoint(_floatPoint[i].position);
+            Vector3 next = transform.InverseTransformPoint(_floatPoint[(i + 1) % _floatPoint.Count].position);
+
+            area += (current.x * next.z) - (next.x * current.z);
+        }
+        return Mathf.Abs(area) * 0.5f;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_floatPoint == null || _floatPoint.Count < 2) { return; }
+
+        Gizmos.color = Color.green;
+
+        for (int i = 0; i < _floatPoint.Count; i++)
+        {
+            Vector3 current = _floatPoint[i].position;
+            Vector3 next = _floatPoint[(i + 1) % _floatPoint.Count].position;
+
+            Gizmos.DrawLine(current, next);
+        }
     }
 }
