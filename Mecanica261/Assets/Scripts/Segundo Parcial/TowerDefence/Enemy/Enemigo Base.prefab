@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 5540165663261129129}
   m_Layer: 0
   m_Name: Enemigo Base
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,9 +59,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6267583343998855317}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 38.8, y: 3.4, z: -0.3}
-  m_LocalScale: {x: 5.061509, y: 5.061509, z: 5.061509}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8287623779062153618}
@@ -161,10 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   _health: 50
-  _speed: 2
   _shield: 5
-  _pointA: {fileID: 8287623779062153618}
-  _pointB: {fileID: 1099363573746544947}
 --- !u!1 &6307384141235225703
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,8 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ExplosiveBullet : MonoBehaviour, IProjectile
 {
+    //Velocidad de Salida de Bala era de 600-900 m/s
+
     [Header("Settings")]
-    [SerializeField] private float _speed = 20f;
+    [SerializeField] private float _speed = 600f;
     [SerializeField] private float _damage = 20f;
     [SerializeField] private float _radius = 5f;
     [SerializeField] private GameObject _explosionVisual;

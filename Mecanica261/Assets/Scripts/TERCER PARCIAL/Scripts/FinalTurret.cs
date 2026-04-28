@@ -3,6 +3,8 @@ using NaughtyAttributes;
 
 public class FinalTurret : MonoBehaviour
 {
+
+    //Alcance Máximo de la torret es de 18 - 24 km/h
     [Header("Dependencies")]
     [SerializeField] private Transform _yawPivot;
     [SerializeField, Required] private Transform _pitchPivot;
@@ -16,13 +18,15 @@ public class FinalTurret : MonoBehaviour
 
     [Header("Targeting")]
     [SerializeField] private float _detectionRadius = 50f;
-    private Transform _currentTarget;
+   
 
     [Header("Projectile")]
     [SerializeField] private float _projectileSpeed = 30f;
     [SerializeField] private float _minDistance = 1f;
+    [SerializeField] private float _maxDistance = 180f;
     [SerializeField] private bool _useHighArc = false;
 
+    private Transform _currentTarget;
     private bool _hasSolution;
 
     private void Update()
@@ -30,7 +34,7 @@ public class FinalTurret : MonoBehaviour
         FindTarget();
         Aim();
 
-        if (Input.GetMouseButtonDown(0) && _currentTarget != null)
+        if (Input.GetKeyDown(KeyCode.Space) )
         {
             FireProjectile();
         }
@@ -46,34 +50,39 @@ public class FinalTurret : MonoBehaviour
     //De UpdateMouseTarget a Find Target.
     private void FindTarget()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy"); // Encuentra todos los enemigos en la escena
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy"); 
 
-        float closestDistance = Mathf.Infinity;
-        Transform closest = null;
+        float _closestDistance = Mathf.Infinity; 
+        Transform closest = null; 
 
         foreach (GameObject enemy in enemies)
         {
-            float distance = Vector3.Distance(transform.position, enemy.transform.position);
-
-            if (distance < closestDistance && distance <= _detectionRadius)
+            float distance = Vector3.Distance(transform.position, enemy.transform.position); 
+             
+            if (distance < _closestDistance && distance <= _detectionRadius) //dist max = detection radius detectasr
+                // velocidad bala 
             {
-                closestDistance = distance;
+                _closestDistance = distance; 
                 closest = enemy.transform;
             }
         }
 
-        _currentTarget = closest;
+        _currentTarget = closest; 
+
+        if (closest != null)
+        {
+            _hasSolution = true;
+        }
     }
+
 
     private Transform GetCurrentSpawn()
     {
         if (_bulletSpawns != null && _bulletSpawns.Length > 0) //verifica si el bulletSpawns tiene elementos
         {
-            Transform spawn = _bulletSpawns[_currentSpawnIndex]; //usa el primer bulletSpawn (0)
-
-            if (spawn != null) //verifica si el spawnactual no existe
+           if (_bulletSpawns[_currentSpawnIndex] != null) //verifica que el spawn actual no sea nulo
             {
-                return spawn;
+                return _bulletSpawns[_currentSpawnIndex]; //retorna el spawn actual
             }
         }
 
@@ -82,19 +91,26 @@ public class FinalTurret : MonoBehaviour
 
     private void Aim()
     {
-        if (_currentTarget == null)
-            return;
+        if (_currentTarget == null) //Encuentra el target más cercano
+        return;
 
         Vector3 originPosition = GetCurrentSpawn().position;
-        Vector3 targetPosition = _currentTarget.position;
+        Vector3 targetPosition = _currentTarget.position; //agarramos la posición del target actual
 
         Vector3 directionToTarget = targetPosition - _yawPivot.position;
         Vector3 horizontalDirection = new Vector3(directionToTarget.x, 0f, directionToTarget.z);
 
         float horizontalDistance = horizontalDirection.magnitude;
 
-        if (horizontalDistance < _minDistance)
-            return;
+        if (horizontalDistance < _minDistance || horizontalDistance > _maxDistance) //verifica que el target esté dentro del rango mínimo y máximo
+        {
+            _minDistance = horizontalDistance;
+            // Si el target está fuera del rango, no se apunta ni se dispara
+            _maxDistance = horizontalDistance;
+            // Aquí podrías agregar lógica para manejar esta situación, como dejar de apuntar o disparar
+          
+        }
+        
 
         // YAW
         if (horizontalDirection.sqrMagnitude > 0.001f)
@@ -103,17 +119,18 @@ public class FinalTurret : MonoBehaviour
             _yawPivot.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
         }
 
-        // PITCH (balístico)
+        // PITCH 
         _hasSolution = SolveBallisticAngle(originPosition, targetPosition, _projectileSpeed, out float launchAngle);
 
         if (_hasSolution)
         {
-            float launchAngleDegrees = launchAngle * Mathf.Rad2Deg;
+            float launchAngleDegrees = launchAngle * Mathf.Rad2Deg; // Convierte el ángulo de lanzamiento a grados
             _pitchPivot.localEulerAngles = new Vector3(-launchAngleDegrees, 0f, 0f);
         }
+
         else
         {
-            _pitchPivot.localEulerAngles = new Vector3(-45f, 0f, 0f);
+            _pitchPivot.localEulerAngles = new Vector3(-45f, 0f, 0f); // Si no hay solución, se apunta a un ángulo fijo (por ejemplo, -45 grados)
         }
     }
 

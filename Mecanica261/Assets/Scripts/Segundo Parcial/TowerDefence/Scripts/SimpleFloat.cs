@@ -89,4 +89,19 @@ public class SimpleFloat : MonoBehaviour
 
         return Mathf.Abs(area) * 0.5f;
     }
+
+    private void OnDrawGizmos()
+    {
+        if (_floatPoints == null || _floatPoints.Count < 2) { return; }
+
+        Gizmos.color = Color.green;
+
+        for (int i = 0; i < _floatPoints.Count; i++)
+        {
+            Vector3 current = _floatPoints[i].position;
+            Vector3 next = _floatPoints[(i + 1) % _floatPoints.Count].position;
+
+            Gizmos.DrawLine(current, next);
+        }
+    }
 }
