@@ -319,8 +319,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AguaPhysc
   _waterLevel: 0
   _waterDensity: 1000
-  _waterDraft: 150
-  _shapeFactor_: 0.67
+  _waterDrag: 10
+  _shapeFactor: 0.67
   _topPoint: {fileID: 992762923}
   _bottomPoint: {fileID: 1352290377}
   _floatPoints:
@@ -1063,7 +1063,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4971f8503c6bae247aab92ca68d46ba4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.8796792
+      value: 1.879679
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4971f8503c6bae247aab92ca68d46ba4, type: 3}
       propertyPath: m_LocalScale.y
