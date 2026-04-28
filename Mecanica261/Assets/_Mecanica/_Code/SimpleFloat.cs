@@ -1,84 +1,61 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
+using System.Collections.Generic;
 
-public class SimpleFloat : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class ShipFlotability : MonoBehaviour
 {
-    [Header("Water Settings")]
-    [SerializeField] private float _waterLevel = 0;
-    [SerializeField] private float _volume = 1;
-    [SerializeField] private float _waterDensity = 1000;
-    [SerializeField] private float _waterDrag = 1;
+    [Header("Water")]
+    [SerializeField] private float _waterLevel = 0f;
+    [SerializeField] private float _waterDensity = 1000f;
+    [SerializeField] private float _waterDrag = 1f;
 
-    [Header("Physics Settings")]
-    [SerializeField] private float _shapeFactor;
+    [Header("Hull")]
+    [SerializeField] private float _shapeFactor = 0.67f;
     [SerializeField] private Transform _topPoint;
     [SerializeField] private Transform _bottomPoint;
-    [SerializeField] private List<Transform> _floatPoints;
+    [SerializeField] private List<Transform> _floatPoints = new List<Transform>();
+
     private Rigidbody _rigidbody;
 
-    [Header("Debug Settings")]
-    [SerializeField] private float _area;
-    [SerializeField] private float _hullHeight;
-    [SerializeField] private float _hullVolume;
-    [SerializeField] private float _draft;
-    
+    private float _area;
+    private float _hullHeight;
+    private float _hullVolume;
+    private float _draft;
 
-    [Header("Area")]
-    float Area { get => _area; }
+    public float Area => _area;
+    public float HullHeight => _hullHeight;
+    public float HullVolume => _hullVolume;
+    public float Draft => _draft;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-
+        CalculateHullData();
     }
-
-    [Header("Altitude")]
-    float HullHeight { get => _hullHeight; }
-
-    [Header("Volume")]
-    float HullVolume { get => _hullVolume; }
-
-    [Header("Draft")]
-    float Draft { get => _draft; }
-
-
 
     private void FixedUpdate()
     {
-        Float();
+        FloatShip();
     }
 
-    private void Float()
+    private void FloatShip()
     {
-        float summersion = Mathf.Clamp01((_waterLevel - transform.position.y / 1f));
+        float gravity = Physics.gravity.magnitude;
+        float volumePerPoint = _hullVolume / _floatPoints.Count;
 
-        if (summersion < 0f) return;
-
-        float force = _waterDensity * summersion * Physics.gravity.magnitude;
-
-        _rigidbody.AddForce(Vector3.up * force * _volume, ForceMode.Force);
-    }
-
-    void FloatShip()
-    {
-        float Gravity = Physics.gravity.magnitude;
-        float VolumePerPoints = _hullVolume / _floatPoints.Count;
         for (int i = 0; i < _floatPoints.Count; i++)
         {
-            Transform Point = _floatPoints[i];
-            float Submersion = Mathf.Clamp01(_waterLevel - Point.position.y) / _hullHeight;
-            if (Submersion <= 0)
-            {
-                continue;
-            }
+            Transform point = _floatPoints[i];
 
-            float Force = _waterDensity * Submersion * VolumePerPoints * Gravity;
-            _rigidbody.AddForceAtPosition(Vector3.up * Force, Point.position, ForceMode.Force);
-            Vector3 Velocity = _rigidbody.GetPointVelocity(Point.position);
-            _rigidbody.AddForceAtPosition(-Velocity * _waterDrag * Submersion, Point.position, ForceMode.Force);
+            float submersion = Mathf.Clamp01((_waterLevel - point.position.y) / _hullHeight);
+            if (submersion <= 0f) { continue; }
+
+            float force = _waterDensity * volumePerPoint * gravity * submersion;
+            _rigidbody.AddForceAtPosition(Vector3.up * force, point.position, ForceMode.Force);
+
+            Vector3 velocity = _rigidbody.GetPointVelocity(point.position);
+            _rigidbody.AddForceAtPosition(-velocity * _waterDrag * submersion, point.position, ForceMode.Force);
         }
-
-
     }
 
     private void CalculateHullData()
@@ -106,4 +83,18 @@ public class SimpleFloat : MonoBehaviour
         return Mathf.Abs(area) * 0.5f;
     }
 
+    private void OnDrawGizmos()
+    {
+        if (_floatPoints == null || _floatPoints.Count < 2) { return; }
+
+        Gizmos.color = Color.green;
+
+        for (int i = 0; i < _floatPoints.Count; i++)
+        {
+            Vector3 current = _floatPoints[i].position;
+            Vector3 next = _floatPoints[(i + 1) % _floatPoints.Count].position;
+
+            Gizmos.DrawLine(current, next);
+        }
+    }
 }
