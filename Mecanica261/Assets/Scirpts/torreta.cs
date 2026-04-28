@@ -188,11 +188,11 @@ public class torreta : MonoBehaviour
     }
 
 
-    private void OnDrawGizmos()
-    {        
-            Gizmos.color = _isTargetInRange ? Color.green : Color.red;
-            Gizmos.DrawLine(_bulletSpawn != null ? _bulletSpawn.position : _yawPivot.position, _tragetPosition);
-    }
+    //private void OnDrawGizmos()
+    //{        
+    //        Gizmos.color = _isTargetInRange ? Color.green : Color.red;
+    //        Gizmos.DrawLine(_bulletSpawn != null ? _bulletSpawn.position : _yawPivot.position, _tragetPosition);
+    //}
     
 }
 //trabajo en clase: usar la formula correcta que vimos en clase.
