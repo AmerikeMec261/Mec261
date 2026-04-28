@@ -1,47 +1,43 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 
-public class CalculateArea : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class ShipFlotability : MonoBehaviour
 {
+    [Header("Water")]
+    [SerializeField] private float _waterLevel = 0f;
+    [SerializeField] private float _waterDensity = 1000f;
+    [SerializeField] private float _waterDrag = 1f;
 
-    [SerializeField] private float _waterLevel;
-    [SerializeField] private float _waterDensity;
-    [SerializeField] private float _waterDrag;
-
-    [SerializeField] private float _shapeFactor;
+    [Header("Hull")]
+    [SerializeField] private float _shapeFactor = 0.67f;
     [SerializeField] private Transform _topPoint;
     [SerializeField] private Transform _bottomPoint;
-    [SerializeField] private List<Transform> _floatPoints;
-    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private List<Transform> _floatPoints = new List<Transform>();
 
-    [SerializeField] private float _area;
-    [SerializeField] private float _hullHeight;
-    [SerializeField] private float _hullVolume;
-    [SerializeField] private float _draft;
+    private Rigidbody _rigidbody;
 
-    float Area { get => _area; }
-    float HullHeight { get => _hullHeight; }
-    float HullVolume { get => _hullVolume; }
-    float Draft { get => _draft; }
+    private float _area;
+    private float _hullHeight;
+    private float _hullVolume;
+    private float _draft;
 
-    //hullheight = toppoint.position.y - bottomPoint.poisition.y
-    //VOLUMNE ARE * HULLhEIGHT
-    //FLOAT REQUIERED VOLUMEN = _RIGIDBODY.MASS/ WATERDENSITY
-    //_DRAFT = VOLUMEN REQUERIDO/ AREA * shapefactor
-    void Awake()
+    public float Area => _area;
+    public float HullHeight => _hullHeight;
+    public float HullVolume => _hullVolume;
+    public float Draft => _draft;
+
+    private void Awake()
     {
-        
         _rigidbody = GetComponent<Rigidbody>();
         CalculateHullData();
-
-
     }
-    void FixedUpdate()
+
+    private void FixedUpdate()
     {
         FloatShip();
     }
+
     private void FloatShip()
     {
         float gravity = Physics.gravity.magnitude;
@@ -61,18 +57,18 @@ public class CalculateArea : MonoBehaviour
             _rigidbody.AddForceAtPosition(-velocity * _waterDrag * submersion, point.position, ForceMode.Force);
         }
     }
+
     private void CalculateHullData()
     {
-        _area = CalculatedArea();
+        _area = CalculateAreaXZ();
         _hullHeight = _topPoint.position.y - _bottomPoint.position.y;
         _hullVolume = _area * _hullHeight * _shapeFactor;
 
         float requiredVolume = _rigidbody.mass / _waterDensity;
         _draft = requiredVolume / (_area * _shapeFactor);
-
-
     }
-    private float CalculatedArea()
+
+    private float CalculateAreaXZ()
     {
         float area = 0f;
 
@@ -86,6 +82,7 @@ public class CalculateArea : MonoBehaviour
 
         return Mathf.Abs(area) * 0.5f;
     }
+
     private void OnDrawGizmos()
     {
         if (_floatPoints == null || _floatPoints.Count < 2) { return; }
@@ -100,6 +97,4 @@ public class CalculateArea : MonoBehaviour
             Gizmos.DrawLine(current, next);
         }
     }
-
-
 }
