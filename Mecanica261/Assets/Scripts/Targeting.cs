@@ -49,3 +49,5 @@ public class Targeting : MonoBehaviour
         }
     }
 }
+
+//Use Slerp en vez de Lerp para la línea 48 para hacer el movimiento de mi torreta más fluido y no tan robótico, porque Slerp hace que el giro sea más constante, con Lerp en cmabio, mi torreta haría cambios más rapidos o se movería de forma mas lineal entonces no habría tenido tanta fluidez
