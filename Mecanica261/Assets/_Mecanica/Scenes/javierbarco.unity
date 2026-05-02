@@ -1694,8 +1694,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AguaPhysc
   _waterLevel: 0
   _waterDensity: 1000
-  _waterDraft: 10
-  _shapeFactor: 1
+  _waterDrag: 10
+  _shapeFactor: 0.67
   _topPoint: {fileID: 1828553611}
   _bottomPoint: {fileID: 1373624962}
   _floatPoints:

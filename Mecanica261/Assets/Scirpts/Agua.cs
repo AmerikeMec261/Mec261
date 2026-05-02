@@ -7,7 +7,7 @@ public class Agua : MonoBehaviour
     [Header("Water")]
     [SerializeField] private float _waterLevel = 0f;
     [SerializeField] private float _waterDensity = 1000f;
-    [SerializeField] private float _waterDraft = 10f;
+    [SerializeField] private float _waterDrag = 10f;
 
     [Header("BattleShip")]
     [SerializeField] private float _shapeFactor = 1.0f;
@@ -17,14 +17,15 @@ public class Agua : MonoBehaviour
 
     private float _area;
     private float _HullHeight;
-    private float _HullVolume;    
+    private float _HullVolume;
+    private float _draft;
 
     private Rigidbody _rigidBody;
 
-    public float Area { get; }
-    public float HullHeight { get; }
-    public float HullVolume { get; }
-    public float Graft { get; }
+    public float Area => _area;
+    public float HullHeight => _HullHeight;
+    public float HullVolume => _HullVolume;
+    public float Draft => _draft;
 
 
     private void Awake()
@@ -45,7 +46,7 @@ public class Agua : MonoBehaviour
     private void FloatShip()
     {
         float gravity = Physics.gravity.magnitude;
-        float volumePerPoint = HullVolume / _floatPoints.Count;
+        float volumePerPoint = _HullVolume / _floatPoints.Count;
 
         for (int i = 0; i < _floatPoints.Count; i++)
         {
@@ -61,7 +62,7 @@ public class Agua : MonoBehaviour
 
             Vector3 velocity = _rigidBody.GetPointVelocity(point.position);
 
-            _rigidBody.AddForceAtPosition(- velocity * _waterDraft * submersion, point.position, ForceMode.Force);
+            _rigidBody.AddForceAtPosition(- velocity * _waterDrag * submersion, point.position, ForceMode.Force);
         }
     }
 
@@ -72,7 +73,7 @@ public class Agua : MonoBehaviour
         _HullVolume = _area * _HullHeight * _shapeFactor;
 
         float requireVolume = _rigidBody.mass / _waterDensity;
-        _waterDraft = requireVolume / (_area * _shapeFactor);
+        _draft = requireVolume / (_area * _shapeFactor);
     }
 
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TurretBarco : MonoBehaviour
 {
-    [Header("Torreta")]
+    [Header("Turret")]
     [SerializeField] private Transform _target;
     [SerializeField] private Transform _turret;
     void Start()
@@ -12,10 +12,10 @@ public class TurretBarco : MonoBehaviour
     
     void Update()
     {
-        Rotacion(); 
+        Rotation(); 
     }
 
-    private void Rotacion()
+    private void Rotation()
     {
         Vector3 direction = _target.position - _turret.position;
         direction.y = 0f;
