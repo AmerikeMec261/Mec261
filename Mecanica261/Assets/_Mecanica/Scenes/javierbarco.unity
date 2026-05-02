@@ -1045,42 +1045,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 285166041}
-  - component: {fileID: 285166040}
+  - component: {fileID: 285166042}
   m_Layer: 0
   m_Name: TowerOrigin (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &285166040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 285166039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bc9b11221a8f7445941159a0dd07f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::torreta
-  _yawPivot: {fileID: 1100957794}
-  _pitchPivot: {fileID: 1882228341}
-  _bulletSpawn: {fileID: 1838849265}
-  _bulletPrefab: {fileID: 101858928520071479, guid: 55032aa9f4f31ab4db8cc4eabacceef0, type: 3}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _reticle: {fileID: 0}
-  _yawSpeed: 120
-  _yawLimits: {x: -180, y: 180}
-  _yawOffset: 90
-  _pitchSpeed: 90
-  _pitchLimits: {x: -10, y: 90}
-  _pitchOffset: 0
-  _useHighAngle: 0
-  _projectileVelocity: 20
+  m_IsActive: 0
 --- !u!4 &285166041
 Transform:
   m_ObjectHideFlags: 0
@@ -1097,6 +1069,20 @@ Transform:
   - {fileID: 1232402847}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &285166042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285166039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc936bfa0e363a3498fb54abb6235212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurretBarco
+  _target: {fileID: 0}
+  _turret: {fileID: 285166041}
 --- !u!1 &439039723
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,7 +1162,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &512087235
+--- !u!1 &594464764
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1184,24 +1170,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 512087239}
-  - component: {fileID: 512087238}
-  - component: {fileID: 512087237}
-  - component: {fileID: 512087236}
+  - component: {fileID: 594464768}
+  - component: {fileID: 594464767}
+  - component: {fileID: 594464766}
+  - component: {fileID: 594464765}
   m_Layer: 0
-  m_Name: reticle
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &512087236
-MeshCollider:
+--- !u!136 &594464765
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 512087235}
+  m_GameObject: {fileID: 594464764}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1213,17 +1199,18 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &512087237
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &594464766
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 512087235}
+  m_GameObject: {fileID: 594464764}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1266,25 +1253,25 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &512087238
+--- !u!33 &594464767
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 512087235}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &512087239
+  m_GameObject: {fileID: 594464764}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &594464768
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 512087235}
+  m_GameObject: {fileID: 594464764}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.480001, y: 0.10000014, z: 0}
-  m_LocalScale: {x: 0.21334997, y: 0.21334997, z: 0.21335}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.49844, y: 21.07396, z: 9.72479}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1331,42 +1318,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 636781614}
-  - component: {fileID: 636781613}
+  - component: {fileID: 636781615}
   m_Layer: 0
   m_Name: TowerOrigin (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &636781613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 636781612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bc9b11221a8f7445941159a0dd07f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::torreta
-  _yawPivot: {fileID: 885472934}
-  _pitchPivot: {fileID: 1835382032}
-  _bulletSpawn: {fileID: 2026058105}
-  _bulletPrefab: {fileID: 101858928520071479, guid: 55032aa9f4f31ab4db8cc4eabacceef0, type: 3}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _reticle: {fileID: 0}
-  _yawSpeed: 120
-  _yawLimits: {x: -180, y: 180}
-  _yawOffset: 90
-  _pitchSpeed: 90
-  _pitchLimits: {x: -10, y: 90}
-  _pitchOffset: 0
-  _useHighAngle: 0
-  _projectileVelocity: 20
+  m_IsActive: 0
 --- !u!4 &636781614
 Transform:
   m_ObjectHideFlags: 0
@@ -1383,6 +1342,20 @@ Transform:
   - {fileID: 214700331}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &636781615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636781612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc936bfa0e363a3498fb54abb6235212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurretBarco
+  _target: {fileID: 0}
+  _turret: {fileID: 636781614}
 --- !u!1 &657676937
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,42 +1776,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 752114647}
-  - component: {fileID: 752114646}
+  - component: {fileID: 752114648}
   m_Layer: 0
   m_Name: TowerOrigin (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &752114646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752114645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bc9b11221a8f7445941159a0dd07f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::torreta
-  _yawPivot: {fileID: 1361987126}
-  _pitchPivot: {fileID: 624984222}
-  _bulletSpawn: {fileID: 15746942}
-  _bulletPrefab: {fileID: 101858928520071479, guid: 55032aa9f4f31ab4db8cc4eabacceef0, type: 3}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _reticle: {fileID: 0}
-  _yawSpeed: 120
-  _yawLimits: {x: -180, y: 180}
-  _yawOffset: 90
-  _pitchSpeed: 90
-  _pitchLimits: {x: -10, y: 90}
-  _pitchOffset: 0
-  _useHighAngle: 0
-  _projectileVelocity: 20
+  m_IsActive: 0
 --- !u!4 &752114647
 Transform:
   m_ObjectHideFlags: 0
@@ -1855,6 +1800,20 @@ Transform:
   - {fileID: 663347432}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &752114648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752114645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc936bfa0e363a3498fb54abb6235212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurretBarco
+  _target: {fileID: 0}
+  _turret: {fileID: 752114647}
 --- !u!1 &753185489
 GameObject:
   m_ObjectHideFlags: 0
@@ -2211,25 +2170,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1055770555}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bc9b11221a8f7445941159a0dd07f7c, type: 3}
+  m_Script: {fileID: 11500000, guid: bc936bfa0e363a3498fb54abb6235212, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::torreta
-  _yawPivot: {fileID: 1289176983}
-  _pitchPivot: {fileID: 1383793600}
-  _bulletSpawn: {fileID: 657676938}
-  _bulletPrefab: {fileID: 101858928520071479, guid: 55032aa9f4f31ab4db8cc4eabacceef0, type: 3}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _reticle: {fileID: 0}
-  _yawSpeed: 120
-  _yawLimits: {x: -180, y: 180}
-  _yawOffset: 90
-  _pitchSpeed: 90
-  _pitchLimits: {x: -10, y: 90}
-  _pitchOffset: 0
-  _useHighAngle: 0
-  _projectileVelocity: 20
+  m_EditorClassIdentifier: Assembly-CSharp::TurretBarco
+  _target: {fileID: 594464768}
+  _turret: {fileID: 1055770557}
 --- !u!1 &1100957793
 GameObject:
   m_ObjectHideFlags: 0
@@ -3608,5 +3553,5 @@ SceneRoots:
   - {fileID: 752114647}
   - {fileID: 285166041}
   - {fileID: 636781614}
-  - {fileID: 512087239}
   - {fileID: 694891803}
+  - {fileID: 594464768}
