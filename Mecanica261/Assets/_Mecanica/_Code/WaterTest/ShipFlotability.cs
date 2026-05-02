@@ -7,7 +7,8 @@ public class ShipFlotability : MonoBehaviour
     [Header("Water")]
     [SerializeField] private float _waterLevel = 0f;
     [SerializeField] private float _waterDensity = 1000f;
-    [SerializeField] private float _waterDrag = 1f;
+    [SerializeField] private float _verticalWaterDrag = 1f;
+    [SerializeField] private float _horizontalWaterDrag = 0.005f;
 
     [Header("Hull")]
     [SerializeField] private float _shapeFactor = 0.67f;
@@ -54,7 +55,14 @@ public class ShipFlotability : MonoBehaviour
             _rigidbody.AddForceAtPosition(Vector3.up * force, point.position, ForceMode.Force);
 
             Vector3 velocity = _rigidbody.GetPointVelocity(point.position);
-            _rigidbody.AddForceAtPosition(-velocity * _waterDrag * submersion, point.position, ForceMode.Force);
+
+            Vector3 verticalVelocity = Vector3.Project(velocity, Vector3.up);
+            Vector3 horizontalVelocity = velocity - verticalVelocity;
+
+            Vector3 verticalDrag = -verticalVelocity * verticalVelocity.magnitude * _verticalWaterDrag * submersion;
+            Vector3 horizontalDrag = -horizontalVelocity * horizontalVelocity.magnitude * _horizontalWaterDrag * submersion;
+
+            _rigidbody.AddForceAtPosition(verticalDrag + horizontalDrag, point.position, ForceMode.Force);
         }
     }
 
