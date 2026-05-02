@@ -12,20 +12,23 @@ public class FinalTurret : MonoBehaviour
     [SerializeField] private GameObject[] _bulletPrefabs;
     private int _currentBulletIndex = 0;
 
+    [Header("================================================================")]
     [Header("BulletsSpawn")]
     [SerializeField] private Transform[] _bulletSpawns;
     private int _currentSpawnIndex = 0;
 
+    [Header("================================================================")]
     [Header("Targeting")]
-    [SerializeField] private float _detectionRadius = 50f;
-   
+    [SerializeField] private float _detectionRadius = 24f;
 
+    [Header("================================================================")]
     [Header("Projectile")]
     [SerializeField] private float _projectileSpeed = 30f;
     [SerializeField] private float _minDistance = 1f;
-    [SerializeField] private float _maxDistance = 180f;
+    [SerializeField] private float _maxDistance = 18000f;
     [SerializeField] private bool _useHighArc = false;
 
+    [Header("================================================================")]
     private Transform _currentTarget;
     private bool _hasSolution;
 
@@ -51,7 +54,6 @@ public class FinalTurret : MonoBehaviour
     private void FindTarget()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy"); 
-
         float _closestDistance = Mathf.Infinity; 
         Transform closest = null; 
 
@@ -59,8 +61,7 @@ public class FinalTurret : MonoBehaviour
         {
             float distance = Vector3.Distance(transform.position, enemy.transform.position); 
              
-            if (distance < _closestDistance && distance <= _detectionRadius) //dist max = detection radius detectasr
-                // velocidad bala 
+            if (distance < _closestDistance && distance <= _detectionRadius) 
             {
                 _closestDistance = distance; 
                 closest = enemy.transform;
@@ -68,12 +69,15 @@ public class FinalTurret : MonoBehaviour
         }
 
         _currentTarget = closest; 
-
-        if (closest != null)
-        {
-            _hasSolution = true;
-        }
+ 
     }
+    /*
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _detectionRadius);
+    }
+    */
 
 
     private Transform GetCurrentSpawn()
@@ -110,7 +114,6 @@ public class FinalTurret : MonoBehaviour
             // Aquí podrías agregar lógica para manejar esta situación, como dejar de apuntar o disparar
           
         }
-        
 
         // YAW
         if (horizontalDirection.sqrMagnitude > 0.001f)

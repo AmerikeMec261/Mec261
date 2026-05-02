@@ -11,6 +11,7 @@ public class SimpleFloat : MonoBehaviour
     [SerializeField] private float _waterDensity = 1000f;
     [SerializeField] private float _waterDrag = 10f;
 
+    [Header("================================================================")]
     [Header("Settings")]
     [SerializeField] private float _shapeFactor;
     [SerializeField] private Transform _topPoint;
@@ -18,6 +19,20 @@ public class SimpleFloat : MonoBehaviour
     [SerializeField] private List<Transform> _floatPoints;
     [SerializeField] private Rigidbody _rigidbody;
 
+    [Header("================================================================")]
+    [Header("Motores")]
+    [SerializeField] private List<Transform> _motors;
+    [SerializeField] private List<Transform> _rightmotors;
+    [SerializeField] private List<Transform> _leftmotors;
+
+    [Header("================================================================")]
+    [Header("Settings Motores")]
+    [SerializeField] private float _motorForce = 20f;
+    //Información de mi barco: ~ Velocidad Máxima: aproximadamente 18-24 km/h
+    [SerializeField] private float _rotation = 13f;
+    //Infromación de mi barco: ~ Velocidad de crucero: 10 y 13 nudos
+
+    [Header("================================================================")]
     [SerializeField] private float _area;
     [SerializeField] private float hulllHeight;
     [SerializeField] private float hullVolume;
@@ -37,8 +52,20 @@ public class SimpleFloat : MonoBehaviour
     private void FixedUpdate()
     {
         FloatShip();
-    }
 
+        if (Input.GetKey(KeyCode.W))
+        {
+            MoverAdelante();
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            GirarDerecha();
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            GirarIzquierda();
+        }
+    }
    
     private void FloatShip()
     {
@@ -62,6 +89,47 @@ public class SimpleFloat : MonoBehaviour
         }
     }
 
+    private void MoverAdelante()
+    {
+        Vector3 direction = transform.right;
+
+        foreach (Transform motor in _motors)
+        {
+            _rigidbody.AddForceAtPosition(direction * _motorForce, motor.position, ForceMode.Force); 
+        }
+    }
+
+    private void GirarDerecha()
+    {
+        Vector3 direction = transform.forward;
+        float _rotationAplication =  _motorForce * _rotation;
+
+        foreach (Transform motor in _leftmotors)
+        {
+            _rigidbody.AddForceAtPosition(direction * _rotationAplication, motor.position, ForceMode.Force);
+        }
+
+        foreach (Transform motor in _rightmotors)
+        {
+            _rigidbody.AddForceAtPosition(-direction * _rotationAplication, motor.position,ForceMode.Force);
+        }
+    }
+
+    private void GirarIzquierda()
+    {
+        Vector3 direction = transform.forward;
+        float _rotationAplication = _motorForce * _rotation;
+
+        foreach (Transform motor in _rightmotors)
+        {
+            _rigidbody.AddForceAtPosition(direction * _rotationAplication, motor.position, ForceMode.Force);
+        }
+
+        foreach (Transform motor in _leftmotors)
+        {
+            _rigidbody.AddForceAtPosition(-direction * _rotationAplication, motor.position, ForceMode.Force);
+        }
+    }
     private void CalculateHullData()
     {
         _area = CalculateArea();
@@ -104,4 +172,9 @@ public class SimpleFloat : MonoBehaviour
             Gizmos.DrawLine(current, next);
         }
     }
+
+   
+
+
+
 }
