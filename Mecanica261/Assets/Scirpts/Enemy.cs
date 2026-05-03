@@ -5,7 +5,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyStats
     [Header("Enemy stats")]
     [SerializeField] private float _health = 100f;
     [SerializeField] private float _speed = 5f;
-    [SerializeField] private float _shield = 0f;
+    //[SerializeField] private float _shield = 0f;
 
     [Header("Patrol settings")]
     [SerializeField] private Transform _pointA;
