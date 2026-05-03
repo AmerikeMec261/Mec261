@@ -3,20 +3,23 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     [Header("Turret")]
-    [SerializeField] private Transform _pivotHorizontal;
-    [SerializeField] private Transform _pivotVertical;
-    [SerializeField] private float _distance = 20f;
+    [SerializeField] private Transform _horizontalPivot;
+    [SerializeField] private Transform _verticalPivot;
+    [SerializeField] private float _maxDistance = 20f;
+
 
     [Header("Crosshair")]
-    [SerializeField] private Transform _mira;
+    [SerializeField] private Transform _crosshair;
 
     [Header("Projectile")]
-    [SerializeField] private Transform _spawn;
-    [SerializeField] private GameObject _BulletPrefab;
-    [SerializeField] private GameObject _explosiveBullet;
+    [SerializeField] private Transform _spawnPoint;
+    [SerializeField] private GameObject _basicBulletPrefab;
+    [SerializeField] private GameObject _explosiveBulletPrefab;
 
-    [SerializeField] private float Angulo = 95f;
-    [SerializeField] private float VelocidadMouse = 18f;
+
+    [Header("Aiming Settings")]
+    [SerializeField] private float _baseAngle = 95f;
+    [SerializeField] private float _projectileSpeed = 18f;
 
     private GameObject _currentProjectile;
 
@@ -25,7 +28,7 @@ public class Turret : MonoBehaviour
     private void Start()
     {
         _camera = Camera.main;
-        _currentProjectile = _BulletPrefab;
+        _currentProjectile = _basicBulletPrefab;
     }
 
     private void Update()
@@ -39,18 +42,18 @@ public class Turret : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            _currentProjectile = _BulletPrefab;
+            _currentProjectile = _basicBulletPrefab;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            _currentProjectile = _explosiveBullet;
+            _currentProjectile = _explosiveBulletPrefab;
         }
     }
 
     private void FireProjectile()
     {
-        GameObject bullet = Instantiate( _currentProjectile, _spawn.position, _spawn.rotation);
+        GameObject bullet = Instantiate( _currentProjectile, _spawnPoint.position, _spawnPoint.rotation);
 
         bullet.GetComponent<IProjectile>()?.Fire();
     }
@@ -61,24 +64,26 @@ public class Turret : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            Vector3 target = hit.point;
+            Vector3 targetPoint = hit.point;
 
-            _mira.position = target + Vector3.up * 0.02f;
-            
-            Vector3 flatDirection = target - _pivotHorizontal.position;
-            flatDirection.y = 0;
+            _crosshair.position = targetPoint + Vector3.up * 0.02f;
 
-            _pivotHorizontal.rotation = Quaternion.LookRotation(-flatDirection);
+            Vector3 horizontalDirection = targetPoint - _horizontalPivot.position;
+            horizontalDirection.y = 0;
 
-            Vector3 fullDirection = target - _pivotVertical.position;
-            float dis = flatDirection.magnitude;
-            float alt = fullDirection.y;
+            _horizontalPivot.rotation = Quaternion.LookRotation(-horizontalDirection);
 
-            float angle = CalculateHighAngle(dis, alt, VelocidadMouse);
+            Vector3 fullDirection = targetPoint - _verticalPivot.position;
 
-            _pivotVertical.localRotation = Quaternion.Euler(Angulo - angle, 0f, 0f); //Si le pongo mas de 95 grados volteas a ver mas el cielo pero ya no se ve naatural//
+            float horizontalDistance = horizontalDirection.magnitude;
+            float heightDifference = fullDirection.y;
+
+            float launchAngle = CalculateHighAngle(horizontalDistance, heightDifference, _projectileSpeed);
+
+            _verticalPivot.localRotation = Quaternion.Euler(_baseAngle - launchAngle, 0f, 0f);
         }
     }
+
 
     private float CalculateHighAngle(float distance, float height, float speed)
     {
@@ -89,8 +94,8 @@ public class Turret : MonoBehaviour
 
         if (discriminant < 0)
         {
-            Vector3 maxPoint = _pivotHorizontal.position + _pivotHorizontal.forward * _distance;
-            _mira.position = maxPoint + Vector3.up * 0.02f;
+            Vector3 maxPoint = _horizontalPivot.position + _horizontalPivot.forward * _maxDistance;
+            _crosshair.position = maxPoint + Vector3.up * 0.02f;
 
             return 45f;
         }

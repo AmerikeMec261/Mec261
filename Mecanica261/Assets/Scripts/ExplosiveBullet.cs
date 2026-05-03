@@ -3,9 +3,10 @@ using UnityEngine;
 public class ExplosiveBullet : MonoBehaviour, IProjectile
 
 {
-    [SerializeField] private float velocidad = 15f;
-    [SerializeField] private float damagee = 40f;
-    [SerializeField] private float radio = 5f;
+    [Header("Projectile Settings")]
+    [SerializeField] private float _velocity = 15f;
+    [SerializeField] private float _damagee = 40f;
+    [SerializeField] private float _explosiveRadius= 5f;
 
     private Rigidbody _rigidbody;
 
@@ -16,20 +17,20 @@ public class ExplosiveBullet : MonoBehaviour, IProjectile
 
     public void Fire()
     {
-        _rigidbody.AddForce(transform.forward * velocidad, ForceMode.Impulse);
+        _rigidbody.AddForce(transform.forward * _velocity, ForceMode.Impulse);
     }
 
     public void Impact()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, radio);
+        Collider[] hits = Physics.OverlapSphere(transform.position, _explosiveRadius);
 
         foreach (Collider hit in hits)
         {
-            IDamageable enemy = hit.GetComponent<IDamageable>();
+            IDamageable damageable = hit.GetComponent<IDamageable>();
 
-            if (enemy != null)
+            if (damageable != null)
             {
-                enemy.DamageEnemy(damagee);
+                damageable.DamageEnemy(_damagee);
             }
         }
     }

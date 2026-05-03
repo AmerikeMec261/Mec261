@@ -7,16 +7,15 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private float _health = 100f;
     [SerializeField] private float _speed = 2f;
 
-    [Header("Los puntos donde se mueve el enemigo")]
-    [SerializeField] private Transform _puntotuno;
-    [SerializeField] private Transform _puntodos;
-    [SerializeField] private TextMeshPro _Text;
+    [SerializeField] private Transform _pointA;
+    [SerializeField] private Transform _pointB;
+    [SerializeField] private TextMeshPro _healthText;
 
-    private Transform _Target;
+    private Transform _target;
 
     private void Start()
     {
-        _Target = _puntodos;
+        _target = _pointB;
     }
     private void Update()
     {
@@ -24,17 +23,17 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     private void MoveEnemy()
     {
-        transform.position = Vector3.MoveTowards(transform.position,_Target.position,_speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position,_target.position,_speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, _Target.position) < 0.1f)
+        if (Vector3.Distance(transform.position, _target.position) < 0.1f)
         {
-            _Target = _Target == _puntotuno ? _puntodos : _puntotuno;
+            _target = _target == _pointA ? _pointB : _pointA;
         }
     }
     public void DamageEnemy(float damage)
     {
         _health -= damage;
-        _Text.text = _health.ToString();
+        _healthText.text = _health.ToString();
         if (_health <= 0)
         {
             Destroy(gameObject);
