@@ -3,78 +3,78 @@ using System.Collections.Generic;
 
 public class Agua : MonoBehaviour
 {
-    [Header("Water configutation")]
-    [SerializeField] private float _watterlevel = 1.0f;
-    [SerializeField] private float _watterDensity = 1.0f;
-    [SerializeField] private float _watterDraft = 1.0f;
+    [Header("Water")]
+    [SerializeField] private float _waterLevel = 0f;
+    [SerializeField] private float _waterDensity = 1000f;
+    [SerializeField] private float _waterDrag = 10f;
 
-    [Header("Barco")]
+    [Header("BattleShip")]
     [SerializeField] private float _shapeFactor = 1.0f;
     [SerializeField] private Transform _topPoint;
     [SerializeField] private Transform _bottomPoint;
-    [SerializeField] private List <Transform> _floatPoints;
+    [SerializeField] private List<Transform> _floatPoints;
 
     private float _area;
     private float _HullHeight;
     private float _HullVolume;
+    private float _draft;
 
     private Rigidbody _rigidBody;
 
-        public float Area { get; }
-    public float HullHeight { get; }
-    public float HullVolume { get; }
-    public float Draft { get; }
+    public float Area => _area;
+    public float HullHeight => _HullHeight;
+    public float HullVolume => _HullVolume;
+    public float Draft => _draft;
 
 
-   private void Awake()
+    private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody>();
-        CalculateData();
-       
+        CalculateHullData();
     }
 
+    private void Start()
+    {
+
+    }
     private void FixedUpdate()
     {
         FloatShip();
     }
 
-
     private void FloatShip()
     {
-
-        float Gravity = Physics.gravity.magnitude;
-
-        float volumenperpoint = HullVolume / _floatPoints.Count;
+        float gravity = Physics.gravity.magnitude;
+        float volumePerPoint = _HullVolume / _floatPoints.Count;
 
         for (int i = 0; i < _floatPoints.Count; i++)
         {
-           Transform point = _floatPoints[i];
-            float sumergtion = Mathf.Clamp01(_watterlevel - point.position.y) / HullHeight;
-            if (sumergtion <=0)
+            Transform point = _floatPoints[i];
+            float submersion = Mathf.Clamp01(_waterLevel - point.position.y) / _HullHeight;
+
+            if (submersion <= 0)
             {
                 continue;
             }
-
-            float Force = _watterDensity * volumenperpoint * Gravity * sumergtion;
-            _rigidBody.AddForceAtPosition(Vector3.up * Force, point.position, ForceMode.Force);
+            float force = _waterDensity * volumePerPoint * gravity * submersion;
+            _rigidBody.AddForceAtPosition(Vector3.up * force, point.position, ForceMode.Force);
 
             Vector3 velocity = _rigidBody.GetPointVelocity(point.position);
-            _rigidBody.AddForceAtPosition(-velocity * _watterDraft * sumergtion, point.position, ForceMode.Force);
-        }
 
+            _rigidBody.AddForceAtPosition(-velocity * _waterDrag * submersion, point.position, ForceMode.Force);
+        }
     }
 
-
-    private void CalculateData()
+    private void CalculateHullData()
     {
         _area = CalculateArea();
         _HullHeight = _topPoint.position.y - _bottomPoint.position.y;
         _HullVolume = _area * _HullHeight * _shapeFactor;
 
-        float RiquiereVolume = _rigidBody.mass / _watterDensity;
-
-        _watterDraft = RiquiereVolume    / (_area * _shapeFactor);
+        float requireVolume = _rigidBody.mass / _waterDensity;
+        _draft = requireVolume / (_area * _shapeFactor);
     }
+
 
     private float CalculateArea()
     {
@@ -89,5 +89,20 @@ public class Agua : MonoBehaviour
         }
 
         return Mathf.Abs(area) * 0.5f;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_floatPoints == null || _floatPoints.Count < 2) { return; }
+
+        Gizmos.color = Color.green;
+
+        for (int i = 0; i < _floatPoints.Count; i++)
+        {
+            Vector3 current = _floatPoints[i].position;
+            Vector3 next = _floatPoints[(i + 1) % _floatPoints.Count].position;
+
+            Gizmos.DrawLine(current, next);
+        }
     }
 }
