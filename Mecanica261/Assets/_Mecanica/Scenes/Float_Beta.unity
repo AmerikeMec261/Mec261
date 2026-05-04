@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 661885722}
   - component: {fileID: 661885721}
   - component: {fileID: 661885720}
+  - component: {fileID: 661885726}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -147,14 +148,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 661885719}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1eaef78e1972ca439463e85d9dab454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleFloat
   _waterLevel: 0
-  _volume: 1
   _waterDensity: 1000
+  _waterDrag: 10
+  _shapeFactor: 0
+  _topPoint: {fileID: 0}
+  _bottomPoint: {fileID: 0}
+  _floatPoints: []
+  _rigidbody: {fileID: 0}
+  _motors: []
+  _rightmotors: []
+  _leftmotors: []
+  _motorForce: 20
+  _maxmotorForce: 24
+  _rotation: 13
+  _area: 0
+  hulllHeight: 0
+  hullVolume: 0
+  draft: 0
 --- !u!54 &661885721
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -275,6 +291,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &661885726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661885719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9053903ae9fe97b43b7f0bae3299fa3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleFloat2
+  _waterLevel: 0
+  _volume: 1
+  _waterDensity: 1000
 --- !u!1 &1311554917
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,6 +447,7 @@ GameObject:
   - component: {fileID: 1421756196}
   - component: {fileID: 1421756195}
   - component: {fileID: 1421756194}
+  - component: {fileID: 1421756200}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -430,14 +462,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1421756193}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1eaef78e1972ca439463e85d9dab454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleFloat
   _waterLevel: 0
-  _volume: 1
   _waterDensity: 1000
+  _waterDrag: 10
+  _shapeFactor: 0
+  _topPoint: {fileID: 0}
+  _bottomPoint: {fileID: 0}
+  _floatPoints: []
+  _rigidbody: {fileID: 0}
+  _motors: []
+  _rightmotors: []
+  _leftmotors: []
+  _motorForce: 20
+  _maxmotorForce: 24
+  _rotation: 13
+  _area: 0
+  hulllHeight: 0
+  hullVolume: 0
+  draft: 0
 --- !u!54 &1421756195
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -558,6 +605,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1421756200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421756193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9053903ae9fe97b43b7f0bae3299fa3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleFloat2
+  _waterLevel: 0
+  _volume: 1
+  _waterDensity: 1000
 --- !u!1 &1532464055
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,6 +634,7 @@ GameObject:
   - component: {fileID: 1532464058}
   - component: {fileID: 1532464057}
   - component: {fileID: 1532464056}
+  - component: {fileID: 1532464062}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -586,14 +649,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532464055}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1eaef78e1972ca439463e85d9dab454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleFloat
   _waterLevel: 0
-  _volume: 1
   _waterDensity: 1000
+  _waterDrag: 10
+  _shapeFactor: 0
+  _topPoint: {fileID: 0}
+  _bottomPoint: {fileID: 0}
+  _floatPoints: []
+  _rigidbody: {fileID: 0}
+  _motors: []
+  _rightmotors: []
+  _leftmotors: []
+  _motorForce: 20
+  _maxmotorForce: 24
+  _rotation: 13
+  _area: 0
+  hulllHeight: 0
+  hullVolume: 0
+  draft: 0
 --- !u!54 &1532464057
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -714,6 +792,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1532464062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532464055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9053903ae9fe97b43b7f0bae3299fa3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleFloat2
+  _waterLevel: 0
+  _volume: 1
+  _waterDensity: 1000
 --- !u!1 &1788737596
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,6 +958,7 @@ GameObject:
   - component: {fileID: 2004802904}
   - component: {fileID: 2004802903}
   - component: {fileID: 2004802902}
+  - component: {fileID: 2004802908}
   m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -879,14 +973,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004802901}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1eaef78e1972ca439463e85d9dab454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleFloat
   _waterLevel: 0
-  _volume: 1
   _waterDensity: 1000
+  _waterDrag: 10
+  _shapeFactor: 0
+  _topPoint: {fileID: 0}
+  _bottomPoint: {fileID: 0}
+  _floatPoints: []
+  _rigidbody: {fileID: 0}
+  _motors: []
+  _rightmotors: []
+  _leftmotors: []
+  _motorForce: 20
+  _maxmotorForce: 24
+  _rotation: 13
+  _area: 0
+  hulllHeight: 0
+  hullVolume: 0
+  draft: 0
 --- !u!54 &2004802903
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1007,6 +1116,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2004802908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004802901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9053903ae9fe97b43b7f0bae3299fa3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleFloat2
+  _waterLevel: 0
+  _volume: 1
+  _waterDensity: 1000
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
