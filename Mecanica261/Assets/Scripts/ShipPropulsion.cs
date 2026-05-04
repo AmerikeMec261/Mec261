@@ -20,15 +20,15 @@ public class ShipPropulsion : MonoBehaviour
     [Header("Hull Drag")]
     [SerializeField] private float _hullDrag = 0.08f;
 
-    private Rigidbody _rb;
+    private Rigidbody _rigidbody;
     private float _throttle;
     private float _rudder;
     private float _engineForce;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
-        _engineForce = _rb.mass * (_maxSpeed / _timeToMaxSpeed) * 1.3f;
+        _rigidbody = GetComponent<Rigidbody>();
+        _engineForce = _rigidbody.mass * (_maxSpeed / _timeToMaxSpeed) * 1.3f;
     }
 
     private void FixedUpdate()
