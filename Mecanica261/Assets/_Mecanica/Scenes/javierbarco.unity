@@ -1081,8 +1081,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc936bfa0e363a3498fb54abb6235212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurretBarco
-  _target: {fileID: 0}
-  _turret: {fileID: 285166041}
+  towerOrigin: {fileID: 0}
+  picth: {fileID: 0}
+  yaw: {fileID: 0}
+  bulletExit: {fileID: 0}
+  bullets: []
+  bulletSpeed: 0
+  rotationSpeed: 0
+  rotationDegrees: 0
+  trackingRange: 50
+  enemyTag: Enemy
 --- !u!1 &439039723
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,7 +1184,7 @@ GameObject:
   - component: {fileID: 594464765}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1354,8 +1362,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc936bfa0e363a3498fb54abb6235212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurretBarco
-  _target: {fileID: 0}
-  _turret: {fileID: 636781614}
+  towerOrigin: {fileID: 0}
+  picth: {fileID: 0}
+  yaw: {fileID: 0}
+  bulletExit: {fileID: 0}
+  bullets: []
+  bulletSpeed: 0
+  rotationSpeed: 0
+  rotationDegrees: 0
+  trackingRange: 50
+  enemyTag: Enemy
 --- !u!1 &657676937
 GameObject:
   m_ObjectHideFlags: 0
@@ -1812,8 +1828,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc936bfa0e363a3498fb54abb6235212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurretBarco
-  _target: {fileID: 0}
-  _turret: {fileID: 752114647}
+  towerOrigin: {fileID: 0}
+  picth: {fileID: 0}
+  yaw: {fileID: 0}
+  bulletExit: {fileID: 0}
+  bullets: []
+  bulletSpeed: 0
+  rotationSpeed: 0
+  rotationDegrees: 0
+  trackingRange: 50
+  enemyTag: Enemy
 --- !u!1 &753185489
 GameObject:
   m_ObjectHideFlags: 0
@@ -2173,8 +2197,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc936bfa0e363a3498fb54abb6235212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurretBarco
-  _target: {fileID: 594464768}
-  _turret: {fileID: 1055770557}
+  towerOrigin: {fileID: 1055770557}
+  picth: {fileID: 1383793600}
+  yaw: {fileID: 1289176983}
+  bulletExit: {fileID: 657676938}
+  bullets:
+  - {fileID: 3959634944075965744, guid: be903b7093ce3fe4285e9d73b8649da7, type: 3}
+  - {fileID: 101858928520071479, guid: 55032aa9f4f31ab4db8cc4eabacceef0, type: 3}
+  bulletSpeed: 0
+  rotationSpeed: 0
+  rotationDegrees: 0
+  trackingRange: 50
+  enemyTag: Enemy
 --- !u!1 &1100957793
 GameObject:
   m_ObjectHideFlags: 0
