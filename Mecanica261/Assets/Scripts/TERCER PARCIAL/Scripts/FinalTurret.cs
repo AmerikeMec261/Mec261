@@ -71,34 +71,12 @@ public class FinalTurret : MonoBehaviour
         _currentTarget = closest; 
  
     }
-    /*
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _detectionRadius);
-    }
-    */
-
-
-    private Transform GetCurrentSpawn()
-    {
-        if (_bulletSpawns != null && _bulletSpawns.Length > 0) //verifica si el bulletSpawns tiene elementos
-        {
-           if (_bulletSpawns[_currentSpawnIndex] != null) //verifica que el spawn actual no sea nulo
-            {
-                return _bulletSpawns[_currentSpawnIndex]; //retorna el spawn actual
-            }
-        }
-
-        return _bulletSpawn; // en caso de no tener bulletSpawns, se usa el spawn por defecto
-    }
 
     private void Aim()
     {
         if (_currentTarget == null) //Encuentra el target más cercano
         return;
-
-        Vector3 originPosition = GetCurrentSpawn().position;
+        Vector3 originPosition = _bulletSpawns[_currentSpawnIndex].position;
         Vector3 targetPosition = _currentTarget.position; //agarramos la posición del target actual
 
         Vector3 directionToTarget = targetPosition - _yawPivot.position;
@@ -109,10 +87,7 @@ public class FinalTurret : MonoBehaviour
         if (horizontalDistance < _minDistance || horizontalDistance > _maxDistance) //verifica que el target esté dentro del rango mínimo y máximo
         {
             _minDistance = horizontalDistance;
-            // Si el target está fuera del rango, no se apunta ni se dispara
             _maxDistance = horizontalDistance;
-            // Aquí podrías agregar lógica para manejar esta situación, como dejar de apuntar o disparar
-          
         }
 
         // YAW
@@ -139,16 +114,11 @@ public class FinalTurret : MonoBehaviour
 
     private void FireProjectile()
     {
-        Transform currentSpawn = GetCurrentSpawn(); //obtiene el spawn actual
+        Transform currentSpawn = _bulletSpawns[_currentSpawnIndex];
 
-        GameObject bulletInstance = Instantiate(
-            _bulletPrefabs[_currentBulletIndex],
-            currentSpawn.position,
-            currentSpawn.rotation
-        );
+        GameObject bulletInstance = Instantiate(_bulletPrefabs[_currentBulletIndex],currentSpawn.position,currentSpawn.rotation);
 
         IProjectile projectile = bulletInstance.GetComponent<IProjectile>();
-
 
         projectile.SetSpeed(_projectileSpeed);
         projectile.Fire();

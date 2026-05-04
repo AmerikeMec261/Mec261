@@ -28,6 +28,7 @@ public class SimpleFloat : MonoBehaviour
     [Header("================================================================")]
     [Header("Settings Motores")]
     [SerializeField] private float _motorForce = 20f;
+    [SerializeField] private float _maxmotorForce = 24f;
     //Información de mi barco: ~ Velocidad Máxima: aproximadamente 18-24 km/h
     [SerializeField] private float _rotation = 13f;
     //Infromación de mi barco: ~ Velocidad de crucero: 10 y 13 nudos
@@ -37,9 +38,9 @@ public class SimpleFloat : MonoBehaviour
     [SerializeField] private float hulllHeight;
     [SerializeField] private float hullVolume;
     [SerializeField] private float draft;
+    private float HullHeight => hulllHeight;
 
     private float Area => _area;
-    private float HullHeight => hulllHeight;
     private float HullVolume  => hullVolume;
     private float Draft => draft;
 
@@ -102,7 +103,7 @@ public class SimpleFloat : MonoBehaviour
     private void GirarDerecha()
     {
         Vector3 direction = transform.forward;
-        float _rotationAplication =  _motorForce * _rotation;
+        float _rotationAplication =  _motorForce * _rotation * _maxmotorForce;
 
         foreach (Transform motor in _leftmotors)
         {
@@ -118,7 +119,7 @@ public class SimpleFloat : MonoBehaviour
     private void GirarIzquierda()
     {
         Vector3 direction = transform.forward;
-        float _rotationAplication = _motorForce * _rotation;
+        float _rotationAplication = _motorForce * _rotation * _maxmotorForce;
 
         foreach (Transform motor in _rightmotors)
         {
@@ -172,9 +173,5 @@ public class SimpleFloat : MonoBehaviour
             Gizmos.DrawLine(current, next);
         }
     }
-
-   
-
-
 
 }
