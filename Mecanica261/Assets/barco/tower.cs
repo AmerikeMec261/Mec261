@@ -16,9 +16,11 @@ public class tower : MonoBehaviour //Todo debe estar en inglés.
     [SerializeField] private float _maxRange = 1000f;
     [SerializeField] private LayerMask _layersPoint;
 
+    private Transform enemigoObjetivo;
+
     private void Update()
     {
-        MoverReticulaAlMouse();
+        
         ApuntarTorreta();
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -40,7 +42,14 @@ public class tower : MonoBehaviour //Todo debe estar en inglés.
         {
             Rigibody.useGravity = true; // no usar abreviaciones
 
-            Vector3 velocidadFinal = CalcularMortero(_bulletSpawn.position, _reticula.position, _Mortarforce);
+            Vector3 objetivo; // no usar abreviaciones
+
+            if (enemigoObjetivo != null)
+                objetivo = enemigoObjetivo.position;
+            else
+                objetivo = _pitchPivot.forward * _maxRange + _bulletSpawn.position;
+
+            Vector3 velocidadFinal = CalcularMortero(_bulletSpawn.position, objetivo, _Mortarforce);
 
             Rigibody.linearVelocity = velocidadFinal; // no usar abreviaciones
 
@@ -70,21 +79,44 @@ public class tower : MonoBehaviour //Todo debe estar en inglés.
         return velocidadFinal; // no usar abreviaciones
     }
 
-    private void MoverReticulaAlMouse()
+   /* private void MoverReticulaAlMouse()
     {
         Ray rayMouse = Camera.main.ScreenPointToRay(Input.mousePosition); // no usar abreviaciones
-        if (Physics.Raycast(rayMouse, out RaycastHit hit, _maxRange, _layersPoint)) // qué se está evaluando aqui? como lo popdrias sustituir por un operador ternario? (si es que es posible) 
-            _reticula.position = hit.point;                                         // calcula si el rayo que esta en la posicion del raton golpea un colisionador dentro de la especificaciones
+        if (Physics.Raycast(rayMouse, out RaycastHit hit, _maxRange, _layersPoint))       // qué se está evaluando aqui? como lo popdrias sustituir por un operador ternario? (si es que es posible) 
+            _reticula.position = hit.point;                                               // calcula si el rayo que esta en la posicion del raton golpea un colisionador dentro de la especificaciones
         else
             _reticula.position = rayMouse.GetPoint(_maxRange / 10);
-    }
+    }*/
 
     private void ApuntarTorreta()
     {
-        Vector3 targetYaw = _reticula.position;
+        float rangoVision = 20f; // no usar abreviaciones
+        Collider[] enemigosEnRango = Physics.OverlapSphere(transform.position, rangoVision);
+
+        enemigoObjetivo = null;
+        float distanciaMinima = Mathf.Infinity;
+
+        foreach (Collider collider in enemigosEnRango)
+        {
+            if (collider.CompareTag("Enemy"))
+            {
+                float distancia = Vector3.Distance(transform.position, collider.transform.position);
+
+                if (distancia < distanciaMinima)
+                {
+                    distanciaMinima = distancia;
+                    enemigoObjetivo = collider.transform;
+                }
+            }
+        }
+
+        if (enemigoObjetivo == null) return;
+
+        Vector3 targetYaw = enemigoObjetivo.position;
         targetYaw.y = _yawPivot.position.y;
         _yawPivot.LookAt(targetYaw);
 
-        _pitchPivot.LookAt(_reticula.position);
+        _pitchPivot.LookAt(enemigoObjetivo.position);
     }
-}// Trabajo en clase: hacer los cambios de los comentarios (y todos los que apliquen) 
+}
+// Trabajo en clase: hacer los cambios de los comentarios (y todos los que apliquen) 
