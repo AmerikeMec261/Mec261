@@ -206,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 51727579}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0057162163, y: -0.9719455, z: 0.23502702, w: -0.00717639}
-  m_LocalPosition: {x: 40.4, y: 32.5, z: 82.2}
+  m_LocalPosition: {x: 39.6, y: 62.5, z: 140.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -719,11 +719,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 752003596}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
       insertIndex: -1
       addedObject: {fileID: 614456760}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 614456761}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 614456762}
   m_SourcePrefab: {fileID: 100100000, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
 --- !u!1 &614456758 stripped
 GameObject:
@@ -752,6 +761,40 @@ MonoBehaviour:
   _rotationSpeed: 5
   _maxRightAngle: 60
   _maxLeftAngle: -60
+--- !u!114 &614456761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614456758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2597956e0e585442a08d91f64e2bf7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurretShooting
+  _shootPoint: {fileID: 752003596}
+  _normalBulletPrefab: {fileID: 1508251507811718844, guid: e40279050e718b3469f9682f3dcedf41, type: 3}
+  _explosiveBulletPrefab: {fileID: 1508251507811718844, guid: 410a2f9f8f3b71541b55d83faef2de07, type: 3}
+  _shootForce: 100
+  _fireRate: 1
+--- !u!114 &614456762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614456758}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 135b94edcfc95754cb590e8c527c58b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurretAiming
+  _target: {fileID: 664865614}
+  _barrel: {fileID: 614456759}
+  _bulletSpeed: 50
+  _useHighAngle: 1
+  _elevationSpeed: 5
 --- !u!1 &664865610
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +907,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &752003595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 752003596}
+  m_Layer: 0
+  m_Name: Shotpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &752003596
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752003595}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.11529, y: 0.0067, z: -0.0157}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 614456759}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &870709985
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,12 +950,12 @@ GameObject:
   - component: {fileID: 870709988}
   - component: {fileID: 870709987}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Mar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &870709987
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1374,11 +1448,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2110531782}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2045346883}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2045346884}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2045346885}
   m_SourcePrefab: {fileID: 100100000, guid: 43f7cf44a9450664da0f2321358e4d56, type: 3}
 --- !u!1 &2045346881 stripped
 GameObject:
@@ -1407,6 +1490,71 @@ MonoBehaviour:
   _rotationSpeed: 5
   _maxRightAngle: 60
   _maxLeftAngle: -60
+--- !u!114 &2045346884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045346881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2597956e0e585442a08d91f64e2bf7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurretShooting
+  _shootPoint: {fileID: 2110531782}
+  _normalBulletPrefab: {fileID: 1508251507811718844, guid: e40279050e718b3469f9682f3dcedf41, type: 3}
+  _explosiveBulletPrefab: {fileID: 1508251507811718844, guid: 410a2f9f8f3b71541b55d83faef2de07, type: 3}
+  _shootForce: 100
+  _fireRate: 1
+--- !u!114 &2045346885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045346881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 135b94edcfc95754cb590e8c527c58b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurretAiming
+  _target: {fileID: 664865614}
+  _barrel: {fileID: 2045346882}
+  _bulletSpeed: 50
+  _useHighAngle: 1
+  _elevationSpeed: 5
+--- !u!1 &2110531781
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2110531782}
+  m_Layer: 0
+  m_Name: Shotpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2110531782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110531781}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.11589, y: 0.00671, z: -0.01546}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2045346882}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
