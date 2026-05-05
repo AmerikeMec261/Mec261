@@ -89,6 +89,10 @@ public class Turret : MonoBehaviour
         float v = initialVelocity;
 
         float v2 = v * v;
+        float v4 = v2 * v2;
+        float g = gravity;
+        //Raiz cuadrada
+        float disc = v4 - g * (g * distance X * distance X + 2 * deltaY * v2);
         */
 
     }

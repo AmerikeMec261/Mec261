@@ -1,8 +1,5 @@
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
-
-public class Movementboat : MonoBehaviour;
-{
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -10,39 +7,72 @@ using System.Collections.Generic;
 using UnityEngine;
 using JetBrains.Annotations;
 
-public class SimpleFloat : MonoBehaviour
+
+public class Movementboat : MonoBehaviour
 {
-    [SerializeField] private float _Max foward = 0;
-    [SerializeField] private float _Max reverse = 1;
-    [SerializeField] private float _foward movement = 1000;
-    [SerializeField] private float _reverse movement;
-   
-    
+
+ 
+        /* [SerializeField] private float _Maxfoward = 0f;
+     [SerializeField] private float _Maxrevere = 1f;
+     [SerializeField] private float _fowardmovement = 1000f;
+     [SerializeField] private float _reversemovement;*/
+        public Transform Motor;
+        [SerializeField] private float steerPower = 500f;
+        [SerializeField] private float Power = 5f;
+        [SerializeField] private float MaxSpeed = 10f;
+        [SerializeField] private float Drag = 0.1f;
+
+        private Rigidbody _Rigidbody;
+        [SerializeField] private Quaternion StartRotation;
 
 
-    private void Awake()
-    {
-      
-        CalculateHullData();
+
+        private void Awake()
+        {
+            _Rigidbody = GetComponent<Rigidbody>();
+            StartRotation = Motor.localRotation;
+
+        }
+
+
+        private void FixedUpdate()
+        {
+            var forceDirection = transform.forward; //Que avance hacia en frente dependiendo de donde este la transformación y hacia donde este apuntando
+            var steer = 0; //dirección del barco 
+            //Direccion hacia donde ira el barco 
+            if (Input.GetKey(KeyCode.A))
+                steer = 1;
+            if (Input.GetKey(KeyCode.D))
+                steer = -1;
+
+            //Fuerza rotacional
+            _Rigidbody.AddForceAtPosition(steer * transform.right * steerPower / 100f, Motor.position);
+
+            var forward = Vector3.Scale(new Vector3(1, 0, 1), transform.forward);
+            var targetVel = Vector3.zero;
+
+            //Mover hacia adelante o hacia atras 
+
+            if (Input.GetKey(KeyCode.W))
+                _Rigidbody.AddForce(forward * Power, ForceMode.Acceleration);
+            if (Input.GetKey(KeyCode.S))
+                _Rigidbody.AddForce(-forward * Power, ForceMode.Acceleration);
+        }
     }
 
-
-    private void FixedUpdate()
-    {
         
-    }
 
 
-
-  private float movement()
+/*
+  private float move()
 {
 
 }
 
-40 lines, input, calculos
+//40 lines, input, calculos
 
 
-    private void FloatShip()
+    private void movementShip()
     {
         float gravity = Physics.gravity.magnitude;
 
@@ -65,7 +95,7 @@ public class SimpleFloat : MonoBehaviour
 
             Vector3 velocity = _rigidbody.GetPointVelocity(point.position);
 
-         ***   _rigidbody.AddForceAtPosition(-velocity * _waterDrag * Submersion, propeler.position, ForceMode.Force); crece a o largo del tiempo multiplicar por timr.deltatime por la fuerza del motor fuerxa de motor * tiepmo de aceleracion * time.deltatime
+         //***   _rigidbody.AddForceAtPosition(-velocity * _waterDrag * Submersion, propeler.position, ForceMode.Force); crece a o largo del tiempo multiplicar por timr.deltatime por la fuerza del motor fuerxa de motor * tiepmo de aceleracion * time.deltatime
         }
     }
 
