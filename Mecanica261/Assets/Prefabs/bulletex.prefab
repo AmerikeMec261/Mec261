@@ -126,8 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54e3a90880eb5c4998ad8f917e18461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::explosivebullet
-  _speed: 20
+  _speed: 50
   _damage: 50
+  _destroyHeight: -10
   _explosionRadius: 5
   _fragmentsCount: 15
   _fragmentExplosionForce: 500

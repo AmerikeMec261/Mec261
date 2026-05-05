@@ -32,9 +32,6 @@ public class TurretBarco : MonoBehaviour
     private bool enemyInRange = false;
     private Transform _target;
 
-    private float fireCooldown = 1f;
-    private float currentCooldown = 0f;
-
     void Start()
     {
         SelectWeapon();    
@@ -43,13 +40,11 @@ public class TurretBarco : MonoBehaviour
     void Update()
     {
         ChangeBullet();
-
-        currentCooldown -= Time.deltaTime;
         
-        if (Input.GetKeyDown(KeyCode.Space) && currentCooldown <= 0f && enemyInRange)
+        
+        if (Input.GetKeyDown(KeyCode.Space) && enemyInRange)
         {
             FireBullet();
-            currentCooldown = fireCooldown;
         }
     }
 
@@ -150,7 +145,7 @@ public class TurretBarco : MonoBehaviour
         Vector3 dir = _target.position - bulletExit.position;
         float x = new Vector2(dir.x, dir.z).magnitude;
         float y = _target.position.y - bulletExit.position.y;
-        float g = Mathf.Abs(Physics.gravity.y);
+        float g = 9.81f;
         float v = bulletSpeed;
         float targetPitchAngle = 0f;
 
