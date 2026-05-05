@@ -17,10 +17,10 @@ public class Movementboat : MonoBehaviour
      [SerializeField] private float _fowardmovement = 1000f;
      [SerializeField] private float _reversemovement;*/
         public Transform Motor;
-        [SerializeField] private float steerPower = 500f;
-        [SerializeField] private float Power = 5f;
-        [SerializeField] private float MaxSpeed = 10f;
-        [SerializeField] private float Drag = 0.1f;
+        [SerializeField] private float _steerPower = 500f;
+        [SerializeField] private float _power = 5f;
+        [SerializeField] private float _maxSpeed = 10f;
+        [SerializeField] private float _drag = 0.1f;
 
         private Rigidbody _Rigidbody;
         [SerializeField] private Quaternion StartRotation;
@@ -37,7 +37,7 @@ public class Movementboat : MonoBehaviour
 
         private void FixedUpdate()
         {
-            var forceDirection = transform.forward; //Que avance hacia en frente dependiendo de donde este la transformación y hacia donde este apuntando
+            var forceDirection = transform.right; //Que avance hacia en frente dependiendo de donde este la transformación y hacia donde este apuntando
             var steer = 0; //dirección del barco 
             //Direccion hacia donde ira el barco 
             if (Input.GetKey(KeyCode.A))
@@ -46,21 +46,25 @@ public class Movementboat : MonoBehaviour
                 steer = -1;
 
             //Fuerza rotacional
-            _Rigidbody.AddForceAtPosition(steer * transform.right * steerPower / 100f, Motor.position);
+            _Rigidbody.AddForceAtPosition(steer * forceDirection * _steerPower, Motor.position);
 
-            var forward = Vector3.Scale(new Vector3(1, 0, 1), transform.forward);
+            var forward = Vector3.Scale(new Vector3(0, 0, 1), transform.forward);
             var targetVel = Vector3.zero;
+        var right = Vector3.Scale(new Vector3(-1, 0, 0), transform.forward);
 
-            //Mover hacia adelante o hacia atras 
+        //Mover hacia adelante o hacia atras 
 
-            if (Input.GetKey(KeyCode.W))
-                _Rigidbody.AddForce(forward * Power, ForceMode.Acceleration);
+        if (Input.GetKey(KeyCode.W))
+                _Rigidbody.AddForce(forward * _power, ForceMode.Acceleration);
             if (Input.GetKey(KeyCode.S))
-                _Rigidbody.AddForce(-forward * Power, ForceMode.Acceleration);
+                _Rigidbody.AddForce(-forward * _power, ForceMode.Acceleration);
         }
     }
 
-        
+//Video en el que me apoye https://youtu.be/gdW_rXFE1Gk
+
+
+
 
 
 /*

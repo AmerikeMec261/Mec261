@@ -7,6 +7,8 @@ public class Turret : MonoBehaviour
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Transform _enemy;
+
 
     [Header("Yaw Settings")]
     [SerializeField] private float _yawSpeed = 90f;
