@@ -7,6 +7,7 @@ public class Torreta : MonoBehaviour
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
+    [SerializeField] private Transform _target;
     [SerializeField] private GameObject _normalBullet;
     [SerializeField] private GameObject _explosiveBullet;
     [SerializeField] private bool _useHighArc = false;
@@ -20,21 +21,15 @@ public class Torreta : MonoBehaviour
     [SerializeField] private float _pitchSpeed = 90f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
-    [Header("Reticle")]
-    [SerializeField] private GameObject _reticle;
-    [SerializeField] private float _maxRange = 50f;
-    [SerializeField] private LayerMask _ground;
 
     private GameObject _currentBullet;
-    private GameObject _reticleInstance;
     private float _currentPitch = 0f;
+    private float _currentYaw = 0f;
     private Vector3 _targetPoint;
 
     private void Start()
     {
-        _currentBullet=_normalBullet;
-        if (_reticle != null)
-            _reticleInstance=Instantiate(_reticle); // porqué instancias la reticula?  Debería estar en la escena y solo moverlo.  
+        _currentBullet=_normalBullet; 
     }
 
     public void FireProjectile()
@@ -100,7 +95,6 @@ public class Torreta : MonoBehaviour
     private void Update()
     {
         RotateMouse();
-        UpdateReticle();
 
         if(Input.GetKeyDown(KeyCode.Q))
         {
@@ -116,15 +110,16 @@ public class Torreta : MonoBehaviour
     private void RotateYaw(float input)
     {
         float yawChange = input * _yawSpeed * Time.deltaTime;
-        float newYaw = Mathf.Clamp(_yawPivot.localEulerAngles.y + yawChange, _yawLimits.x, _yawLimits.y);
+        float newYaw = Mathf.MoveTowardsAngle(_yawPivot.localEulerAngles.y > 180f ? _yawPivot.localEulerAngles.y - 360f:_yawPivot.localEulerAngles.y,_currentYaw,_yawSpeed*Time.deltaTime);
         _yawPivot.localEulerAngles = new Vector3(_yawPivot.localEulerAngles.x, newYaw, _yawPivot.localEulerAngles.z);
     }
 
     private void RotatePitch(float input)
     {
         float pitchChange = input * _pitchSpeed * Time.deltaTime;
-        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
-        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
+        float curentX = _pitchPivot.localEulerAngles.x >180f?_pitchPivot.localEulerAngles.x-360f:_pitchPivot.localEulerAngles.x;
+        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, curentX);
+        float newPitch = Mathf.MoveTowardsAngle(curentX, _currentPitch, _pitchSpeed * Time.deltaTime);
     }
 
 
@@ -143,20 +138,6 @@ public class Torreta : MonoBehaviour
         float targetPitch = -Mathf.Atan2(localTarget.y, localTarget.z) * Mathf.Rad2Deg;
         _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
 
-        _pitchPivot.localRotation = Quaternion.Lerp( _pitchPivot.localRotation,Quaternion.Euler(_currentPitch, 0f, 0f),_pitchSpeed * Time.deltaTime); // porqué los saltos de línea?  Esto suele ser residuo de GPT.
+        _pitchPivot.localRotation = Quaternion.Lerp( _pitchPivot.localRotation,Quaternion.Euler(_currentPitch, 0f, 0f),_pitchSpeed * Time.deltaTime); 
     }
-
-    private void UpdateReticle()
-    {
-        if (_reticleInstance == null) return;
-
-        Ray ray=Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray,out RaycastHit hit, _maxRange,_ground))
-        {
-            _targetPoint = hit.point;
-            _reticleInstance.transform.position = _targetPoint + Vector3.up * 0.02f;
-            _reticleInstance.transform.rotation = Quaternion.Euler(90f,0f,0f);
-        }
-    }
-}  //Trabajo en clase: Usar la formula completa que vimos en clase y usarla para el pitch de la torreta. Poner enemigos a diferentes alturas y hacer que repitan su ruta. 
+}  

@@ -153,6 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c883ca13f72b05d45bd559d3d190bc00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExplosiveBullet
-  _speed: 5
+  _speed: 25
   _damage: 10
   _range: 3
