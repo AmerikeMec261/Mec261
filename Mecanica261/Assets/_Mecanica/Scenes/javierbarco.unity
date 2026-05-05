@@ -146,14 +146,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50060356}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03387975, y: -0.02695775, z: 0}
+  m_LocalRotation: {x: -0, y: 0.71812797, z: -0, w: 0.6959111}
+  m_LocalPosition: {x: 0.064, y: -0.026958346, z: 0.136}
   m_LocalScale: {x: 0.9587332, y: 0.8870689, z: 0.93689084}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1383793600}
   m_Father: {fileID: 1289176983}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 91.8, z: 0}
 --- !u!65 &50060358
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -707,8 +707,8 @@ Transform:
   m_GameObject: {fileID: 594464764}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.49844, y: 21.07396, z: 9.72479}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 11.49844, y: 63.7, z: 228.9}
+  m_LocalScale: {x: 6.8336, y: 6.8336, z: 6.8336}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -866,6 +866,7 @@ Transform:
   - {fileID: 1694947266}
   - {fileID: 1373624962}
   - {fileID: 1730568012}
+  - {fileID: 1055770557}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &694891804
@@ -1244,13 +1245,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055770555}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 129.24005, y: 59.899998, z: 716.2}
-  m_LocalScale: {x: 5.6228004, y: 5.6227994, z: 5.6228}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -3.360049, y: 6.2680516, z: 4.443524}
+  m_LocalScale: {x: 0.19422449, y: 0.6151859, z: 0.026353572}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 131427453}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 694891803}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1055770558
 MonoBehaviour:
@@ -1271,11 +1272,14 @@ MonoBehaviour:
   bullets:
   - {fileID: 3959634944075965744, guid: be903b7093ce3fe4285e9d73b8649da7, type: 3}
   - {fileID: 101858928520071479, guid: 55032aa9f4f31ab4db8cc4eabacceef0, type: 3}
-  bulletSpeed: 0
-  rotationSpeed: 0
-  rotationDegrees: 0
-  trackingRange: 50
+  bulletSpeed: 20
+  rotationSpeed: 30
+  rotationDegrees: 60
+  maxElevation: 0
+  maxDown: 5
+  trackingRange: 282.44
   enemyTag: Enemy
+  visionAngle: 97.9
 --- !u!1 &1289176982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1705,7 +1709,7 @@ Transform:
   m_GameObject: {fileID: 1788159720}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.29999977, y: 2.4079995, z: -0.18000033}
+  m_LocalPosition: {x: -0.3, y: 2.408, z: -0.475}
   m_LocalScale: {x: 0.32260996, y: 1, z: 0.31876162}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1750,6 +1754,5 @@ SceneRoots:
   - {fileID: 799547693}
   - {fileID: 1440358656}
   - {fileID: 439039726}
-  - {fileID: 1055770557}
   - {fileID: 694891803}
   - {fileID: 594464768}
