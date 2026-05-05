@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class TurretShooting : MonoBehaviour
 {
-    #region Variables
 
     [Header("Dependencies")]
     [SerializeField] private Transform _shootPoint;
@@ -18,18 +17,14 @@ public class TurretShooting : MonoBehaviour
 
     private float _currentCooldown;
 
-    #endregion Variables
-
-    #region Unity Methods
+    
 
     private void Update()
     {
         HandleShooting();
     }
 
-    #endregion Unity Methods
-
-    #region Methods
+    
 
     private void HandleShooting()
     {
@@ -59,21 +54,13 @@ public class TurretShooting : MonoBehaviour
 
     private void Shoot(GameObject bulletPrefab)
     {
-        GameObject bulletInstance = Instantiate(
-            bulletPrefab,
-            _shootPoint.position,
-            _shootPoint.rotation
-        );
+        GameObject bulletInstance = Instantiate(bulletPrefab,_shootPoint.position,_shootPoint.rotation);
 
         Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
 
         if (bulletRigidbody == null) { return; }
 
-        bulletRigidbody.AddForce(
-            _shootPoint.forward * _shootForce,
-            ForceMode.Impulse
-        );
+        bulletRigidbody.AddForce(_shootPoint.forward * _shootForce,ForceMode.Impulse);
     }
 
-    #endregion Methods
 }

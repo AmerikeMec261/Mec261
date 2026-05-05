@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TurretBarquito : MonoBehaviour
 {
-    #region Variables
+    
 
     [Header("Dependencies")]
     [SerializeField] private Transform _target;
@@ -20,18 +20,14 @@ public class TurretBarquito : MonoBehaviour
 
     private float _currentAngle;
 
-    #endregion Variables
-
-    #region Unity Methods
+   
 
     private void Update()
     {
         RotateTurret();
     }
 
-    #endregion Unity Methods
-
-    #region Methods
+   
 
     private void RotateTurret()
     {
@@ -44,14 +40,9 @@ public class TurretBarquito : MonoBehaviour
 
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
 
-        float smoothAngle = Mathf.LerpAngle(
-            _turretBase.eulerAngles.y,
-            targetAngle,
-            Time.deltaTime * _rotationSpeed
-        );
+        float smoothAngle = Mathf.LerpAngle(_turretBase.eulerAngles.y,targetAngle,Time.deltaTime * _rotationSpeed);
 
         float clampedAngle = ClampAngle(smoothAngle);
-
         _turretBase.rotation = Quaternion.Euler(0f, clampedAngle, 0f);
     }
 
@@ -70,6 +61,4 @@ public class TurretBarquito : MonoBehaviour
 
         return angle;
     }
-
-    #endregion Methods
 }

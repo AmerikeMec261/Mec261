@@ -2,14 +2,8 @@ using UnityEngine;
 
 public class NormalBullet : MonoBehaviour
 {
-    #region Variables
-
     [Header("Settings")]
     [SerializeField] private float _lifeTime = 5f;
-
-    #endregion Variables
-
-    #region Unity Methods
 
     private void Start()
     {
@@ -20,6 +14,4 @@ public class NormalBullet : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
-    #endregion Unity Methods
 }
