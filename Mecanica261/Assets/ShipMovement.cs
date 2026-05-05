@@ -9,23 +9,23 @@ public class ShipMovement : MonoBehaviour
     [SerializeField] private Rigidbody _rigidbody;
 
     [Header("Engine Settings")]
-    [Tooltip("Fuerza m�xima del motor")]
+    [Tooltip("Fuerza maxima del motor")]
     [SerializeField] private float _maxEngineForce = 15000f;
 
-    [Tooltip("Tiempo en alcanzar la fuerza m�xima")]
+    [Tooltip("Tiempo en alcanzar la fuerza maxima")]
     [SerializeField] private float _engineAccelerationTime = 5f;
 
-    [Tooltip("Velocidad m�xima del barco")]
+    [Tooltip("Max Velocity")]
     [SerializeField] private float _maxSpeed = 10f;
 
     [Tooltip("Punto donde se aplica la fuerza del motor")]
     [SerializeField] private Transform _enginePoint;
 
     [Header("Rudder Settings")]
-    [Tooltip("Fuerza m�xima del rudder")]
+    [Tooltip("Fuerza maxima del rudder")]
     [SerializeField] private float _maxRudderForce = 8000f;
 
-    [Tooltip("Tiempo en alcanzar la fuerza m�xima del giro")]
+    [Tooltip("Tiempo en alcanzar la fuerza maxima del giro")]
     [SerializeField] private float _rudderAccelerationTime = 2f;
 
     [Tooltip("Punto donde se aplica la fuerza del rudder")]
