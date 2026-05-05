@@ -99,9 +99,11 @@ public class Turret : MonoBehaviour
 
         float speed = projectile.Speed;
         float gravity = Mathf.Abs(Physics.gravity.y);
+
         Vector3 directionToTarget = _target.position - _bulletSpawn.position;
         Vector3 horizontalDirection = directionToTarget;
         horizontalDirection.y = 0f;
+
         float horizontalDistance = horizontalDirection.magnitude;
         float verticalDistance = directionToTarget.y;
 

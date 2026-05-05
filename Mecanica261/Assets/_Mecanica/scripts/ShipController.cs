@@ -62,7 +62,7 @@ public class ShipController : MonoBehaviour
 
         for (int i = 0; i < engineForcePoints.Length; i++)
         {
-            Vector3 force = transform.forward * currentEnginePower * engineForce;
+            Vector3 force = transform.right * currentEnginePower * engineForce;
             rigidbodyComponent.AddForceAtPosition(force, engineForcePoints[i].position);
         }
     }
@@ -73,7 +73,7 @@ public class ShipController : MonoBehaviour
 
         for (int i = 0; i < rudderForcePoints.Length; i++)
         {
-            Vector3 force = transform.right * rudderAngle * rudderForce;
+            Vector3 force = transform.forward * rudderAngle * rudderForce;
             rigidbodyComponent.AddForceAtPosition(force, rudderForcePoints[i].position);
         }
     }
