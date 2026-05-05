@@ -2,13 +2,11 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    #region Variables
-
     [Header("Dependencies")]
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
     [SerializeField] private Transform _bulletSpawn;
-    [SerializeField] private Transform _targetPoint;
+    [SerializeField] private Transform _target;
 
     [Header("Bullets")]
     [SerializeField] private GameObject _simpleBullet;
@@ -18,16 +16,12 @@ public class Turret : MonoBehaviour
     [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 80f);
 
-    [Header("Target Area")]
-    [SerializeField] private Vector2 _targetXLimits;
-    [SerializeField] private Vector2 _targetZLimits;
-    [SerializeField] private float _targetY = 0f;
+    [Header("Detection")]
+    [SerializeField] private float _detectionRange = 100f;
+    [SerializeField] private float _fireInterval = 3f;
 
     private GameObject _currentBullet;
-
-    #endregion
-
-    #region Unity Methods
+    private float _fireTimer;
 
     private void Start()
     {
@@ -36,15 +30,123 @@ public class Turret : MonoBehaviour
 
     private void Update()
     {
-        UpdateTarget();
+        UpdateBulletSelection();
+
+        if (_target == null) 
+        { 
+            return;
+        } 
+
+        float distanceToTarget = Vector3.Distance(transform.position, _target.position);
+        if (distanceToTarget > _detectionRange)
+        {
+            _fireTimer = 0f;
+            return;
+        }
+
         RotateYaw();
         RotatePitch();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        _fireTimer += Time.deltaTime;
+
+        if (_fireTimer >= _fireInterval)
         {
             Fire();
+            _fireTimer = 0f;
+        }
+    }
+
+    private void RotateYaw()
+    {
+        Vector3 directionToTarget = _target.position - _yawPivot.position;
+        directionToTarget.y = 0f;
+
+        if (directionToTarget.sqrMagnitude <= 0f) 
+        { 
+            return;
         }
 
+        float yawAngle = Mathf.Atan2(directionToTarget.x, directionToTarget.z) * Mathf.Rad2Deg - 90f;
+        yawAngle = Mathf.Clamp(yawAngle, _yawLimits.x, _yawLimits.y);
+        _yawPivot.localEulerAngles = new Vector3(0f, yawAngle, 0f);
+    }
+
+    private void RotatePitch()
+    {
+        if (!TryGetLaunchAngle(out float launchAngle)) 
+        { 
+            return; 
+        }
+
+        launchAngle = Mathf.Clamp(launchAngle, _pitchLimits.x, _pitchLimits.y);
+        _pitchPivot.localEulerAngles = new Vector3(-launchAngle, 0f, 0f);
+    }
+
+    private bool TryGetLaunchAngle(out float launchAngle)
+    {
+        launchAngle = 0f;
+
+        if (_currentBullet == null) 
+        { 
+            return false; 
+        }
+
+        IProjectile projectile = _currentBullet.GetComponent<IProjectile>();
+        if (projectile == null) 
+        { 
+            return false; 
+        }
+
+        float speed = projectile.Speed;
+        float gravity = Mathf.Abs(Physics.gravity.y);
+        Vector3 directionToTarget = _target.position - _bulletSpawn.position;
+        Vector3 horizontalDirection = directionToTarget;
+        horizontalDirection.y = 0f;
+        float horizontalDistance = horizontalDirection.magnitude;
+        float verticalDistance = directionToTarget.y;
+
+        if (horizontalDistance <= 0f) 
+        { 
+            return false; 
+        }
+
+        float speedSquared = speed * speed;
+        float discriminant = speedSquared * speedSquared - gravity * (gravity * horizontalDistance * horizontalDistance + 2f * verticalDistance * speedSquared);
+
+        if (discriminant < 0f) 
+        { 
+            return false; 
+        }
+
+        float squareRoot = Mathf.Sqrt(discriminant);
+        float highAngle = Mathf.Atan((speedSquared + squareRoot) / (gravity * horizontalDistance));
+        launchAngle = highAngle * Mathf.Rad2Deg;
+        return true;
+    }
+
+    private void Fire()
+    {
+        if (_currentBullet == null) 
+        { 
+            return; 
+        }
+
+        GameObject bulletInstance = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
+        Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
+        IProjectile projectile = bulletInstance.GetComponent<IProjectile>();
+
+        if (bulletRigidbody == null || projectile == null)
+        {
+            Destroy(bulletInstance);
+            return;
+        }
+
+        bulletRigidbody.linearVelocity = _bulletSpawn.forward * projectile.Speed;
+        projectile.Fire();
+    }
+
+    private void UpdateBulletSelection()
+    {
         if (Input.GetKeyDown(KeyCode.S))
         {
             _currentBullet = _simpleBullet;
@@ -55,77 +157,4 @@ public class Turret : MonoBehaviour
             _currentBullet = _explosiveProjectile;
         }
     }
-
-    #endregion
-
-    #region Methods
-
-    private void UpdateTarget()
-    {
-        float targetPositionX = Mathf.Lerp(_targetXLimits.x, _targetXLimits.y, Input.mousePosition.x / Screen.width);
-        float targetPositionZ = Mathf.Lerp(_targetZLimits.x, _targetZLimits.y, Input.mousePosition.y / Screen.height);
-
-        _targetPoint.position = new Vector3(_yawPivot.position.x + targetPositionX, _targetY, _yawPivot.position.z + targetPositionZ);
-    }
-
-    private void RotateYaw()
-    {
-        Vector3 directionToTarget = _targetPoint.position - _yawPivot.position;
-        directionToTarget.y = 0f;
-
-        float yawAngle = Mathf.Atan2(directionToTarget.x, directionToTarget.z) * Mathf.Rad2Deg - 90f;
-        yawAngle = Mathf.Clamp(yawAngle, _yawLimits.x, _yawLimits.y);
-
-        _yawPivot.localEulerAngles = new Vector3(0f, yawAngle, 0f);
-    }
-
-    private void RotatePitch()
-    {
-        IProjectile projectile = _currentBullet.GetComponent<IProjectile>();
-        if (projectile == null) return;
-
-        float projectileSpeed = projectile.Speed;
-        float gravity = Mathf.Abs(Physics.gravity.y);
-
-        Vector3 directionToTarget = _targetPoint.position - _bulletSpawn.position;
-        Vector3 horizontalDirection = directionToTarget;
-        horizontalDirection.y = 0f;
-
-        float horizontalDistance = horizontalDirection.magnitude;
-        float verticalDistance = directionToTarget.y;
-
-        float projectileSpeedSquared = projectileSpeed * projectileSpeed;
-
-        float discriminant = projectileSpeedSquared * projectileSpeedSquared - gravity * (gravity * horizontalDistance * horizontalDistance + 2 * verticalDistance * projectileSpeedSquared);
-
-        if (discriminant < 0f) return;
-
-        float squareRoot = Mathf.Sqrt(discriminant);
-
-        float pitchAngle = Mathf.Atan((projectileSpeedSquared + squareRoot) / (gravity * horizontalDistance)) * Mathf.Rad2Deg;
-
-        pitchAngle = Mathf.Clamp(pitchAngle, _pitchLimits.x, _pitchLimits.y);
-
-        _pitchPivot.localEulerAngles = new Vector3(-pitchAngle, 0f, 0f);
-    }
-
-    private void Fire()
-    {
-        GameObject spawnedBullet = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
-
-        Rigidbody rigidbody = spawnedBullet.GetComponent<Rigidbody>();
-        IProjectile projectile = spawnedBullet.GetComponent<IProjectile>();
-
-        if (rigidbody == null || projectile == null)
-        {
-            Destroy(spawnedBullet);
-            return;
-        }
-
-        rigidbody.linearVelocity = _bulletSpawn.forward * projectile.Speed;
-        projectile.Fire();
-    }
-
-    #endregion
-} 
-// Trabajo en clase: Quitar las abreviaciones. Utilizar el ángulo alto en lugar del bajo. Utilizar DRY para evitar repetir codigo. 
+}
