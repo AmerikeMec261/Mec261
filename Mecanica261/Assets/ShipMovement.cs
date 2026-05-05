@@ -80,13 +80,9 @@ public class ShipMovement : MonoBehaviour
         float targetForce = _inputForward * _maxEngineForce;
 
         _currentEngineForce = Mathf.MoveTowards(
-            _currentEngineForce,
-            targetForce,
-            (_maxEngineForce / _engineAccelerationTime) * Time.fixedDeltaTime
-        );
+            _currentEngineForce, targetForce, (_maxEngineForce / _engineAccelerationTime) * Time.fixedDeltaTime);
 
         if (_rigidbody.linearVelocity.magnitude > _maxSpeed) { return; }
-
         Vector3 force = transform.forward * _currentEngineForce;
 
         _rigidbody.AddForceAtPosition(force, _enginePoint.position, ForceMode.Force);
@@ -99,13 +95,10 @@ public class ShipMovement : MonoBehaviour
 
         float targetForce = _inputTurn * _maxRudderForce;
 
-        _currentRudderForce = Mathf.MoveTowards(
-            _currentRudderForce,
-            targetForce,
-            (_maxRudderForce / _rudderAccelerationTime) * Time.fixedDeltaTime
-        );
+        _currentRudderForce = Mathf.MoveTowards
+             (_currentRudderForce, targetForce, (_maxRudderForce / _rudderAccelerationTime) * Time.fixedDeltaTime);
 
-        Vector3 force = transform.right * _currentRudderForce;
+           Vector3 force = transform.right * _currentRudderForce;
 
         _rigidbody.AddForceAtPosition(force, _rudderPoint.position, ForceMode.Force);
     }
