@@ -41,7 +41,6 @@ public class CalculateArea : MonoBehaviour
     private void FixedUpdate()
     {
         FloatShip();
-        OnDrawGizmos();
     }
     void FloatShip()
     {
@@ -83,20 +82,5 @@ public class CalculateArea : MonoBehaviour
             area += (current.x * next.z) - (next.x * current.z);
         }
         return Mathf.Abs(area) * 0.5f;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (_floatPoint == null || _floatPoint.Count < 2) { return; }
-
-        Gizmos.color = Color.green;
-
-        for (int i = 0; i < _floatPoint.Count; i++)
-        {
-            Vector3 current = _floatPoint[i].position;
-            Vector3 next = _floatPoint[(i + 1) % _floatPoint.Count].position;
-
-            Gizmos.DrawLine(current, next);
-        }
     }
 }
