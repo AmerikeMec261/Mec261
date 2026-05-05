@@ -32,6 +32,9 @@ public class TurretBarco : MonoBehaviour
     private bool enemyInRange = false;
     private Transform _target;
 
+    private float fireCooldown = 1f;
+    private float currentCooldown = 0f;
+
     void Start()
     {
         SelectWeapon();    
@@ -40,11 +43,20 @@ public class TurretBarco : MonoBehaviour
     void Update()
     {
         ChangeBullet();
+
+        currentCooldown -= Time.deltaTime;
+        
+        if (Input.GetKeyDown(KeyCode.Space) && currentCooldown <= 0f && enemyInRange)
+        {
+            FireBullet();
+            currentCooldown = fireCooldown;
+        }
     }
 
     private void FixedUpdate()
     {
         RotationYaw();
+        RotationPitch();
     }
 
     private void RotationYaw()
@@ -83,18 +95,95 @@ public class TurretBarco : MonoBehaviour
             yaw.localRotation = Quaternion.RotateTowards(yaw.localRotation, idleRotation, rotationSpeed * Time.fixedDeltaTime);
         }
     }
+
+    private void RotationPitch()
+    {
+        if (picth == null || _target == null || !enemyInRange)
+        {            
+            picth.localRotation = Quaternion.RotateTowards(picth.localRotation, Quaternion.identity, rotationSpeed * Time.fixedDeltaTime);
+            return;
+        }
+        
+        Vector3 dirToTarget = _target.position - picth.position;
+        
+        Quaternion lookRotation = Quaternion.LookRotation(dirToTarget, yaw.up);
+        Quaternion relativeRotation = Quaternion.Inverse(yaw.rotation) * lookRotation;
+
+        float targetPitchAngle = relativeRotation.eulerAngles.x;
+        
+        if (targetPitchAngle > 180f) targetPitchAngle -= 360f;
+
+
+        float clampedPitch = Mathf.Clamp(targetPitchAngle, -maxElevation, maxDown);
+        
+        Quaternion targetRotation = Quaternion.Euler(clampedPitch, 0f, 0f);
+        picth.localRotation = Quaternion.RotateTowards(picth.localRotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
+    }
+
+
     private void FireBullet()
     {
+        if (bullets.Count > 0 && bullets[currentBullet] != null && bulletExit != null)
+        {
+            GameObject bullet = Instantiate(bullets[currentBullet], bulletExit.position, bulletExit.rotation);
 
+            IProjectile projectileScript = bullet.GetComponent<IProjectile>();
+            if (projectileScript != null)
+            {
+                projectileScript.Fire();
+            }
+            else
+            {
+                Rigidbody rb = bullet.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.linearVelocity = bulletExit.forward * bulletSpeed;
+                }
+            }
+        }
     }
 
     private void MathShoot()
     {
+        if (bulletExit == null || picth == null || _target == null || !enemyInRange) return;
 
+        Vector3 dir = _target.position - bulletExit.position;
+        float x = new Vector2(dir.x, dir.z).magnitude;
+        float y = _target.position.y - bulletExit.position.y;
+        float g = Mathf.Abs(Physics.gravity.y);
+        float v = bulletSpeed;
+        float targetPitchAngle = 0f;
+
+        if (v > 0)
+        {
+            float root = (v * v * v * v) - g * (g * (x * x) + 2 * y * (v * v));
+
+            if (root >= 0)
+            {
+                float angleRadians = Mathf.Atan(((v * v) - Mathf.Sqrt(root)) / (g * x));
+                targetPitchAngle = -(angleRadians * Mathf.Rad2Deg);
+            }
+            else
+            {
+                Vector3 localDir = picth.parent.InverseTransformPoint(_target.position);
+                targetPitchAngle = Mathf.Atan2(-localDir.y, localDir.z) * Mathf.Rad2Deg;
+            }
+        }
+        else
+        {
+            Vector3 localDir = picth.parent.InverseTransformPoint(_target.position);
+            targetPitchAngle = Mathf.Atan2(-localDir.y, localDir.z) * Mathf.Rad2Deg;
+        }
+
+        float clampedPitch = Mathf.Clamp(targetPitchAngle, -maxElevation, maxDown);
+        Quaternion targetRotation = Quaternion.Euler(clampedPitch, 0f, 0f);
+        picth.localRotation = Quaternion.RotateTowards(picth.localRotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
     }
 
     private void ChangeBullet()
     {
+        if (bullets.Count <= 1) return;
+
         int previousBullet = currentBullet;
         if(Input.GetKeyDown(KeyCode.Q))
         {

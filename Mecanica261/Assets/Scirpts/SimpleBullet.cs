@@ -8,6 +8,7 @@ public class SimpleBullet : MonoBehaviour, IProjectile
     [Header("Settings")]
     [SerializeField] private float _speed = 100f;
     [SerializeField] private float _damage = 25f;
+    [SerializeField] private float _destroyHeight = -10f;
 
     public float Speed => _speed;
     public float Damage => _damage;
@@ -21,6 +22,14 @@ public class SimpleBullet : MonoBehaviour, IProjectile
         if (target != null)
         {
             target.TakeDamage(_damage);
+        }
+    }
+
+    private void Update()
+    {
+        if (transform.position.y < _destroyHeight)
+        {
+            Destroy(gameObject);
         }
     }
 

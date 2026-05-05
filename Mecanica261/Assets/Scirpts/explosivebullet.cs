@@ -5,6 +5,7 @@ public class explosivebullet : MonoBehaviour, IProjectile
     [Header("Settings")]
     [SerializeField] private float _speed = 60f;
     [SerializeField] private float _damage = 50f;
+    [SerializeField] private float _destroyHeight = -10f;
 
     [Header("Explosion Settings")]
     [SerializeField] private float _explosionRadius = 5f;
@@ -76,6 +77,14 @@ public class explosivebullet : MonoBehaviour, IProjectile
             rb.AddExplosionForce(_fragmentExplosionForce, transform.position, _explosionRadius);
             
             Destroy(fragment, 2f);
+        }
+    }
+
+    private void Update()
+    {
+        if (transform.position.y < _destroyHeight)
+        {
+            Destroy(gameObject);
         }
     }
 }
