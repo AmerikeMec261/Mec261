@@ -62,99 +62,70 @@ public class Turret : MonoBehaviour
 
     private void UpdateTarget()
     {
-        float x = Mathf.Lerp(_targetXLimits.x, _targetXLimits.y, Input.mousePosition.x / Screen.width); //No usar abreviaciones
-        float z = Mathf.Lerp(_targetZLimits.x, _targetZLimits.y, Input.mousePosition.y / Screen.height); //No usar abreviaciones
+        float targetPositionX = Mathf.Lerp(_targetXLimits.x, _targetXLimits.y, Input.mousePosition.x / Screen.width);
+        float targetPositionZ = Mathf.Lerp(_targetZLimits.x, _targetZLimits.y, Input.mousePosition.y / Screen.height);
 
-        _targetPoint.position = new Vector3( //El salto de linea para qué? Es consistente con respuestas de GPT.
-            _yawPivot.position.x + x,
-            _targetY,
-            _yawPivot.position.z + z
-        );
+        _targetPoint.position = new Vector3(_yawPivot.position.x + targetPositionX, _targetY, _yawPivot.position.z + targetPositionZ);
     }
 
     private void RotateYaw()
     {
-        Vector3 dir = _targetPoint.position - _yawPivot.position; //No usar abreviaciones
-        dir.y = 0f;
+        Vector3 directionToTarget = _targetPoint.position - _yawPivot.position;
+        directionToTarget.y = 0f;
 
-        float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg - 90f;
-        angle = Mathf.Clamp(angle, _yawLimits.x, _yawLimits.y);
+        float yawAngle = Mathf.Atan2(directionToTarget.x, directionToTarget.z) * Mathf.Rad2Deg - 90f;
+        yawAngle = Mathf.Clamp(yawAngle, _yawLimits.x, _yawLimits.y);
 
-        _yawPivot.localEulerAngles = new Vector3(0f, angle, 0f);
+        _yawPivot.localEulerAngles = new Vector3(0f, yawAngle, 0f);
     }
 
-    private void RotatePitch() //No usar abreviaciones
+    private void RotatePitch()
     {
         IProjectile projectile = _currentBullet.GetComponent<IProjectile>();
         if (projectile == null) return;
 
-        float speed = projectile.Speed;
-        float g = Mathf.Abs(Physics.gravity.y);
+        float projectileSpeed = projectile.Speed;
+        float gravity = Mathf.Abs(Physics.gravity.y);
 
-        Vector3 dir = _targetPoint.position - _bulletSpawn.position;
-        Vector3 flat = dir; flat.y = 0f;
+        Vector3 directionToTarget = _targetPoint.position - _bulletSpawn.position;
+        Vector3 horizontalDirection = directionToTarget;
+        horizontalDirection.y = 0f;
 
-        float x = flat.magnitude;
-        float y = dir.y;
+        float horizontalDistance = horizontalDirection.magnitude;
+        float verticalDistance = directionToTarget.y;
 
-        float v2 = speed * speed;
+        float projectileSpeedSquared = projectileSpeed * projectileSpeed;
 
-        float inside = v2 * v2 - g * (g * x * x + 2 * y * v2);
+        float discriminant = projectileSpeedSquared * projectileSpeedSquared - gravity * (gravity * horizontalDistance * horizontalDistance + 2 * verticalDistance * projectileSpeedSquared);
 
-        if (inside < 0f) return;
+        if (discriminant < 0f) return;
 
-        float sqrt = Mathf.Sqrt(inside);
+        float squareRoot = Mathf.Sqrt(discriminant);
 
-     
-        float angle = Mathf.Atan((v2 - sqrt) / (g * x)) * Mathf.Rad2Deg;
+        float pitchAngle = Mathf.Atan((projectileSpeedSquared + squareRoot) / (gravity * horizontalDistance)) * Mathf.Rad2Deg;
 
-        angle = Mathf.Clamp(angle, _pitchLimits.x, _pitchLimits.y);
+        pitchAngle = Mathf.Clamp(pitchAngle, _pitchLimits.x, _pitchLimits.y);
 
-        _pitchPivot.localEulerAngles = new Vector3(-angle, 0f, 0f);
+        _pitchPivot.localEulerAngles = new Vector3(-pitchAngle, 0f, 0f);
     }
 
-    private void Fire() //El calcular la trayectoria depende de otro método. La bala debe tomar la orientación del spawn y ser disparada hacia en frente. No hay necesidad de calcular el ángulo. //No usar abreviaciones
+    private void Fire()
     {
-        GameObject obj = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
+        GameObject spawnedBullet = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
 
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
-        IProjectile projectile = obj.GetComponent<IProjectile>();
+        Rigidbody rigidbody = spawnedBullet.GetComponent<Rigidbody>();
+        IProjectile projectile = spawnedBullet.GetComponent<IProjectile>();
 
-        if (rb == null || projectile == null) return;
-
-        float speed = projectile.Speed;
-        float g = Mathf.Abs(Physics.gravity.y);
-
-        Vector3 dir = _targetPoint.position - _bulletSpawn.position;
-        Vector3 flat = dir; flat.y = 0f;
-
-        float x = flat.magnitude;
-        float y = dir.y;
-
-        float v2 = speed * speed;
-
-        float inside = v2 * v2 - g * (g * x * x + 2 * y * v2);
-
-        if (inside < 0f)
+        if (rigidbody == null || projectile == null)
         {
-            Destroy(obj);
+            Destroy(spawnedBullet);
             return;
         }
 
-        float sqrt = Mathf.Sqrt(inside);
-        float angle = Mathf.Atan((v2 - sqrt) / (g * x));
-
-        float vx = Mathf.Cos(angle) * speed;
-        float vy = Mathf.Sin(angle) * speed;
-
-        Vector3 velocity =
-            flat.normalized * vx +
-            Vector3.up * vy;
-
-        rb.linearVelocity = velocity;
-
+        rigidbody.linearVelocity = _bulletSpawn.forward * projectile.Speed;
         projectile.Fire();
     }
 
     #endregion
-} // Trabajo en clase: Quitar las abreviaciones. Utilizar el ángulo alto en lugar del bajo. Utilizar DRY para evitar repetir codigo. 
+} 
+// Trabajo en clase: Quitar las abreviaciones. Utilizar el ángulo alto en lugar del bajo. Utilizar DRY para evitar repetir codigo. 
