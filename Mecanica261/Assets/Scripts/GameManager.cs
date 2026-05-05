@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-/*public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
 
     public static int Score = 0;
@@ -135,4 +135,3 @@ using UnityEngine.UI;
         }
     }
 }
-*/

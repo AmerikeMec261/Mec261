@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class Tower1 : MonoBehaviour
+
+public class Tower2 : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private Transform _yawPivot;
@@ -17,14 +18,20 @@ public class Tower1 : MonoBehaviour
     [SerializeField] private float _pitchSpeed = 90f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
-    [Header("Reticula")]
-    [SerializeField] private Transform _reticula;
+    //[Header("Reticula")]
+    //[SerializeField] private Transform _reticula;
 
     [Header("Bullet")]
     [SerializeField] private GameObject _explosivePrefab;
     private bool _usingExplosive = false;
-    //private float _currentYaw = 0f;
+    private float _currentYaw = 0f;
     private float _currentPitch = 0f;
+
+    [Header("Turret")]
+    [SerializeField] private Transform _target;
+    [SerializeField] private Transform _turret;
+
+
 
     public void FireProjectile()
     {
@@ -40,9 +47,19 @@ public class Tower1 : MonoBehaviour
         Debug.DrawRay(transform.position, transform.forward * 5f, Color.red, 2f);
     }
 
+    private void Rotation()
+    {
+        Vector3 direction = _target.position - _turret.position;
+        direction.y = 0f;
+
+        float angle = Mathf.Atan2( - direction.x, direction.z) * Mathf.Rad2Deg;
+
+        _yawPivot.localEulerAngles = new Vector3(0f, angle - 90f + 180f , 0f);
+    }
     private void Update()
     {
-        RotateMouse();
+        //RotateMouse();
+        Rotation();
 
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -72,7 +89,7 @@ public class Tower1 : MonoBehaviour
     }
 
 
-    private void RotateMouse()
+   /* private void RotateMouse()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -122,5 +139,5 @@ public class Tower1 : MonoBehaviour
         }
 
 
-    }
+    }*/
 }
