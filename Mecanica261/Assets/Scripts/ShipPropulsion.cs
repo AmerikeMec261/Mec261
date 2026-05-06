@@ -7,67 +7,30 @@ public class ShipPropulsion : MonoBehaviour
     [SerializeField] private Transform _propulsorPoint;
     [SerializeField] private Transform _rudderPoint;
 
-    [Header("Motor")]
-    [SerializeField] private float _maxSpeed = 15.95f;
-    [SerializeField] private float _timeToMaxSpeed = 25f;
-    [SerializeField] private float _throttleDecay = 1f;
-    [SerializeField] private float _reverseSpeed = 0.3f;
+    [Header("Settings")]
+    [SerializeField] private float _engineForce = 5000f;
+    [SerializeField] private float _rudderForce = 3000f;
+    [SerializeField] private float _aceleration = 0.5f;
 
-    [Header("Rudder")]
-    [SerializeField] private float _maxRudderForce = 5000f;
-    [SerializeField] private float _rudderTimeToMax = 25f;
-    [SerializeField] private float _rudderDecay = 1.5f;
-    
     private Rigidbody _rigidbody;
-    
-    private float _rudder;
     private float _throttle;
-    private float _engineForce;
+    private float _rudder;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        _engineForce = _rigidbody.mass * (_maxSpeed / _timeToMaxSpeed) * 1.3f;
     }
 
     private void FixedUpdate()
     {
-        UpdateInputs();
-        ApplyPropulsion();
-        ApplyRudder();
-    }
+        float throttleInput = Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1 : 0f;
+        float rudderInput = Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1 : 0f;
 
-    private void UpdateInputs()
-    {
-        float throttleInput = Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -_reverseSpeed : 0f;
-        float rudderInput = Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0f;
+        _throttle = Mathf.MoveTowards(_throttle, throttleInput, _aceleration * Time.deltaTime);
+        _rudder = Mathf.MoveTowards(_rudder, throttleInput, _aceleration * Time.deltaTime);
 
-        float throttleRate=!Mathf.Approximately(throttleInput,0f)?1f/_timeToMaxSpeed:_throttleDecay;
-        float rudderRate = !Mathf.Approximately(rudderInput, 0f) ? 1f / _rudderTimeToMax : _rudderDecay;
-
-        _throttle = Mathf.MoveTowards(_throttle, throttleInput, throttleRate * Time.fixedDeltaTime);
-        _rudder = Mathf.MoveTowards(_rudder, rudderInput, rudderRate * Time.fixedDeltaTime);
-    }
-
-    private void ApplyPropulsion()
-    {
-        if (Mathf.Approximately(_throttle, 0f) || _propulsorPoint == null) return;
-
-        float speedRatio = Mathf.Clamp01(Mathf.Abs(Vector3.Dot(_rigidbody.linearVelocity, transform.forward)) / _maxSpeed);
-        Vector3 force=transform.forward *(_engineForce*_throttle *(1f-speedRatio));
-
-        _rigidbody.AddForceAtPosition(force, _propulsorPoint.position, ForceMode.Force);
-    }
-
-    private void ApplyRudder()
-    {
-        if (Mathf.Approximately(_rudder, 0f) || _rudderPoint == null) return;
-
-        float forwardSpeed = Vector3.Dot(_rigidbody.linearVelocity, transform.forward);
-        float effectiveness = Mathf.Clamp01(Mathf.Abs(forwardSpeed) / (_maxSpeed * 0.3f));
-        Vector3 force = transform.right * (_maxRudderForce * _rudder * effectiveness);
-
-        _rigidbody.AddForceAtPosition(force, _rudderPoint.position, ForceMode.Force);
+        _rigidbody.AddForceAtPosition(transform.forward * _engineForce * _throttle, _propulsorPoint.position, ForceMode.Force);
+        _rigidbody.AddForceAtPosition(transform.right * _rudderForce * _rudder, _rudderPoint.position, ForceMode.Force);
     }
 
     //https://discussions.unity.com/t/sailing-ship-control/374700/20
