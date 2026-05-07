@@ -17,6 +17,22 @@ public class barquito : MonoBehaviour
     [SerializeField] private Transform _bottomPoint;
     [SerializeField] private List<Transform> _floatPoints = new List<Transform>();
 
+    [Header("Motor")]
+    [SerializeField] private Transform _enginePoint;
+    [SerializeField] private float _engineForce = 100f;
+    [SerializeField] private float _multiplier = 100f;
+    [SerializeField] private float _aceleration = 5f;
+
+    [Header("Rudder")]
+    [SerializeField] private Transform _rudderPoint;
+    [SerializeField] private float _rudderForce = 2000f;
+
+
+    private float _currentEngine;
+    private float _currentRudder;
+
+
+
     private Rigidbody _rigidbody;
 
     private float _area;
@@ -38,7 +54,30 @@ public class barquito : MonoBehaviour
     private void FixedUpdate()
     {
         FloatShip();
+        if (Input.GetKey(KeyCode.W))
+        {
+            _rigidbody.AddForceAtPosition(transform.forward * _engineForce , _enginePoint.position, ForceMode.Force);
+        }
+
+        
+        if (Input.GetKey(KeyCode.A))
+        {
+            _rigidbody.AddForceAtPosition(-transform.right * _rudderForce,_rudderPoint.position,ForceMode.Force);
+        }
+
+        
+        if (Input.GetKey(KeyCode.D))
+        {
+            _rigidbody.AddForceAtPosition( transform.right * _rudderForce,_rudderPoint.position,ForceMode.Force);
+        }
+
+     
+        if (Input.GetKey(KeyCode.S))
+        {
+            _rigidbody.AddForceAtPosition(-transform.forward * _engineForce,_enginePoint.position,ForceMode.Force);
+        }
     }
+
 
     private void FloatShip()
     {
