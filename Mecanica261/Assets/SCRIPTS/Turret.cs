@@ -44,7 +44,7 @@ public class Turret : MonoBehaviour
 
         Vector3 direction = hit.point - _yawPivot.position;
 
-        
+
         float targetYaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
         float clampedYaw = Mathf.Clamp(targetYaw, _yawLimits.x, _yawLimits.y);
         _yawPivot.localEulerAngles = new Vector3(0f, clampedYaw, 0f);

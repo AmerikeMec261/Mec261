@@ -2,63 +2,50 @@ using UnityEngine;
 
 public class TurretBarquito : MonoBehaviour
 {
-    
-
-    [Header("Dependencies")]
+    [SerializeField] private Transform _yawPivot;
+    [SerializeField] private Transform _pitchPivot;
+    [SerializeField] private Transform _bulletSpawn;
+    [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _target;
-    [SerializeField] private Transform _turretBase;
+    [SerializeField] private float _bulletForce = 50f;
+    [SerializeField] private float _maxYaw = 90f;
 
-    [Header("Settings")]
-    [Tooltip("Velocidad de rotación de la torreta")]
-    [SerializeField] private float _rotationSpeed = 5f;
-
-    [Tooltip("Ángulo máximo hacia la derecha")]
-    [SerializeField] private float _maxRightAngle = 60f;
-
-    [Tooltip("Ángulo máximo hacia la izquierda")]
-    [SerializeField] private float _maxLeftAngle = -60f;
-
-    private float _currentAngle;
-
-   
-
-    private void Update()
+    void Update()
+    
     {
-        RotateTurret();
-    }
+        Aim();
 
-   
-
-    private void RotateTurret()
-    {
-        if (_target == null || _turretBase == null) { return; }
-
-        Vector3 direction = _target.position - _turretBase.position;
-        direction.y = 0f;
-
-        if (direction == Vector3.zero) { return; }
-
-        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-
-        float smoothAngle = Mathf.LerpAngle(_turretBase.eulerAngles.y,targetAngle,Time.deltaTime * _rotationSpeed);
-
-        float clampedAngle = ClampAngle(smoothAngle);
-        _turretBase.rotation = Quaternion.Euler(0f, clampedAngle, 0f);
-    }
-
-    private float ClampAngle(float angle)
-    {
-        float normalizedAngle = NormalizeAngle(angle);
-        return Mathf.Clamp(normalizedAngle, _maxLeftAngle, _maxRightAngle);
-    }
-
-    private float NormalizeAngle(float angle)
-    {
-        if (angle > 180f)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            angle -= 360f;
+            Shoot();
         }
+    }
 
-        return angle;
+    private void Aim()
+    
+    {
+        if (_target == null) return;
+        Vector3 direccion = _target.position - _yawPivot.position;
+        float yaw = Mathf.Atan2(direccion.x, direccion.z) * Mathf.Rad2Deg;
+        yaw = Mathf.Clamp(yaw, - _maxYaw,_maxYaw);
+        _yawPivot.localRotation = Quaternion.Euler(0f, yaw, 0f);
+        float distance = Vector3.Distance(_bulletSpawn.position,_target.position);
+        float pitch = distance * 1f;
+        _pitchPivot.localRotation = Quaternion.Euler(- pitch, 0f, 0f);
+    }
+    
+    private void Shoot()
+    
+    {
+        if (_bulletPrefab == null) return;
+        if (_target == null) return;
+        GameObject bullet = Instantiate(_bulletPrefab,_bulletSpawn.position,Quaternion.identity);
+        Rigidbody _rigidbody = bullet.GetComponent<Rigidbody>();
+
+        if (_rigidbody != null)
+        {
+            Vector3 direccion = _target.position - _bulletSpawn.position;
+            _rigidbody.AddForce(direccion.normalized * _bulletForce,ForceMode.Impulse);
+        }
     }
 }
