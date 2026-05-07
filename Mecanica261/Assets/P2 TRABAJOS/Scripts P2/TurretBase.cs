@@ -5,7 +5,9 @@ public class BasicTurret : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
-    [SerializeField] private Transform _bulletSpawn;
+    [SerializeField] private Transform _bulletSpawn1;
+    [SerializeField] private Transform _bulletSpawn2;
+    [SerializeField] private Transform _bulletSpawn3;
     [SerializeField] private GameObject _bulletPrefab;
 
     [Header("Yaw Settings")]
@@ -18,13 +20,19 @@ public class BasicTurret : MonoBehaviour
 
     public void FireProjectile()
     {
-        if (_bulletPrefab == null || _bulletSpawn == null)
+        if (_bulletPrefab == null )
         {
             return;
         }
 
-        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-        currentBullet.GetComponent<IBasicProjectile>()?.Fire();
+        GameObject currentBullet1 = Instantiate(_bulletPrefab, _bulletSpawn1.position, _bulletSpawn1.rotation);
+        currentBullet1.GetComponent<IBasicProjectile>()?.Fire();
+
+        GameObject currentBullet2 = Instantiate(_bulletPrefab, _bulletSpawn2.position, _bulletSpawn2.rotation);
+        currentBullet2.GetComponent<IBasicProjectile>()?.Fire();
+
+        GameObject currentBullet3 = Instantiate(_bulletPrefab, _bulletSpawn3.position, _bulletSpawn3.rotation);
+        currentBullet3.GetComponent<IBasicProjectile>()?.Fire();
     }
 
     private void Update()
