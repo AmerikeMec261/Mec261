@@ -11,7 +11,7 @@ public class Turret : MonoBehaviour
     [Header("Disparo")]
     [SerializeField] private float _bulletSpeed = 20f;
 
-    private Camera _mainCamera;
+    private Camera _mainCamera; //se usa para saber donde esta la camara en el mundo 3d y guarda la camara principal en la escena el código convierte la posición del mouse en un rayo invisible que sale desde la cámara hacia el mundo
     private Vector3 _targetPoint;
 
     private void Start()
@@ -93,3 +93,10 @@ public class Turret : MonoBehaviour
         }
     }
 }
+
+
+//se usa para saber donde esta la camara en el mundo 3d y guarda la camara principal en la escena el código convierte la posición del mouse en un rayo invisible que sale desde la cámara hacia el mundo
+// y detecta el objeto o punto que toca el rayo sin eso el juego no sabria a donde esta apuntando la torreta.
+//https://docs.unity.cn/ScriptReference/Camera.ScreenPointToRay.html?utm_source=chatgpt.com
+//https://docs.unity.cn/550/Documentation/Manual/CameraRays.html?utm_source=chatgpt.com
+//https://docs.unity3d.com/ScriptReference/Physics.Raycast.html?utm_source=chatgpt.com
