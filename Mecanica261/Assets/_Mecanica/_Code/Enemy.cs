@@ -1,45 +1,79 @@
 
+using System.Data.Common;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour //El codigo no está estandarizado. //No hace uso de interfaces
+public class Enemy : MonoBehaviour 
 {
-    public float speed = 2f;
-    public int health = 10;
-    public int reward = 5;
-
-    private int currentWaypoint = 0;
-     GameObject[] waypoints;
-
-  void Start()
+    public interface IDamageable
     {
-        waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
+        int Health { get; }
+        void TakeDamage(int damage);
+        bool IsAlive { get; }
     }
 
-  void Update()
-  {
-        if (waypoints.Length == 0) return;
+    [Header("Movement")]
+    [SerializeField] private float speed = 2f;
 
-        Vector3 target = waypoints[currentWaypoint].transform.position;
-        transform.position = Vector3.MoveTowards(transform.position, target, speed*Time.deltaTime);
+    [Header("Health & Rewards")]
+    [SerializeField] private int maxHealth = 10;
+    [SerializeField] private int reward = 5;
 
-        if (Vector3.Distance(transform.position, target) < 0.1f)
+    [Header("Waypoints")]
+    private GameObject[] waypoints;
+    private int currentWaypointIndex = 0;
+    private const float arrivalThreshold = 0.1f;
+
+    private int currentHealth;
+
+    private void Start()
+    {
+        currentHealth = maxHealth;
+        waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
+
+        if (waypoints.Length == 0)
         {
-            currentWaypoint++;
-            if(currentWaypoint>=waypoints.Length)
+            Debug.LogWarning($"{name}: No waypoints found with tag 'Waypoint'. Destroying.");
+            Destroy(gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        if (waypoints.Length == 0 || !IsAlive) return;
+
+        Vector3 targetPosition = waypoints[currentWaypointIndex].transform.position;
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            targetPosition,
+            speed * Time.deltaTime
+        );
+
+        if (Vector3.Distance(transform.position, targetPosition) < arrivalThreshold)
+        {
+            currentWaypointIndex++;
+
+            if (currentWaypointIndex >= waypoints.Length)
             {
                 GameManager.Instance.LoseLife(1);
                 Destroy(gameObject);
             }
         }
-        
-  }
+    }
+
+    
+    public int Health => currentHealth;
+
+    public bool IsAlive => currentHealth > 0;
 
     public void TakeDamage(int damage)
     {
-        health-=damage;
-        if(health <= 0)
+        if (!IsAlive) return;
+
+        currentHealth = Mathf.Max(0, currentHealth - damage);
+
+        if (!IsAlive)
         {
-            GameManager.Instance.AddMoney(reward);
+            
             Destroy(gameObject);
         }
     }

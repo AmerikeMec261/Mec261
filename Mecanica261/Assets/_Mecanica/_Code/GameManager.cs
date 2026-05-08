@@ -90,4 +90,3 @@ public class GameManager : MonoBehaviour //El codigo no está estandarizado.
 }
 
 
-//Trabajo en clase: Estandarizar el código y hacer uso de interfaces.
