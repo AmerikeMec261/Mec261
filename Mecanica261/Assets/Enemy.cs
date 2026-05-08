@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -50,3 +51,23 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 }
+
+// El método Vector3.MoveTowards lo use para mover al enemigo
+// gradualmente desde su posición actual hacia un punto objetivo
+// sin sobrepasarlo, permitiendo un movimiento constante entre
+// pointA y pointB.
+//
+// Utilice Vector3.Distance para detectar cuándo
+// el enemigo llegó suficientemente cerca del objetivo y así
+// cambiar su dirección utilizando un operador ternario.
+//
+// Además, Time.deltaTime se implementó para que la velocidad
+// del movimiento sea independiente de los FPS y funcione de
+// manera consistente en diferentes computadoras.
+//
+// Documentación oficial:
+// https://docs.unity3d.com/ScriptReference/Vector3.MoveTowards.html
+// https://docs.unity3d.com/ScriptReference/Vector3.Distance.html
+// https://docs.unity3d.com/ScriptReference/Time-deltaTime.html
+// https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator
+
