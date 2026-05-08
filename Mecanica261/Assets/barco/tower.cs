@@ -90,7 +90,7 @@ public class tower : MonoBehaviour //Todo debe estar en inglés.
 
     private void ApuntarTorreta()
     {
-        float rangoVision = 20f; // no usar abreviaciones
+        float rangoVision = 20000f; // no usar abreviaciones
         Collider[] enemigosEnRango = Physics.OverlapSphere(transform.position, rangoVision);
 
         enemigoObjetivo = null;
@@ -117,6 +117,12 @@ public class tower : MonoBehaviour //Todo debe estar en inglés.
         _yawPivot.LookAt(targetYaw);
 
         _pitchPivot.LookAt(enemigoObjetivo.position);
+    }
+
+    private void OnDrawalzmossolected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _maxRange);
     }
 }
 // Trabajo en clase: hacer los cambios de los comentarios (y todos los que apliquen) 
