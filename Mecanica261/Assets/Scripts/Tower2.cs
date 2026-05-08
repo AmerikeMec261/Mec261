@@ -52,9 +52,9 @@ public class Tower2 : MonoBehaviour
         Vector3 direction = _target.position - _turret.position;
         direction.y = 0f;
 
-        float angle = Mathf.Atan2( - direction.x, direction.z) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(  direction.x, direction.z) * Mathf.Rad2Deg;
 
-        _yawPivot.localEulerAngles = new Vector3(0f, angle - 90f + 180f , 0f);
+        _yawPivot.localEulerAngles = new Vector3(0f, angle - 90f , 0f);
     }
     private void Update()
     {

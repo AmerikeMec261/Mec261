@@ -15,11 +15,22 @@ public class Agua : MonoBehaviour
     [SerializeField] private Transform _bottomPoint;
     [SerializeField] private List<Transform> _floatPoints;
 
+    [Header("Controller")]
+    [SerializeField] private float _acceleration = 5f;
+    [SerializeField] private float _engineforcw = 100f;
+    [SerializeField] private float _multiplier = 100f;
+    [SerializeField] private Transform _enginePoint;
+    [SerializeField] private float _brake = 5f;
+    [SerializeField] private float _turn = 20f;
+    [SerializeField] private Transform _rudderPoint;
+
     private float _area;
     private float _HullHeight;
     private float _HullVolume;
     private float _draft;
-
+    private float _currentAcceleration = 0f;
+    private float _currentTurn = 0f;
+   
     private Rigidbody _rigidBody;
 
     public float Area => _area;
@@ -38,9 +49,21 @@ public class Agua : MonoBehaviour
     {
 
     }
+
+    private void Update()
+    {
+        _currentAcceleration = Input.GetAxis("Vertical");
+
+        _currentTurn = Input.GetAxis("Horizontal");
+        
+
+    }
     private void FixedUpdate()
     {
         FloatShip();
+        _rigidBody.AddForceAtPosition(transform.right * _engineforcw * Time.deltaTime * _multiplier * _currentAcceleration, _enginePoint.position , ForceMode.Force);
+        _rigidBody.AddForceAtPosition(transform.forward *  _engineforcw *  Time.deltaTime * _multiplier * _currentTurn , _rudderPoint.position, ForceMode.Force);
+     
     }
 
     private void FloatShip()
@@ -91,6 +114,7 @@ public class Agua : MonoBehaviour
 
         return Mathf.Abs(area) * 0.5f;
     }
+
 
     private void OnDrawGizmos()
     {

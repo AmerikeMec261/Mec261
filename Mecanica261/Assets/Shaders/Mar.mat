@@ -54,7 +54,7 @@ Material:
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShallowColor: {r: 0.09999994, g: 0.6, b: 0.7, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _WaveSpeedA: {r: 0.03, g: 0.02, b: 0, a: 0}
-    - _WaveSpeedB: {r: -0.02, g: 0.03, b: 0, a: 0}
+    - _WaveSpeedA: {r: 5, g: 0.02, b: 0, a: 0}
+    - _WaveSpeedB: {r: 5, g: 0.03, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
