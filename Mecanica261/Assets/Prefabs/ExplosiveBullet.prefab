@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 113145153842528497}
   - component: {fileID: 1935916165893242563}
   - component: {fileID: 8743842450428942707}
-  - component: {fileID: -2691274049838059305}
+  - component: {fileID: 4770073184178804577}
   m_Layer: 0
   m_Name: ExplosiveBullet
   m_TagString: Untagged
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &-2691274049838059305
+--- !u!114 &4770073184178804577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,9 +150,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1508251507811718844}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed54dbcc6515b31418c09483fbd23bd9, type: 3}
+  m_Script: {fileID: 11500000, guid: d9d152f16ad68324e9a0d640d01b6684, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ExplosiveBullett
-  _explosionForce: 3000
+  m_EditorClassIdentifier: Assembly-CSharp::ExplosiveBullet2
+  _explosionForce: 200
   _explosionRadius: 5
-  _lifeTime: 5
