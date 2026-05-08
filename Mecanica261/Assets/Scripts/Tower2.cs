@@ -18,8 +18,6 @@ public class Tower2 : MonoBehaviour
     [SerializeField] private float _pitchSpeed = 90f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
-    //[Header("Reticula")]
-    //[SerializeField] private Transform _reticula;
 
     [Header("Bullet")]
     [SerializeField] private GameObject _explosivePrefab;
@@ -74,7 +72,7 @@ public class Tower2 : MonoBehaviour
         }
     }
 
-    private void RotateYaw(float input)
+    /*private void RotateYaw(float input)
     {
         float yawChange = input * _yawSpeed * Time.deltaTime;
         float newYaw = Mathf.Clamp(_yawPivot.localEulerAngles.y + yawChange, _yawLimits.x, _yawLimits.y);
@@ -86,58 +84,7 @@ public class Tower2 : MonoBehaviour
         float pitchChange = input * _pitchSpeed * Time.deltaTime;
         float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
         _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
-    }
-
-
-   /* private void RotateMouse()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-
-        int layerMask = LayerMask.GetMask("Default");
-        if (Physics.Raycast(ray, out hit))
-        {
-            Vector3 targetPoint = hit.point;
-
-            Vector3 direction = hit.point - transform.position;
-            direction.y = 0f;
-
-            if (direction != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                Quaternion correctedRotation = targetRotation * Quaternion.Euler(0f, 180f, 0f);
-                _yawPivot.rotation = Quaternion.Lerp(
-                    _yawPivot.rotation, correctedRotation, _yawSpeed * Time.deltaTime);
-
-
-
-            }
-
-
-            float horizontalDistance = direction.magnitude;
-            float heightDifference = hit.point.y - _pitchPivot.position.y;
-            float targetPitch = Mathf.Atan2(heightDifference, horizontalDistance) * Mathf.Rad2Deg;
-            _currentPitch = Mathf.Clamp(targetPitch, _pitchLimits.x, _pitchLimits.y);
-            _pitchPivot.localEulerAngles = new Vector3(_currentPitch, 0f, 0f);
-
-
-            //int layerMask = -LayerMask.GetMask("Ignorado");
-            // if (Physics.Raycast(ray, out hit , Mathf.Infinity , layerMask))
-            // {
-            //    Debug.Log($"Raycast golpeó : {hit.collider.name}");
-
-            //  }
-            // else
-            //{
-            //       Debug.Log("No golpeo nada");
-            // }
-
-
-            if (_reticula != null)
-                _reticula.position = new Vector3(hit.point.x, hit.point.y + 0.01f, hit.point.z);
-        }
-
-
     }*/
+
+
 }
