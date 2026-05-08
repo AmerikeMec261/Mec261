@@ -137,5 +137,65 @@ public class CalculateArea : MonoBehaviour
         }
     }
 
+    /*
+    [Header("Water")]
+    [SerializeField] private float _waterLevel = 0f;
+    [SerializeField] private float _waterDensity = 1000f;
+    [SerializeField] private float _waterDrag = 1f;
 
+    [Header("Hull")]
+    [SerializeField] private float _shapeFactor = 0.67f;
+    [SerializeField] private Transform _topPoint;
+    [SerializeField] private Transform _bottomPoint;
+    [SerializeField] private List<Transform> _floatPoints = new List<Transform>();
+
+    private Rigidbody _rigidbody;
+
+    private float _area;
+    private float _hullHeight;
+    private float _hullVolume;
+    private float _draft;
+
+    float Area { get => _area; }
+    float HullHeight { get => _hullHeight; }
+    float HullVolume { get => _hullVolume; }
+    float Draft { get => _draft; }
+
+    private void Awake()
+    {
+        
+    }
+
+    private void FixedUpdate()
+    {
+        
+    }
+
+    private void FloatShip()
+    {
+        
+    }
+
+    private void CalculateHullData()
+    {
+        
+    }
+
+    private float CalculateAreaXZ()
+    {
+        float area = 0f;
+
+        for (int i = 0; i < _floatPoints.Count; i++)
+        {
+            Vector3 current = transform.InverseTransformPoint(_floatPoints[i].position);
+            Vector3 next = transform.InverseTransformPoint(_floatPoints[(i + 1) % _floatPoints.Count].position);
+
+            area += (current.x * next.z) - (next.x * current.z);
+        }
+
+        return Mathf.Abs(area) * 0.5f;
+    }
+
+    
+     */
 }
