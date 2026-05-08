@@ -92,6 +92,8 @@ public class torreta : MonoBehaviour
         highAngle = 0.5f * (180f - arcSinValueInDegrees);
 
         return true;
+
+        //ignore
     }
 
     private void HandleMouseTracking()
@@ -137,7 +139,8 @@ public class torreta : MonoBehaviour
         }
 
         Quaternion desiredWorldRotation = Quaternion.LookRotation(directionToTarget); // para qué el salto de linea? Es consistente con respuestas de GPT.
-        Quaternion desiredLocalRotation = _yawPivot.parent != null ? Quaternion.Inverse(_yawPivot.parent.rotation) * desiredWorldRotation: desiredWorldRotation;  //el objetivo de esta liena es cobvertir una rotacion global a local 
+        Quaternion desiredLocalRotation = _yawPivot.parent != null ? Quaternion.Inverse(_yawPivot.parent.rotation) * desiredWorldRotation: desiredWorldRotation;  
+        //el objetivo de esta liena es cobvertir una rotacion global a local 
         //al multiplicarla por la inversa resta la rotacion de la base 
         // esta es la libreria https://docs.unity3d.com/ScriptReference/Quaternion.Inverse.html
 
