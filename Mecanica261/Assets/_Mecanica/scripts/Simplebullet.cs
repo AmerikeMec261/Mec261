@@ -22,7 +22,9 @@ public class SimpleBullet : MonoBehaviour, IProjectile
         target.Damage(_Damage);
    
     }
-    //Sirve más que nada para rendimiento, al no ver ese objeto en la camara se vuelve invisible al no verlo
+    //Puede servir para rendimiento y te evitan calculos innecesarios cuando el objeto no es visible, si no esta en ejecución los objetos solo son visibles con la camara,
+    //https://docs.unity3d.com/6000.4/Documentation/ScriptReference/MonoBehaviour.OnBecameInvisible.html
+
     void OnBecameInvisible()
     {
         Destroy(gameObject);
