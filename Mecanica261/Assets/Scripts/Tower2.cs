@@ -1,4 +1,5 @@
 using System.Timers;
+using TMPro;
 using UnityEngine;
 
 
@@ -94,6 +95,43 @@ public class Tower2 : MonoBehaviour
     //https://docs.unity3d.com/es/current/ScriptReference/Quaternion.html Quaternion Librebria
     //https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Quaternion.Euler.html Euler Libreria
     //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Mathf.Clamp.html Math Clamp
+
+    /* private bool SolveBallisticAngle(Vector3 originPosition, Vector3 targetPosition, float projectileSpeed, out float launchAngle)
+ {
+     float gravity = Physics.gravity.magnitude;
+
+    Vector3 horizontalVector = new Vector3(
+        targetPosition.x - originPosition.x,
+        0f,
+        targetPosition.z - originPosition.z
+    );
+
+    float horizontalDistance = horizontalVector.magnitude;
+
+    float heightDifference = targetPosition.y - originPosition.y;
+
+    float speedSquared = projectileSpeed * projectileSpeed;
+    float speedFourth = speedSquared * speedSquared;
+
+    float discriminant = speedFourth - gravity * (gravity * horizontalDistance * horizontalDistance + 2 * heightDifference * speedSquared);
+
+     if (discriminant< 0f)
+     {
+         launchAngle = 0f;
+         return false;
+     }
+
+float squareRoot = Mathf.Sqrt(discriminant);
+
+float lowAngle = Mathf.Atan((speedSquared - squareRoot) / (gravity * horizontalDistance));
+float highAngle = Mathf.Atan((speedSquared + squareRoot) / (gravity * horizontalDistance));
+
+launchAngle = _useHighArc ? highAngle : lowAngle;
+
+return true;
+ }*/
+    //Formula corregida 
+
 
 
 }
