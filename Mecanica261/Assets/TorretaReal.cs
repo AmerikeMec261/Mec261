@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TurretBarquito : MonoBehaviour
+public class TorretaReal : MonoBehaviour
 {
     #region Variables
 
