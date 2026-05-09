@@ -3,7 +3,7 @@ using UnityEngine;
 public class FloatBehaviour : MonoBehaviour
 {
     [Header("Water Level")]
-    [Tooltip("Pon la posición de Y del plano que estas utilizando como referencia del agua")]
+    [Tooltip("Pon la posición de Y del plano que estas utilizando como referencia del agua")] //<-- Posible uso de IA
     public float waterLevel = 0;
 
     [Header("Float points")]
@@ -12,7 +12,7 @@ public class FloatBehaviour : MonoBehaviour
 
     [Header("Buoyancy Force")]
     [Tooltip("Cuanta fuerza hacía arriba se aplica por metro de profundidad")]
-    // Para obtener el valor aproximado utiliza la siguiente formula = (masa * 9.81) / profundidad que quieres / cantidad de float points
+    // Para obtener el valor aproximado utiliza la siguiente formula = (masa * 9.81) / profundidad que quieres / cantidad de float points  //<-- Posible uso de IA
     public float buoyancyForce = 15000f;
 
     [Header("Water Damping")]
