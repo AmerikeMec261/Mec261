@@ -1,3 +1,4 @@
+using System.Timers;
 using UnityEngine;
 
 
@@ -72,19 +73,27 @@ public class Tower2 : MonoBehaviour
         }
     }
 
-    /*private void RotateYaw(float input)
-    {
-        float yawChange = input * _yawSpeed * Time.deltaTime;
-        float newYaw = Mathf.Clamp(_yawPivot.localEulerAngles.y + yawChange, _yawLimits.x, _yawLimits.y);
-        _yawPivot.localEulerAngles = new Vector3(_yawPivot.localEulerAngles.x, newYaw, _yawPivot.localEulerAngles.z);
-    }
 
-    private void RotatePitch(float input)
-    {
-        float pitchChange = input * _pitchSpeed * Time.deltaTime;
-        float newPitch = Mathf.Clamp(_pitchPivot.localEulerAngles.z + pitchChange, _pitchLimits.x, _pitchLimits.y);
-        _pitchPivot.localEulerAngles = new Vector3(_pitchPivot.localEulerAngles.x, _pitchPivot.localEulerAngles.y, newPitch);
-    }*/
+    // Diferencia entre Euler y Quaternion ? (Investigación de IA)
+
+
+    //Ambos son métodos para manejar la rotación de objetos en Unity
+
+    //El Quaternion es un metodo con calculos tan complejos que solo entienden las computadoras , tiene 4 vaalores ( X , Y , Z , W ) , su principal ventaja es que 
+    // no sufren de bloqueos y sirven para físicas avanzadas.
+
+    //El Euler solo funciona en 3 ángulos ( X , Y , Z ) , es más fácil de leer ( para los humanos ) , su desventaja era que tiene "Gimbal Lock" que es que cuando rotas 
+    // un ángulo puedes hacer que los otros dos se alíneen con el que rotaste .
+    // Yo había usado ambas para la torreta ( la IA me los dió así para rotar el mouse .
+    // El Math.Clamp sirve para mantener a los números a ver algo y que no se salgan de su rango máximo o minimo.
+
+    //El Math.Clamp lo usé oara que la torreta ( el yaw y el pitch ) no apuntara así hacía abajo o se volteara el cañon , la mantenía de un comportamiento normal .
+    //Quaternion lo usé porque con ciertos ángulos mi torreeta digamos que iba a la inversa , para la base ( el yaw )
+    //Euler para poder mover el cañon en unity y poder estar modificando ángulos de manera local 
+
+    //https://docs.unity3d.com/es/current/ScriptReference/Quaternion.html Quaternion Librebria
+    //https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Quaternion.Euler.html Euler Libreria
+    //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Mathf.Clamp.html Math Clamp
 
 
 }
