@@ -30,7 +30,7 @@ public class Agua : MonoBehaviour
     private float _draft;
     private float _currentAcceleration = 0f;
     private float _currentTurn = 0f;
-   
+
     private Rigidbody _rigidBody;
 
     public float Area => _area;
@@ -55,15 +55,15 @@ public class Agua : MonoBehaviour
         _currentAcceleration = Input.GetAxis("Vertical");
 
         _currentTurn = Input.GetAxis("Horizontal");
-        
+
 
     }
     private void FixedUpdate()
     {
         FloatShip();
-        _rigidBody.AddForceAtPosition(transform.right * _engineforcw * Time.deltaTime * _multiplier * _currentAcceleration, _enginePoint.position , ForceMode.Force);
-        _rigidBody.AddForceAtPosition(transform.forward *  _engineforcw *  Time.deltaTime * _multiplier * _currentTurn , _rudderPoint.position, ForceMode.Force);
-     
+        _rigidBody.AddForceAtPosition(transform.right * _engineforcw * Time.deltaTime * _multiplier * _currentAcceleration, _enginePoint.position, ForceMode.Force);
+        _rigidBody.AddForceAtPosition(transform.forward * _engineforcw * Time.deltaTime * _multiplier * _currentTurn, _rudderPoint.position, ForceMode.Force);
+
     }
 
     private void FloatShip()
@@ -130,6 +130,6 @@ public class Agua : MonoBehaviour
             Gizmos.DrawLine(current, next);
         }
     }
-    //Cmbiando Dimensiones de barco
-    //Este comentario es para el cimmot de la clase UML 
+    
+   
 }

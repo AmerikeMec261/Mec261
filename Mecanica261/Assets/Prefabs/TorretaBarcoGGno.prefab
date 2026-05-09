@@ -105,7 +105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3490386312308093311, guid: c00177d5c1ecc3a438468482d80c2888, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.6013087
+      value: 0.87288934
       objectReference: {fileID: 0}
     - target: {fileID: 3490386312308093311, guid: c00177d5c1ecc3a438468482d80c2888, type: 3}
       propertyPath: m_LocalScale.y
@@ -121,7 +121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4698221585179780723, guid: c00177d5c1ecc3a438468482d80c2888, type: 3}
       propertyPath: m_Name
-      value: TorretaMaybe Variant
+      value: TorretaBarcoGGno
       objectReference: {fileID: 0}
     - target: {fileID: 4698221585179780723, guid: c00177d5c1ecc3a438468482d80c2888, type: 3}
       propertyPath: m_IsActive
