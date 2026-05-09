@@ -7,7 +7,7 @@ public class ShipFlotability : MonoBehaviour
     [Header("Water")]
     [SerializeField] private float _waterLevel = 0f;
     [SerializeField] private float _waterDensity = 1000f;
-    [SerializeField] private float _waterDrag = 1f;
+    [SerializeField] private float _waterDrag = 0.1f;
 
     [Header("BatlleShip")]
     [SerializeField] private float _shapeFactor = 0.67f;

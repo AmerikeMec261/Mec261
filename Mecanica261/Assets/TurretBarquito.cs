@@ -40,19 +40,11 @@ public class TurretBarquito : MonoBehaviour
 
         float currentAngle = _turretBase.localEulerAngles.y;
 
-        float smoothAngle = Mathf.MoveTowardsAngle(
-            currentAngle,
-            targetAngle,
-            _rotationSpeed * Time.deltaTime
-        );
+        float smoothAngle = Mathf.MoveTowardsAngle(currentAngle,targetAngle,_rotationSpeed * Time.deltaTime);
 
         float normalizedAngle = NormalizeAngle(smoothAngle);
 
-        float clampedAngle = Mathf.Clamp(
-            normalizedAngle,
-            -_maxRotationAngle,
-            _maxRotationAngle
-        );
+        float clampedAngle = Mathf.Clamp(normalizedAngle,-_maxRotationAngle,_maxRotationAngle);
 
         _turretBase.localRotation = Quaternion.Euler(0f, clampedAngle, 0f);
     }

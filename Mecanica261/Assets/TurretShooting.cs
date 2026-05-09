@@ -53,11 +53,7 @@ public class TurretShooting : MonoBehaviour
 
         if (velocity == Vector3.zero) { return; }
 
-        Rigidbody projectileInstance = Instantiate(
-            _projectilePrefab,
-            _firePoint.position,
-            Quaternion.identity
-        );
+        Rigidbody projectileInstance = Instantiate(_projectilePrefab,_firePoint.position,Quaternion.identity);
 
         projectileInstance.linearVelocity = velocity;
     }

@@ -431,7 +431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AguaPhysc
   _waterLevel: 0
   _waterDensity: 1000
-  _waterDrag: 10
+  _waterDrag: 0.5
   _shapeFactor: 0.67
   _topPoint: {fileID: 992762923}
   _bottomPoint: {fileID: 1352290377}
@@ -451,8 +451,8 @@ Rigidbody:
   m_GameObject: {fileID: 157549505}
   serializedVersion: 5
   m_Mass: 1000
-  m_LinearDamping: 1
-  m_AngularDamping: 0.5
+  m_LinearDamping: 0.2
+  m_AngularDamping: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -481,14 +481,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 430161f0cc5e8aa45a01818d5ae9f076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipMovement
-  _rigidbody: {fileID: 157549511}
-  _maxEngineForce: 10000
-  _engineAccelerationTime: 1
-  _maxSpeed: 10
   _enginePoint: {fileID: 848149145}
-  _maxRudderForce: 3000
-  _rudderAccelerationTime: 0.5
   _rudderPoint: {fileID: 585716374}
+  _moveForce: 12000
+  _accelerationTime: 4
+  _maxSpeed: 10
+  _turnForce: 6000
+  _rudderTime: 2
 --- !u!1 &319999970
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,7 +691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &680116928
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -759,7 +758,7 @@ Transform:
   m_GameObject: {fileID: 680116927}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.50201, y: -2.66, z: -6.76311}
+  m_LocalPosition: {x: -9.50201, y: -31.5, z: -6.76311}
   m_LocalScale: {x: 200, y: 200, z: 200}
   m_ConstrainProportionsScale: 0
   m_Children: []
