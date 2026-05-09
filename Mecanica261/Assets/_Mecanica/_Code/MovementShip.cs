@@ -50,6 +50,6 @@ public class MovementShip : MonoBehaviour
 
 
 
-
+    //Gracias por poner la fuente, ahora se de dónde tomaste el ApplyForceToReachVelocity
     // https://www.youtube.com/watch?v=gdW_rXFE1Gk
 }
