@@ -58,7 +58,7 @@ public class Agua : MonoBehaviour
 
 
     }
-    private void FixedUpdate()
+    private void FixedUpdate() //Le falta la aceleración x tiempo. Tmabién que el comportamiento del rudder sea gradual.
     {
         FloatShip();
         _rigidBody.AddForceAtPosition(transform.right * _engineforcw * Time.deltaTime * _multiplier * _currentAcceleration, _enginePoint.position, ForceMode.Force);
