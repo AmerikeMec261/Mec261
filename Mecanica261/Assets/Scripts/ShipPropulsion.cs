@@ -27,12 +27,14 @@ public class ShipPropulsion : MonoBehaviour
         float rudderInput = Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1 : 0f;
 
         _throttle = Mathf.MoveTowards(_throttle, throttleInput, _aceleration * Time.deltaTime);
-        _rudder = Mathf.MoveTowards(_rudder, throttleInput, _aceleration * Time.deltaTime);
+        _rudder = Mathf.MoveTowards(_rudder, throttleInput, _aceleration * Time.deltaTime); // Usaste throttle en lugar de rudder para el segundo parámetro
+
+        Debug.Log($"Throttle: {_throttle}, Rudder: {_rudder}"); //Te lo dejo para que vas el error.
 
         _rigidbody.AddForceAtPosition(transform.forward * _engineForce * _throttle, _propulsorPoint.position, ForceMode.Force);
         _rigidbody.AddForceAtPosition(transform.right * _rudderForce * _rudder, _rudderPoint.position, ForceMode.Force);
     }
-
+     //Gracias por investigar.
     //https://discussions.unity.com/t/sailing-ship-control/374700/20
     //https://www.habrador.com/tutorials/unity-boat-tutorial/
     //https://medium.com/@joshua.wiscaver/movement-in-unity-with-mathf-2aca0f649dc6
