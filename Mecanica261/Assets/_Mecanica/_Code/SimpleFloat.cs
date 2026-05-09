@@ -16,13 +16,7 @@ public class ShipFlotability : MonoBehaviour
     [SerializeField] private Transform _bottomPoint;
     [SerializeField] private List<Transform> _floatPoints = new List<Transform>();
 
-    [Header("Movement")]
-    public Transform _waterJetTransform;
-    [SerializeField] private float _currentPropulsion;
-    [SerializeField] private float _powerFactor;
-    [SerializeField] private float _maxPower;
-    [SerializeField] private float _thrustFromWaterJet = 0;
-    [SerializeField] private float _waterJetRotation_Y;
+    
 
     private Rigidbody _rigidbody;
 
