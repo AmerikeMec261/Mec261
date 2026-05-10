@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ShipMovement : MonoBehaviour
+public class ShipMovement : MonoBehaviour //Estandarizar código
 {
     [Header("Ship Speed")]    
     [SerializeField] private float motorFroce = 100f;
@@ -17,7 +17,7 @@ public class ShipMovement : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
     
-    void FixedUpdate()
+    void FixedUpdate() //El input se debe manejar en el Update, pero la física se debe manejar en el FixedUpdate, para evitar problemas de rendimiento y de sincronización.
     {
         MotorShip();
         RudderShip();
@@ -25,7 +25,7 @@ public class ShipMovement : MonoBehaviour
 
     private void MotorShip()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W)) //Tus fuerzas se aplican solo cuando presionas la tecla, lo que no es ideal para un movimiento suave. Deberías usar Input.GetKey en lugar de Input.GetKeyDown para aplicar la fuerza mientras la tecla esté presionada.
         {
             Vector3 force = motor.forward * motorFroce * multiplier * Time.deltaTime;
             rigidBody.AddForceAtPosition(force, motor.position, ForceMode.Force);

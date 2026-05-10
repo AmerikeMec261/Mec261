@@ -75,7 +75,7 @@ public class TurretBarco : MonoBehaviour
         if (enemyInRange && _target != null)
         {
             Vector3 dirForRotation = _target.position - yaw.position;
-            dirForRotation = Vector3.ProjectOnPlane(dirForRotation, towerOrigin.up);
+            dirForRotation = Vector3.ProjectOnPlane(dirForRotation, towerOrigin.up); //<- Posible uso de IA 
 
             float signedAngle = Vector3.SignedAngle(towerOrigin.forward, dirForRotation, towerOrigin.up);
             float clampedAngle = Mathf.Clamp(signedAngle, -rotationDegrees, rotationDegrees);
@@ -93,7 +93,7 @@ public class TurretBarco : MonoBehaviour
 
     private void RotationPitch()
     {
-        if (picth == null || _target == null || !enemyInRange)
+        if (picth == null || _target == null || !enemyInRange) //<- Posible uso de IA por sobre uso de código defensivo
         {            
             picth.localRotation = Quaternion.RotateTowards(picth.localRotation, Quaternion.identity, rotationSpeed * Time.fixedDeltaTime);
             return;
@@ -102,7 +102,7 @@ public class TurretBarco : MonoBehaviour
         Vector3 dirToTarget = _target.position - picth.position;
         
         Quaternion lookRotation = Quaternion.LookRotation(dirToTarget, yaw.up);
-        Quaternion relativeRotation = Quaternion.Inverse(yaw.rotation) * lookRotation;
+        Quaternion relativeRotation = Quaternion.Inverse(yaw.rotation) * lookRotation; //<- Posible uso de IA por sobre uso de código defensivo
 
         float targetPitchAngle = relativeRotation.eulerAngles.x;
         
@@ -118,19 +118,19 @@ public class TurretBarco : MonoBehaviour
 
     private void FireBullet()
     {
-        if (bullets.Count > 0 && bullets[currentBullet] != null && bulletExit != null)
+        if (bullets.Count > 0 && bullets[currentBullet] != null && bulletExit != null) //<- Posible uso de IA por sobre uso de código defensivo
         {
             GameObject bullet = Instantiate(bullets[currentBullet], bulletExit.position, bulletExit.rotation);
 
             IProjectile projectileScript = bullet.GetComponent<IProjectile>();
-            if (projectileScript != null)
+            if (projectileScript != null) //<- Posible uso de IA por sobre uso de código defensivo
             {
                 projectileScript.Fire();
             }
             else
             {
                 Rigidbody rb = bullet.GetComponent<Rigidbody>();
-                if (rb != null)
+                if (rb != null) //<- Posible uso de IA por sobre uso de código defensivo
                 {
                     rb.linearVelocity = bulletExit.forward * bulletSpeed;
                 }
@@ -140,7 +140,7 @@ public class TurretBarco : MonoBehaviour
 
     private void MathShoot()
     {
-        if (bulletExit == null || picth == null || _target == null || !enemyInRange) return;
+        if (bulletExit == null || picth == null || _target == null || !enemyInRange) return; //<- Posible uso de IA por sobre uso de código defensivo
 
         Vector3 dir = _target.position - bulletExit.position;
         float x = new Vector2(dir.x, dir.z).magnitude;
