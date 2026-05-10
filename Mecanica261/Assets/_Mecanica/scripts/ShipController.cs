@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ShipController : MonoBehaviour
+public class ShipController : MonoBehaviour //Recuerda estandarizar el código
 {
     [Header("Force Points")]
     [SerializeField] private Transform[] engineForcePoints;
@@ -25,7 +25,7 @@ public class ShipController : MonoBehaviour
         rigidbodyComponent = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate() //El input va en el update. La física va en el fixed update.
     {
         float forwardInput = Input.GetAxis("Vertical");
         float rudderInput = Input.GetAxis("Horizontal");
@@ -55,7 +55,7 @@ public class ShipController : MonoBehaviour
 
     private void ApplyEngineForce()
     {
-        if (rigidbodyComponent.linearVelocity.magnitude >= maximumSpeed && currentEnginePower > 0f)
+        if (rigidbodyComponent.linearVelocity.magnitude >= maximumSpeed && currentEnginePower > 0f) //Utiliza clamp en su lugar para limitar la velocidad máxima
         {
             return;
         }
