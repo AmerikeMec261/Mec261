@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using JetBrains.Annotations;
+using JetBrains.Annotations; //quita todos los using que no se necesiten
 
 
 public class Movementboat : MonoBehaviour
@@ -14,7 +14,7 @@ public class Movementboat : MonoBehaviour
  
         /* [SerializeField] private float _Maxfoward = 0f;
      [SerializeField] private float _Maxrevere = 1f;
-     [SerializeField] private float _fowardmovement = 1000f;
+     [SerializeField] private float _fowardmovement = 1000f;  //remueve el código que no se usa
      [SerializeField] private float _reversemovement;*/
         public Transform Motor;
         [SerializeField] private float _steerPower = 500f;
@@ -30,9 +30,9 @@ public class Movementboat : MonoBehaviour
         private void Awake()
         {
             _Rigidbody = GetComponent<Rigidbody>();
-            StartRotation = Motor.localRotation;
+            StartRotation = Motor.localRotation; // Valor declarado sin uso alguno
 
-        }
+    }
 
 
         private void FixedUpdate()
@@ -49,18 +49,19 @@ public class Movementboat : MonoBehaviour
             _Rigidbody.AddForceAtPosition(steer * forceDirection * _steerPower, Motor.position);
 
             var forward = Vector3.Scale(new Vector3(0, 0, 1), transform.forward);
-            var targetVel = Vector3.zero;
-        var right = Vector3.Scale(new Vector3(-1, 0, 0), transform.forward);
+            var targetVel = Vector3.zero; //Valor declarado sin uso alguno
+        var right = Vector3.Scale(new Vector3(-1, 0, 0), transform.forward); // Valor declarado sin uso alguno
 
         //Mover hacia adelante o hacia atras 
 
         if (Input.GetKey(KeyCode.W))
-                _Rigidbody.AddForce(forward * _power, ForceMode.Acceleration);
-            if (Input.GetKey(KeyCode.S))
+                _Rigidbody.AddForce(forward * _power, ForceMode.Acceleration); //Que pasó con el uso de AddForceAtPosition?
+        if (Input.GetKey(KeyCode.S))
                 _Rigidbody.AddForce(-forward * _power, ForceMode.Acceleration);
         }
     }
 
+//Gracias por investigar
 //Video en el que me apoye https://youtu.be/gdW_rXFE1Gk
 
 
