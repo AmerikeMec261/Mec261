@@ -43,11 +43,11 @@ public class ShipMovement : MonoBehaviour
     #endregion Unity Methods
 
 
-    #region Methods
+    #region Methods 
 
-    private void Movement()
+    private void Movement() //El barco está al revés
     {
-        if (_enginePoint == null) { return; }
+        if (_enginePoint == null) { return; } //<-- Posible uso de IA. No hay necesidad de revisar si se supone que lo añades en el editor.
 
         float vertical = Input.GetAxis("Vertical");
 
@@ -55,7 +55,7 @@ public class ShipMovement : MonoBehaviour
 
         _currentMoveForce = Mathf.MoveTowards(_currentMoveForce, targetForce, (_moveForce / _accelerationTime) * Time.deltaTime);
 
-        if (_rigidbody.linearVelocity.magnitude > _maxSpeed) { return; }
+        if (_rigidbody.linearVelocity.magnitude > _maxSpeed) { return; } // Esto se puede cambiar por un clamp
 
         Vector3 force = transform.forward * _currentMoveForce;
 
@@ -65,7 +65,7 @@ public class ShipMovement : MonoBehaviour
 
     private void Sides()
     {
-        if (_rudderPoint == null) { return; }
+        if (_rudderPoint == null) { return; }  //<-- Posible uso de IA. No hay necesidad de revisar si se supone que lo añades en el editor.
 
         float horizontal = Input.GetAxis("Horizontal");
 
