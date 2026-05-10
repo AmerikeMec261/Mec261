@@ -182,6 +182,11 @@ MonoBehaviour:
   _waterLevel: 0
   _volume: 1
   _waterDensity: 1000
+  _waterDrug: 0
+  _shapeFactor: 0
+  _topPoint: {fileID: 0}
+  _bottomPoint: {fileID: 0}
+  _floatPoints: []
 --- !u!65 &90965556
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -269,7 +274,7 @@ Transform:
   m_GameObject: {fileID: 90965553}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45.39822, y: 10, z: -12.86571}
+  m_LocalPosition: {x: 81.5, y: 10, z: -12.86571}
   m_LocalScale: {x: 19.335, y: 19.335, z: 19.335}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -338,6 +343,11 @@ MonoBehaviour:
   _waterLevel: 0
   _volume: 1
   _waterDensity: 1000
+  _waterDrug: 0
+  _shapeFactor: 0
+  _topPoint: {fileID: 0}
+  _bottomPoint: {fileID: 0}
+  _floatPoints: []
 --- !u!65 &148223133
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -494,6 +504,11 @@ MonoBehaviour:
   _waterLevel: 0
   _volume: 1
   _waterDensity: 1000
+  _waterDrug: 0
+  _shapeFactor: 0
+  _topPoint: {fileID: 0}
+  _bottomPoint: {fileID: 0}
+  _floatPoints: []
 --- !u!65 &937361467
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -581,7 +596,7 @@ Transform:
   m_GameObject: {fileID: 937361464}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.5, y: 0, z: -34.7}
+  m_LocalPosition: {x: -34.9, y: 0, z: -34.7}
   m_LocalScale: {x: 23.422, y: 23.422, z: 23.422}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -777,6 +792,11 @@ MonoBehaviour:
   _waterLevel: 0
   _volume: 1
   _waterDensity: 1000
+  _waterDrug: 0
+  _shapeFactor: 0
+  _topPoint: {fileID: 0}
+  _bottomPoint: {fileID: 0}
+  _floatPoints: []
 --- !u!65 &1789303099
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -957,7 +977,7 @@ Transform:
   m_GameObject: {fileID: 1873957315}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.7, y: 1, z: -159.8}
+  m_LocalPosition: {x: 62, y: 1, z: -159.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

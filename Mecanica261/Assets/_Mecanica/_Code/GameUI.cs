@@ -34,9 +34,9 @@ public class GameUI : MonoBehaviour //El codigo no está estandarizado.
         if (GameManager.Instance.SpendMoney(towerCost))
         {
             Vector3 zero = Vector3.zero;
-            GameObject t= Instantiate(towerPrefab,zero,Quaternion.identity);
-            t.transform.SetParent(towerParent); //No uses abreviaciones
-            t.transform.localPosition = Vector3.zero;
+            GameObject tower= Instantiate(towerPrefab,zero,Quaternion.identity);
+            tower.transform.SetParent(towerParent); //No uses abreviaciones
+            tower.transform.localPosition = Vector3.zero;
         }
         else
         {
