@@ -57,11 +57,7 @@ public class TurretBattleship : MonoBehaviour
             float currentPitch = NormalizeAngle(_cannonPivots[i].localEulerAngles.y);
             float newPitch = Mathf.MoveTowardsAngle(currentPitch, targetPitch, rotationStep);
 
-            _cannonPivots[i].localRotation = Quaternion.Euler(
-                _cannonPivots[i].localEulerAngles.x,
-                newPitch,
-                _cannonPivots[i].localEulerAngles.z
-            );
+            _cannonPivots[i].localRotation = Quaternion.Euler(_cannonPivots[i].localEulerAngles.x, newPitch, _cannonPivots[i].localEulerAngles.z);
         }
     }
 
