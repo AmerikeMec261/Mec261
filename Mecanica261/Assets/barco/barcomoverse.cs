@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class barcomoverse : MonoBehaviour
+public class barcomoverse : MonoBehaviour //Recuerda cambiar el código a inglés y estandarizarlo
 {
     [Header("Puntos")]
     [SerializeField] private Transform[] motorPoints;
@@ -8,7 +8,7 @@ public class barcomoverse : MonoBehaviour
 
     [Header("Fuerzas")]
     [SerializeField] private float motorForce = 50f;
-    [SerializeField] private float turnForce = 20f;
+    [SerializeField] private float turnForce = 20f; 
 
     private Rigidbody rb;
 
@@ -25,7 +25,7 @@ public class barcomoverse : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float inputForward = Input.GetAxis("Vertical");
+        float inputForward = Input.GetAxis("Vertical"); //El input va en el Update, pero el movimiento se aplica en el FixedUpdate. 
         float inputTurn = Input.GetAxis("Horizontal");
 
         velocidadActual = Mathf.Lerp(velocidadActual, inputForward, Time.fixedDeltaTime * aceleracion);
