@@ -91,10 +91,10 @@ public class FinalTurret : MonoBehaviour
         }
 
         // YAW
-        if (horizontalDirection.sqrMagnitude > 0.001f)
+        if (horizontalDirection.sqrMagnitude > 0.001f) 
         {
             Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
-            _yawPivot.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
+            _yawPivot.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f); //Te faltó el limitar la rotación del yaw para que no gire más de 180 grados a la izquierda o a la derecha, puedes usar Mathf.Clamp para limitar el ángulo de rotación en el eje Y.
         }
 
         // PITCH 

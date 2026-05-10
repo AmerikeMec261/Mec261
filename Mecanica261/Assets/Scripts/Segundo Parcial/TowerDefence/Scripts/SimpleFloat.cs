@@ -36,7 +36,7 @@ public class SimpleFloat : MonoBehaviour
     [Header("================================================================")]
     [SerializeField] private float _area;
     [SerializeField] private float hulllHeight;
-    [SerializeField] private float hullVolume;
+    [SerializeField] private float hullVolume; // Estandarizar 
     [SerializeField] private float draft;
     private float HullHeight => hulllHeight;
 
@@ -56,7 +56,7 @@ public class SimpleFloat : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            MoverAdelante();
+            MoverAdelante(); //Inglés
         }
         if (Input.GetKey(KeyCode.D))
         {
@@ -100,7 +100,7 @@ public class SimpleFloat : MonoBehaviour
         }
     }
 
-    private void GirarDerecha()
+    private void GirarDerecha() //Ve la forma en la que puedes reutilizar este código para que no tengas que escribir dos funciones para girar a la derecha y a la izquierda, sino una sola función que reciba un parámetro de dirección.
     {
         Vector3 direction = transform.forward;
         float _rotationAplication =  _motorForce * _rotation * _maxmotorForce;
