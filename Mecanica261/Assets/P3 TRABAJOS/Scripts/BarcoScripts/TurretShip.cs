@@ -33,7 +33,7 @@ public class TurretShip : MonoBehaviour //Se combino los scripts TurretBase y Tr
 
     public void FireProjectile()
     {
-        if (_bulletPrefab == null || !_solution)
+        if (_bulletPrefab == null || !_solution) //<- Posible uso de IA. El objeto es asignado desde el editor. 
         {
             return;
         }
@@ -80,15 +80,14 @@ public class TurretShip : MonoBehaviour //Se combino los scripts TurretBase y Tr
 
     private void CalculatedShot()
     {
-        if (_bulletPrefab == null)
+        if (_bulletPrefab == null) //<- Posible uso de IA. El objeto es asignado desde el editor. 
         {
             _solution = false;
             return;
         }
 
-        IProjectile projectile = _bulletPrefab.GetComponent<IProjectile>();
-
-        if (projectile == null)
+        IProjectile projectile = _bulletPrefab.GetComponent<IProjectile>(); //<- Posible uso de IA. Ya tienes la linea de  currentBullet3.GetComponent<IProjectile>()?.Fire(); como ejemplo para checar nulls.
+        if (projectile == null) //<- Posible uso de IA. Se supone que el proyectil tiene que implementar la interfaz IProjectile. 
         {
             _solution = false;
             return;
@@ -146,7 +145,7 @@ public class TurretShip : MonoBehaviour //Se combino los scripts TurretBase y Tr
         //Aqui calcula el angulo desde donde mira la base  hacia donde se ubica el objetivo
         float angle = Vector3.SignedAngle(_yawPivot.forward, yawDirection, Vector3.up);
 
-        if (angle > 1f)
+        if (angle > 1f) 
         {
             return 1f;
         }
@@ -193,7 +192,7 @@ public class TurretShip : MonoBehaviour //Se combino los scripts TurretBase y Tr
         float currentYaw = NormalizeAngle(_yawPivot.localEulerAngles.y);
         float newYaw = Mathf.Clamp(currentYaw + yawChange, _yawLimits.x, _yawLimits.y);
 
-        _yawPivot.localEulerAngles = new Vector3(
+        _yawPivot.localEulerAngles = new Vector3( //<-- Uso 100% confirmado de IA, el saltar lineas para escribir el nuevo vector3 es totalmente por IA
             _yawPivot.localEulerAngles.x,
             newYaw,
             _yawPivot.localEulerAngles.z
@@ -206,7 +205,7 @@ public class TurretShip : MonoBehaviour //Se combino los scripts TurretBase y Tr
         float currentPitch = NormalizeAngle(_pitchPivot.localEulerAngles.x);
         float newPitch = Mathf.Clamp(currentPitch + pitchChange, _pitchLimits.x, _pitchLimits.y);
 
-        _pitchPivot.localEulerAngles = new Vector3(
+        _pitchPivot.localEulerAngles = new Vector3( //<-- Uso 100% confirmado de IA, el saltar lineas para escribir el nuevo vector3 es totalmente por IA
             newPitch,
             _pitchPivot.localEulerAngles.y,
             _pitchPivot.localEulerAngles.z

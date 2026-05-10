@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Rendering;
-using UnityEngine.UIElements;
+using UnityEngine.UIElements; //<- Posible uso de IA por librerias fantasma
 
+
+//Muchas gracias por las referencias
 //Referencias
 //https://filehostingbucket.web.app/Unity/Instructables/index.html
 //https://github.com/ditzel/UnityOceanWavesAndShip/blob/master/Waves/Assets/WaterBoat.cs 
@@ -86,16 +88,16 @@ public class CalculateArea : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
             steer = -1;
 
-        if (_motorPoint != null)
-            _rigidbody.AddForceAtPosition(steer * transform.right * _steerPower / 100f, _motorPoint.position);
+        if (_motorPoint != null) //<- Posible uso de IA. El objeto es asignado desde el editor. 
+            _rigidbody.AddForceAtPosition(steer * transform.right * _steerPower / 100f, _motorPoint.position); //Porqué dividiste el steerPower entre 100?
 
-        if (Input.GetKey(KeyCode.W))
-            _targetThrust = Mathf.Clamp(_targetThrust + 4225f * Time.deltaTime, 0f, _maxThrustForce);
+        if (Input.GetKey(KeyCode.W)) //El barco no puede ir en reversa? 
+            _targetThrust = Mathf.Clamp(_targetThrust + 4225f * Time.deltaTime, 0f, _maxThrustForce); //Porque se le suma 4225f? Es un valor arbitrario o tiene alguna relación con la física del barco?
         else
             _targetThrust = 0f;
 
         _currentThrust = Mathf.MoveTowards(_currentThrust, _targetThrust, _thrustAcceleration * Time.fixedDeltaTime);
-        _rigidbody.AddForce(transform.forward * _currentThrust);
+        _rigidbody.AddForce(transform.forward * _currentThrust); //Porqué ya no usaste AddForceAtPosition? 
     }
     private void CalculateHullData()
     {
