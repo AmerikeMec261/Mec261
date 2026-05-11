@@ -54,7 +54,7 @@ public class FinalTurret : MonoBehaviour
     private void FindTarget()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy"); 
-        float _closestDistance = Mathf.Infinity; 
+        float _closestDistance = Mathf.Infinity;  //Inicializa la distancia más cercana como infinito para asegurarse de que cualquier enemigo encontrado sea más cercano que esta distancia inicial.
         Transform closest = null; 
 
         foreach (GameObject enemy in enemies)
@@ -79,10 +79,10 @@ public class FinalTurret : MonoBehaviour
         Vector3 originPosition = _bulletSpawns[_currentSpawnIndex].position;
         Vector3 targetPosition = _currentTarget.position; //agarramos la posición del target actual
 
-        Vector3 directionToTarget = targetPosition - _yawPivot.position;
-        Vector3 horizontalDirection = new Vector3(directionToTarget.x, 0f, directionToTarget.z);
+        Vector3 directionToTarget = targetPosition - _yawPivot.position; 
+        Vector3 horizontalDirection = new Vector3(directionToTarget.x, 0f, directionToTarget.z); 
 
-        float horizontalDistance = horizontalDirection.magnitude;
+        float horizontalDistance = horizontalDirection.magnitude; 
 
         if (horizontalDistance < _minDistance || horizontalDistance > _maxDistance) //verifica que el target esté dentro del rango mínimo y máximo
         {
@@ -94,16 +94,29 @@ public class FinalTurret : MonoBehaviour
         if (horizontalDirection.sqrMagnitude > 0.001f) 
         {
             Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
-            _yawPivot.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f); //Te faltó el limitar la rotación del yaw para que no gire más de 180 grados a la izquierda o a la derecha, puedes usar Mathf.Clamp para limitar el ángulo de rotación en el eje Y.
+            float yawAngle = targetRotation.eulerAngles.y;
+
+            //El rando de yawAngle sería de -180 a 180 grados.
+            if (yawAngle > 90)
+            {
+               yawAngle -= 360f;
+            }
+
+            //Limitar el ángulo de rotación del yaw a -180 a 180 grados con Marthf.Clamp
+            yawAngle = Mathf.Clamp(yawAngle, -90, 90);
+            _yawPivot.rotation = Quaternion.Euler(0f, yawAngle, 0f); 
+
+            //Te faltó el limitar la rotación del yaw para que no gire más de 180 grados a la izquierda o a la derecha,
+            //puedes usar Mathf.Clamp para limitar el ángulo de rotación en el eje Y.
         }
 
         // PITCH 
-        _hasSolution = SolveBallisticAngle(originPosition, targetPosition, _projectileSpeed, out float launchAngle);
+        _hasSolution = SolveBallisticAngle(originPosition, targetPosition, _projectileSpeed, out float launchAngle); 
 
         if (_hasSolution)
         {
             float launchAngleDegrees = launchAngle * Mathf.Rad2Deg; // Convierte el ángulo de lanzamiento a grados
-            _pitchPivot.localEulerAngles = new Vector3(-launchAngleDegrees, 0f, 0f);
+            _pitchPivot.localEulerAngles = new Vector3(-launchAngleDegrees, 0f, 0f); 
         }
 
         else

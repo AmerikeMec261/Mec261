@@ -35,14 +35,14 @@ public class SimpleFloat : MonoBehaviour
 
     [Header("================================================================")]
     [SerializeField] private float _area;
-    [SerializeField] private float hulllHeight;
-    [SerializeField] private float hullVolume; // Estandarizar 
-    [SerializeField] private float draft;
-    private float HullHeight => hulllHeight;
+    [SerializeField] private float _hulllHeight;
+    [SerializeField] private float _hullVolume; // Estandarizar 
+    [SerializeField] private float _draft;
+    private float HullHeight => _hulllHeight;
 
     private float Area => _area;
-    private float HullVolume  => hullVolume;
-    private float Draft => draft;
+    private float HullVolume  => _hullVolume;
+    private float Draft => _draft;
 
     private void Awake()
     {
@@ -56,22 +56,22 @@ public class SimpleFloat : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            MoverAdelante(); //Inglés
+            Movement(); //Inglés
         }
         if (Input.GetKey(KeyCode.D))
         {
-            GirarDerecha();
+            Rotation(1f);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            GirarIzquierda();
+            Rotation(-1f); 
         }
     }
    
     private void FloatShip()
     {
         float gravity = Physics.gravity.magnitude;
-        float volumePerPoint = hullVolume / _floatPoints.Count;
+        float volumePerPoint = _hullVolume / _floatPoints.Count;
 
         for (int i = 0; i < _floatPoints.Count; i++)
         {
@@ -90,7 +90,23 @@ public class SimpleFloat : MonoBehaviour
         }
     }
 
-    private void MoverAdelante()
+    private void Rotation(float _rotate) // Use un float para determinar la dirección, para que vaya a la derecha, el float será positivo y cuando vaya a la izquierda será negativo.
+    {
+        Vector3 direction = transform.forward;
+        float _rotationAplication = _motorForce * _rotation * _maxmotorForce;
+
+        foreach (Transform motor in _leftmotors)
+        {
+            _rigidbody.AddForceAtPosition(direction * _rotationAplication * _rotate, motor.position, ForceMode.Force);
+        }
+
+        foreach (Transform motor in _rightmotors)
+        {
+            _rigidbody.AddForceAtPosition(-direction * _rotationAplication * _rotate, motor.position, ForceMode.Force);
+        }
+    }
+
+    private void Movement()
     {
         Vector3 direction = transform.right;
 
@@ -99,8 +115,9 @@ public class SimpleFloat : MonoBehaviour
             _rigidbody.AddForceAtPosition(direction * _motorForce, motor.position, ForceMode.Force); 
         }
     }
-
-    private void GirarDerecha() //Ve la forma en la que puedes reutilizar este código para que no tengas que escribir dos funciones para girar a la derecha y a la izquierda, sino una sola función que reciba un parámetro de dirección.
+    //Ve la forma en la que puedes reutilizar este código para que no tengas que escribir dos funciones para girar a la derecha y a la izquierda,
+    //sino una sola función que reciba un parámetro de dirección.
+    private void GirarDerecha() 
     {
         Vector3 direction = transform.forward;
         float _rotationAplication =  _motorForce * _rotation * _maxmotorForce;
@@ -135,12 +152,12 @@ public class SimpleFloat : MonoBehaviour
     {
         _area = CalculateArea();
         //Calcular altura del top y button point
-        hulllHeight = (_topPoint.position.y - _bottomPoint.position.y);
+        _hulllHeight = (_topPoint.position.y - _bottomPoint.position.y);
         //Calcular volumen 
-        hullVolume = _area * hulllHeight * _shapeFactor;
+        _hullVolume = _area * _hulllHeight * _shapeFactor;
         // calcular el volumen requerido para flotar
         float requiredVolume = _rigidbody.mass / _waterDensity;
-        draft = requiredVolume / (_area * _shapeFactor);
+        _draft = requiredVolume / (_area * _shapeFactor);
 
     }
 

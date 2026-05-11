@@ -2366,13 +2366,13 @@ MonoBehaviour:
   _leftmotors:
   - {fileID: 2131749371}
   - {fileID: 1980948050}
-  _motorForce: 220
+  _motorForce: 285
   _maxmotorForce: 18
   _rotation: 13
   _area: 0
-  hulllHeight: 0
-  hullVolume: 0
-  draft: 0
+  _hulllHeight: 0
+  _hullVolume: 0
+  _draft: 0
 --- !u!1001 &1591482412
 PrefabInstance:
   m_ObjectHideFlags: 0
