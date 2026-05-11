@@ -3,44 +3,52 @@ using UnityEngine;
 public class barcomoverse : MonoBehaviour //Recuerda cambiar el código a inglés y estandarizarlo
 {
     [Header("Puntos")]
-    [SerializeField] private Transform[] motorPoints;
-    [SerializeField] private Transform[] turnPoints;
+    [SerializeField] private Transform[] _motorPoints;
+    [SerializeField] private Transform[] _turnPoints;
 
     [Header("Fuerzas")]
-    [SerializeField] private float motorForce = 50f;
-    [SerializeField] private float turnForce = 20f; 
+    [SerializeField] private float _motorForce = 50f;
+    [SerializeField] private float _turnForce = 20f; 
 
-    private Rigidbody rb;
+    private Rigidbody _rigiBody;
 
-    private float velocidadActual = 0f;
-    private float giroActual = 0f;
+    private float _currentspeed = 0f;
+    private float _currentturn = 0f;
 
-    [SerializeField] private float aceleracion = 2f;
-    [SerializeField] private float suavizadoGiro = 2f;
+    [SerializeField] private float _acceleration = 2f;
+    [SerializeField] private float _smoothingTurn = 2f;
+
+    private float _inputForward;
+    private float _inputTurn;
+
+    void Update()
+    {
+        float inputForward = Input.GetAxis("Vertical"); //El input va en el Update, pero el movimiento se aplica en el FixedUpdate. 
+        float inputTurn = Input.GetAxis("Horizontal");
+    }
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        _rigiBody = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
     {
-        float inputForward = Input.GetAxis("Vertical"); //El input va en el Update, pero el movimiento se aplica en el FixedUpdate. 
-        float inputTurn = Input.GetAxis("Horizontal");
 
-        velocidadActual = Mathf.Lerp(velocidadActual, inputForward, Time.fixedDeltaTime * aceleracion);
-        giroActual = Mathf.Lerp(giroActual, inputTurn, Time.fixedDeltaTime * suavizadoGiro);
 
-        for (int i = 0; i < motorPoints.Length; i++)
+        _currentspeed = Mathf.Lerp(_currentspeed, _inputForward, Time.fixedDeltaTime * _acceleration);
+        _currentturn = Mathf.Lerp(_currentturn, _inputTurn, Time.fixedDeltaTime * _smoothingTurn);
+
+        for (int i = 0; i < _motorPoints.Length; i++)
         {
-            Vector3 fuerza = transform.forward * velocidadActual * motorForce;
-            rb.AddForceAtPosition(fuerza, motorPoints[i].position);
+            Vector3 fuerza = transform.forward * _currentspeed * _motorForce;
+            _rigiBody.AddForceAtPosition(fuerza, _motorPoints[i].position);
         }
 
-        for (int i = 0; i < turnPoints.Length; i++)
+        for (int i = 0; i < _turnPoints.Length; i++)
         {
-            Vector3 fuerza = transform.right * giroActual * turnForce;
-            rb.AddForceAtPosition(fuerza, turnPoints[i].position);
+            Vector3 fuerza = transform.right * _currentturn * _turnForce;
+            _rigiBody.AddForceAtPosition(fuerza, _turnPoints[i].position);
         }
     }
 }

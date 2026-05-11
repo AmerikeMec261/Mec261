@@ -27,6 +27,8 @@ public class tower : MonoBehaviour //Todo debe estar en inglés.
         {
             FireProjectile();
         }
+
+        OnDrawalzmossolected();
     }
 
     private void FireProjectile()
