@@ -32,10 +32,10 @@ public class Turret : MonoBehaviour
     {
         UpdateBulletSelection();
 
-        if (_target == null) 
-        { 
+        if (_target == null)
+        {
             return;
-        } 
+        }
 
         float distanceToTarget = Vector3.Distance(transform.position, _target.position);
         if (distanceToTarget > _detectionRange)
@@ -46,14 +46,7 @@ public class Turret : MonoBehaviour
 
         RotateYaw();
         RotatePitch();
-
-        _fireTimer += Time.deltaTime;
-
-        if (_fireTimer >= _fireInterval)
-        {
-            Fire();
-            _fireTimer = 0f;
-        }
+        UpdateFireTimer();
     }
 
     private void RotateYaw()
@@ -61,8 +54,8 @@ public class Turret : MonoBehaviour
         Vector3 directionToTarget = _target.position - _yawPivot.position;
         directionToTarget.y = 0f;
 
-        if (directionToTarget.sqrMagnitude <= 0f) 
-        { 
+        if (directionToTarget.sqrMagnitude <= 0f)
+        {
             return;
         }
 
@@ -73,9 +66,9 @@ public class Turret : MonoBehaviour
 
     private void RotatePitch()
     {
-        if (!TryGetLaunchAngle(out float launchAngle)) 
-        { 
-            return; 
+        if (!TryGetLaunchAngle(out float launchAngle))
+        {
+            return;
         }
 
         launchAngle = Mathf.Clamp(launchAngle, _pitchLimits.x, _pitchLimits.y);
@@ -86,15 +79,15 @@ public class Turret : MonoBehaviour
     {
         launchAngle = 0f;
 
-        if (_currentBullet == null) 
-        { 
-            return false; 
+        if (_currentBullet == null)
+        {
+            return false;
         }
 
         IProjectile projectile = _currentBullet.GetComponent<IProjectile>();
-        if (projectile == null) 
-        { 
-            return false; 
+        if (projectile == null)
+        {
+            return false;
         }
 
         float speed = projectile.Speed;
@@ -107,17 +100,17 @@ public class Turret : MonoBehaviour
         float horizontalDistance = horizontalDirection.magnitude;
         float verticalDistance = directionToTarget.y;
 
-        if (horizontalDistance <= 0f) 
-        { 
-            return false; 
+        if (horizontalDistance <= 0f)
+        {
+            return false;
         }
 
         float speedSquared = speed * speed;
         float discriminant = speedSquared * speedSquared - gravity * (gravity * horizontalDistance * horizontalDistance + 2f * verticalDistance * speedSquared);
 
-        if (discriminant < 0f) 
-        { 
-            return false; 
+        if (discriminant < 0f)
+        {
+            return false;
         }
 
         float squareRoot = Mathf.Sqrt(discriminant);
@@ -126,11 +119,22 @@ public class Turret : MonoBehaviour
         return true;
     }
 
+    private void UpdateFireTimer()
+    {
+        _fireTimer += Time.deltaTime;
+
+        if (_fireTimer >= _fireInterval)
+        {
+            Fire();
+            _fireTimer = 0f;
+        }
+    }
+
     private void Fire()
     {
-        if (_currentBullet == null) 
-        { 
-            return; 
+        if (_currentBullet == null)
+        {
+            return;
         }
 
         GameObject bulletInstance = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
