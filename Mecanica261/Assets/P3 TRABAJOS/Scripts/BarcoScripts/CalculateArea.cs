@@ -33,7 +33,7 @@ public class CalculateArea : MonoBehaviour
     [SerializeField] private float _steerPower = 500f;
 
     [SerializeField] private float _maxThrustForce = 50f;
-    [SerializeField] private float _thrustAcceleration = 5f;
+    [SerializeField] private float _thrustAcceleration = 4225f;
     [SerializeField] private float _targetThrust = 0f;
     [SerializeField] private float _currentThrust = 0f;
 
@@ -88,17 +88,22 @@ public class CalculateArea : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
             steer = -1;
 
-        if (_motorPoint != null) //<- Posible uso de IA. El objeto es asignado desde el editor. 
-            _rigidbody.AddForceAtPosition(steer * transform.right * _steerPower / 100f, _motorPoint.position); //Porqué dividiste el steerPower entre 100?
+        if (_motorPoint != null)
+            _rigidbody.AddForceAtPosition(steer * transform.right * _steerPower / 100f, _motorPoint.position); 
 
-        if (Input.GetKey(KeyCode.W)) //El barco no puede ir en reversa? 
-            _targetThrust = Mathf.Clamp(_targetThrust + 4225f * Time.deltaTime, 0f, _maxThrustForce); //Porque se le suma 4225f? Es un valor arbitrario o tiene alguna relación con la física del barco?
+        if (Input.GetKey(KeyCode.W)) 
+            _targetThrust = Mathf.Clamp(_targetThrust + _thrustAcceleration * Time.deltaTime, 0f, _maxThrustForce); 
+        else
+            _targetThrust = 0f;
+
+        if (Input.GetKey(KeyCode.S))
+            _targetThrust = Mathf.Clamp(_targetThrust + _thrustAcceleration * Time.deltaTime, 0f, _maxThrustForce);
         else
             _targetThrust = 0f;
 
         _currentThrust = Mathf.MoveTowards(_currentThrust, _targetThrust, _thrustAcceleration * Time.fixedDeltaTime);
-        _rigidbody.AddForce(transform.forward * _currentThrust); //Porqué ya no usaste AddForceAtPosition? 
-    }
+        _rigidbody.AddForce(transform.forward * _currentThrust);
+ }
     private void CalculateHullData()
     {
         _area = CalculatedArea();
