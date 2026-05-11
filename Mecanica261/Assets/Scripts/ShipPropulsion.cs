@@ -23,11 +23,11 @@ public class ShipPropulsion : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float throttleInput = Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1 : 0f;
+        float throttleInput = Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1 : 0f; //Función Ternaria 
         float rudderInput = Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1 : 0f;
 
         _throttle = Mathf.MoveTowards(_throttle, throttleInput, _aceleration * Time.deltaTime);
-        _rudder = Mathf.MoveTowards(_rudder, throttleInput, _aceleration * Time.deltaTime); // Usaste throttle en lugar de rudder para el segundo parámetro
+        _rudder = Mathf.MoveTowards(_rudder, rudderInput, _aceleration * Time.deltaTime); // Usaste throttle en lugar de rudder para el segundo parámetro
 
         Debug.Log($"Throttle: {_throttle}, Rudder: {_rudder}"); //Te lo dejo para que vas el error.
 
