@@ -1,17 +1,19 @@
 using UnityEngine;
 
-public class Enemys : MonoBehaviour // Falta usar interfaz
+public class Enemys : MonoBehaviour 
 {
     public float health = 100;
     public float speed = 3f;
     public float moveRange = 5f;
 
-    float StartX;
-    int direction = 1;
+    private float StartX;
+    private int direction = 1;
 
     void Start()
     {
         StartX = transform.position.x;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null) rb.freezeRotation = true;
     }
 
     void Update()
@@ -29,21 +31,15 @@ public class Enemys : MonoBehaviour // Falta usar interfaz
         }
     }
 
-    void OnCollisionEnter(Collision collision) // El enemigo no debe ser el encargado de collisionar con el proyectil, debe ser el proyectil el encargado de detectar la colisión con el enemigo.
+    public void TakeDamage(float amount)
     {
-        if (collision.gameObject.name.Contains("Bullet") || collision.gameObject.tag == "Bullet")
+        health -= amount;
+        Debug.Log("Vida Enemigo: " + health);
+
+        if (health <= 0)
         {
-            health = health - 20f;
-            Debug.Log("Enemy health: " + health);
-
-            // Destroy the bullet on impact
-            Destroy(collision.gameObject);
-
-            if (health <= 0)
-            {
-                Debug.Log("Enemy destroyed!");
-                Destroy(gameObject);
-            }
+            Debug.Log("¡Enemigo eliminado!");
+            Destroy(gameObject);
         }
     }
 }

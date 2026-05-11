@@ -3,55 +3,53 @@ using UnityEngine.InputSystem;
 
 public class ShipControler : MonoBehaviour
 {
-    public Transform Motor;
-    public float SteerPower = 500f;
-    public float Power = 5f;
-    public float MaxSpeed = 10f;
-    public float Drag = 0.1f;
+    [SerializeField] private float _Maxfoward = 0f;
+    [SerializeField] private float _Maxreverse = 1f;
+    [SerializeField] private float _Forwardmovement;
+    [SerializeField] private float _Reversemovement;
 
-    protected Rigidbody Rigidbody;
-    protected Quaternion StartRotation;
+    public Transform Motor;
+    private Rigidbody _Rigidbody;
+
+    [SerializeField] public float SteerPower = 500f;
+    [SerializeField] public float Power = 5f;
+    [SerializeField] public float MaxSpeed = 10f;
+    [SerializeField] public float Drag = 0.1f;
+
+    [SerializeField] private Quaternion StartRotation;
 
     public void Awake()
     {
-        Rigidbody = GetComponent<Rigidbody>();
+        _Rigidbody = GetComponent<Rigidbody>();
         if (Motor != null) StartRotation = Motor.localRotation;
     }
 
     void FixedUpdate()
     {
         var keyboard = Keyboard.current;
-        if (keyboard == null) return;
 
-        var steer = 0f;
+        Vector3 forwardFix = transform.right;
+        Vector3 steerDirection = transform.forward;
 
-        if (keyboard.aKey.isPressed)
+        float steer = 0f;
+
+        if (keyboard.aKey.isPressed) steer = 1f;
+
+        if (keyboard.dKey.isPressed) steer = -1f;
+
+        if (Motor != null)
         {
-            steer = 1;
+            _Rigidbody.AddForceAtPosition(steer * steerDirection * SteerPower / 100f, Motor.position);
         }
-
-        if (keyboard.dKey.isPressed)
-        {
-            steer = -1;
-        }
-
-        Rigidbody.AddForceAtPosition(steer * transform.right * SteerPower / 100f, Motor.position);
-
-        var forward = Vector3.Scale(new Vector3(1,0,1), transform.forward);
         
         if (keyboard.wKey.isPressed)
         {
-            Rigidbody.AddForce(forward * Power, ForceMode.Acceleration);
+            _Rigidbody.AddForce(forwardFix * Power, ForceMode.Acceleration);
         }
 
         if (keyboard.sKey.isPressed)
         {
-            Rigidbody.AddForce(-forward * Power, ForceMode.Acceleration);
-        }
-
-        if (Rigidbody.linearVelocity.magnitude > MaxSpeed)
-        {
-            Rigidbody.linearVelocity = Rigidbody.linearVelocity.normalized * MaxSpeed;
+            _Rigidbody.AddForce(-forwardFix * Power, ForceMode.Acceleration);
         }
     }
 }

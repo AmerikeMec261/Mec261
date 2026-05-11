@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,8 +10,6 @@ public class Turret : MonoBehaviour
 
     [SerializeField] private Transform _pitchPivot;
 
-    [SerializeField] private Transform _bulletSpawn;
-
     [SerializeField] private GameObject _bulletPrefab;
 
     [Header("Ballistics Settings")]
@@ -21,6 +20,9 @@ public class Turret : MonoBehaviour
 
     [Header("Yaw Settings")]
 
+    [Header("Multi-Cannon Setup")]
+    [SerializeField] private MultiSpawn _multiSpawn;
+
     [SerializeField] private float _yawSpeed = 90f;
 
     [SerializeField] private Vector2 _yawLimits = new Vector2(-90f, 90f);
@@ -30,47 +32,49 @@ public class Turret : MonoBehaviour
 
     [SerializeField] private float _pitchSpeed = 90f;
 
+    [Header("Fire Settings")]
+    [SerializeField] private float _fireRate = 2f;
+    private float _nextFireTime = 0f;
+
     [SerializeField] private Vector2 _pitchLimits = new Vector2(-10f, 90f);
 
 
     public void FireProjectile()
 
     {
-
-        GameObject currentBullet = Instantiate(_bulletPrefab, _bulletSpawn.position, _bulletSpawn.rotation);
-
-        currentBullet.GetComponent<IProjectile>()?.Fire();
-
+        if (_multiSpawn != null)
+        {
+            _multiSpawn.Fire();
+        }
     }
 
 
     private void Update()
-
     {
-        if (_target != null)
+        if (_target != null && _multiSpawn != null)
         {
-            if (SolveBallisticAngle(_bulletSpawn.position, _target.position, _projectileSpeed, out float angle))
+           Vector3 direction = _target.position - _yawPivot.position;
+           Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z);
+
+           if (horizontalDirection != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection) * Quaternion.Euler(0, -90, 0);
+                _yawPivot.rotation = Quaternion.RotateTowards(_yawPivot.rotation, targetRotation, _yawSpeed * Time.deltaTime);
+            }
+
+           if (SolveBallisticAngle(_multiSpawn.GetFirstSpawn().position, _target.position, _projectileSpeed, out float angle))
             {
                 float targetPitch = -angle * Mathf.Rad2Deg;
-
-                Vector3 currentRotation = _pitchPivot.localEulerAngles;
-                _pitchPivot.localEulerAngles = new Vector3(currentRotation.x, currentRotation.y, targetPitch);
+                _pitchPivot.localEulerAngles = new Vector3(targetPitch, 0,0);
             }
-        }
 
-        float yawInput = 0f;
-        if (Keyboard.current.aKey.isPressed) yawInput = -1f;
-        else if (Keyboard.current.dKey.isPressed) yawInput = 1f;
+            float anguloEnemigo = Vector3.Angle(_yawPivot.right, horizontalDirection);
 
-        float pitchInput = 0f;
-        if (Keyboard.current.wKey.isPressed) pitchInput = 1f;
-        else if (Keyboard.current.sKey.isPressed) pitchInput = -1f;
-
-        RotateYaw(yawInput);
-
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            FireProjectile();
+            if (anguloEnemigo < 10f && Time.time >= _nextFireTime)
+            {
+                _multiSpawn.Fire();
+                _nextFireTime = Time.time + _fireRate;
+            }
         }
     }
 
