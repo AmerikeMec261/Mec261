@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class New_Turret : MonoBehaviour
@@ -5,7 +6,8 @@ public class New_Turret : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private Transform _yawPivot;
     [SerializeField] private Transform _pitchPivot;
-    [SerializeField] private Transform _bulletSpawn;
+    [SerializeField] private Transform _gunPointLeft;
+    [SerializeField] private Transform _gunPointRight;
     [SerializeField] private GameObject _normalBullet;
     [SerializeField] private GameObject _explosiveBullet;
     [SerializeField] private bool _useHighArc = false;
@@ -28,6 +30,7 @@ public class New_Turret : MonoBehaviour
     private Transform _currentTarget;
     private float _currentYaw = 0f;
     private float _currentPitch = 0f;
+    private bool _fireLeft = true;
 
     private Quaternion _yawOrigin;
     private Quaternion _pitchOrigin;
@@ -85,15 +88,13 @@ public class New_Turret : MonoBehaviour
 
     private void RotateYaw()
     {
-        Vector3 localDir = _yawPivot.parent.InverseTransformPoint(_currentTarget.position);
-        localDir.y = 0f;
+        Vector3 localDirection = _yawPivot.parent.InverseTransformPoint(_currentTarget.position);
+        localDirection.y = 0f;
 
-        float targetYaw = Mathf.Atan2(localDir.x, localDir.z) * Mathf.Rad2Deg;
+        float targetYaw = Mathf.Atan2(localDirection.x, localDirection.z) * Mathf.Rad2Deg;
         _currentYaw = Mathf.Clamp(targetYaw, _yawMin, _yawMax);
 
-        float currentY = _yawPivot.localEulerAngles.y > 180f
-            ? _yawPivot.localEulerAngles.y - 360f
-            : _yawPivot.localEulerAngles.y;
+        float currentY = _yawPivot.localEulerAngles.y > 180f ? _yawPivot.localEulerAngles.y - 360f : _yawPivot.localEulerAngles.y;
 
         float newYaw = Mathf.MoveTowardsAngle(currentY, _currentYaw, _yawSpeed * Time.deltaTime);
         _yawPivot.localEulerAngles = new Vector3(0f, newYaw, 0f);
@@ -105,9 +106,7 @@ public class New_Turret : MonoBehaviour
         float targetPitch = -Mathf.Atan2(localTarget.y, localTarget.z) * Mathf.Rad2Deg;
         _currentPitch = Mathf.Clamp(targetPitch, _pitchMin, _pitchMax);
 
-        float currentX = _pitchPivot.localEulerAngles.x > 180f
-            ? _pitchPivot.localEulerAngles.x - 360f
-            : _pitchPivot.localEulerAngles.x;
+        float currentX = _pitchPivot.localEulerAngles.x > 180f ? _pitchPivot.localEulerAngles.x - 360f : _pitchPivot.localEulerAngles.x;
 
         float newPitch = Mathf.MoveTowardsAngle(currentX, _currentPitch, _pitchSpeed * Time.deltaTime);
         _pitchPivot.localEulerAngles = new Vector3(newPitch, 0f, 0f);
@@ -121,23 +120,23 @@ public class New_Turret : MonoBehaviour
 
     public void FireProjectile()
     {
-        GameObject bullet = Instantiate(_currentBullet, _bulletSpawn.position, _bulletSpawn.rotation);
+        
+        Transform spawnPoint = _fireLeft ? _gunPointLeft : _gunPointRight;
+        _fireLeft = !_fireLeft;
+
+        GameObject bullet = Instantiate(_currentBullet, spawnPoint.position, spawnPoint.rotation);
         IProjectile projectile = bullet.GetComponent<IProjectile>();
 
         if (projectile == null) { Destroy(bullet); return; }
 
-        if (!SolveBallisticAngle(_bulletSpawn.position, _currentTarget.position, projectile.Speed, out float launchAngle))
+        if (!SolveBallisticAngle(spawnPoint.position, _currentTarget.position, projectile.Speed, out float launchAngle))
         {
             Debug.LogWarning("[Torreta] Sin solucion — sube el Speed de la bala.");
             Destroy(bullet);
             return;
         }
 
-        Vector3 horizontalDir = new Vector3(
-            _currentTarget.position.x - _bulletSpawn.position.x,
-            0f,
-            _currentTarget.position.z - _bulletSpawn.position.z
-        ).normalized;
+        Vector3 horizontalDir = new Vector3(_currentTarget.position.x - spawnPoint.position.x, 0f, _currentTarget.position.z - spawnPoint.position.z).normalized;
 
         Vector3 velocity = horizontalDir * projectile.Speed * Mathf.Cos(launchAngle);
         velocity.y = projectile.Speed * Mathf.Sin(launchAngle);
@@ -147,18 +146,18 @@ public class New_Turret : MonoBehaviour
 
     private bool SolveBallisticAngle(Vector3 origin, Vector3 target, float speed, out float launchAngle)
     {
-        float g = Physics.gravity.magnitude;
-        float x = Vector3.Distance(new Vector3(origin.x, 0f, origin.z), new Vector3(target.x, 0f, target.z));
-        float dy = target.y - origin.y;
-        float v2 = speed * speed;
-        float v4 = v2 * v2;
-        float disc = v4 - g * (g * x * x + 2f * dy * v2);
+        float gravity = Physics.gravity.magnitude;
+        float horizontalDistance = Vector3.Distance(new Vector3(origin.x, 0f, origin.z), new Vector3(target.x, 0f, target.z));
+        float heightDifference = target.y - origin.y;
+        float speedSquare = speed * speed;
+        float speedFourth = speedSquare * speedSquare;
+        float discriminant = speedFourth - gravity * (gravity * horizontalDistance * horizontalDistance + 2f * heightDifference * speedSquare);
 
-        if (disc < 0f) { launchAngle = 0f; return false; }
+        if (discriminant < 0f) { launchAngle = 0f; return false; }
 
-        float sqrt = Mathf.Sqrt(disc);
-        float lowAngle = Mathf.Atan((v2 - sqrt) / (g * x));
-        float highAngle = Mathf.Atan((v2 + sqrt) / (g * x));
+        float squareRoot = Mathf.Sqrt(discriminant);
+        float lowAngle = Mathf.Atan((speedSquare - squareRoot) / (gravity * horizontalDistance));
+        float highAngle = Mathf.Atan((speedSquare + squareRoot) / (gravity * horizontalDistance));
 
         launchAngle = _useHighArc ? highAngle : lowAngle;
         return true;
@@ -169,4 +168,8 @@ public class New_Turret : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _detectionRange);
     }
+
+    //https://www.youtube.com/watch?v=XTJEgWcHd2o
+    //https://gist.github.com/gengen1988/bc95661693dafc2d3bae486b86ef323a
+    //Inspiración en cuanto a la creación de la torreta y un poco en el disparo
 }
