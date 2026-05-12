@@ -1579,7 +1579,7 @@ MonoBehaviour:
   _motorPoint: {fileID: 512534575}
   _steerPower: 350000
   _maxThrustForce: 50700
-  _thrustAcceleration: 4500
+  _thrustAcceleration: 4225
   _targetThrust: 0
   _currentThrust: 0
 --- !u!1 &12860764079441595
