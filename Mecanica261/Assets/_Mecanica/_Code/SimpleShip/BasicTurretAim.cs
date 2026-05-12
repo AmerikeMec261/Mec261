@@ -2,30 +2,30 @@ using UnityEngine;
 
 public class BasicTurretAim : MonoBehaviour
 {
-    [SerializeField] private Transform _targetTransform;
-    [SerializeField] private Transform _cannonPivot;
-    [SerializeField] private Transform _shipReferenceTransform;
+    [SerializeField] private Transform _targetTransform; // Transform del objetivo del cañon
+    [SerializeField] private Transform _cannonPivot; // Transform del pivote del cañon
+    [SerializeField] private Transform _shipReferenceTransform; // Transform del barco
 
-    [SerializeField] private float _yawLimit = 145f;
-    [SerializeField] private float _projectileSpeed = 250f;
-    [SerializeField] private Vector2 _pitchLimits = new Vector2(0f, 45f);
+    [SerializeField] private float _yawLimit = 145f; // Limite del yaw de la torreta
+    [SerializeField] private float _projectileSpeed = 250f; // Velocidad del priyectil
+    [SerializeField] private Vector2 _pitchLimits = new Vector2(0f, 45f); // limites del pitch del cañon
 
-    private float _startingYaw;
+    private float _startingYaw; // Yaw inicial de la torreta
 
     private void Awake()
     {
-        _startingYaw = Mathf.DeltaAngle(0f, transform.localEulerAngles.z);
+        _startingYaw = Mathf.DeltaAngle(0f, transform.localEulerAngles.z); // Se calcula la diferencia para obtener el yaw inicial con 0 y el transform.localEulerAngles.z 
     }
 
     private void Update()
     {
-        RotateTurretBase();
-        ElevateCannon();
+        RotateTurretBase(); // Llama la funcion para rotar la base de la torreta
+        ElevateCannon(); // Llama la funcion para elevar el cañon
     }
 
-    private void RotateTurretBase()
+    private void RotateTurretBase() // Funcion para rotar la base de la torreta
     {
-        if (_targetTransform == null)
+        if (_targetTransform == null) // Si el transform del objetivo es nulo, 
         {
             transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw);
             return;
