@@ -23,6 +23,11 @@ public class Agua : MonoBehaviour
     [SerializeField] private float _brake = 5f;
     [SerializeField] private float _turn = 20f;
     [SerializeField] private Transform _rudderPoint;
+    [SerializeField] private float _engineChangeSpeed = 0.5f;
+    [SerializeField] private float _rudderChangeSpeed = 0.4f;
+   
+
+
 
     private float _area;
     private float _HullHeight;
@@ -30,6 +35,8 @@ public class Agua : MonoBehaviour
     private float _draft;
     private float _currentAcceleration = 0f;
     private float _currentTurn = 0f;
+    private float _currentEngineInput;
+    private float _currentRudderInput;
 
     private Rigidbody _rigidBody;
 
@@ -52,9 +59,9 @@ public class Agua : MonoBehaviour
 
     private void Update()
     {
-        _currentAcceleration = Input.GetAxis("Vertical");
 
-        _currentTurn = Input.GetAxis("Horizontal");
+        UpdateEngineInput();
+        UpdateRudderInput();
 
 
     }
@@ -66,6 +73,47 @@ public class Agua : MonoBehaviour
 
     }
 
+    private void UpdateEngineInput()
+    {
+        float targetEngineInput = 0f;
+
+        if (Input.GetKey(KeyCode.W)) { targetEngineInput = 1f; }
+        else if (Input.GetKey(KeyCode.S)) { targetEngineInput = -1f; }
+
+        float engineInputChangePerFrame = _engineChangeSpeed * Time.deltaTime;
+
+        if (_currentEngineInput < targetEngineInput)
+        {
+            _currentEngineInput += engineInputChangePerFrame;
+            if (_currentEngineInput > targetEngineInput) { _currentEngineInput = targetEngineInput; }
+        }
+        else if (_currentEngineInput > targetEngineInput)
+        {
+            _currentEngineInput -= engineInputChangePerFrame;
+            if (_currentEngineInput < targetEngineInput) { _currentEngineInput = targetEngineInput; }
+        }
+    }
+
+    private void UpdateRudderInput()
+    {
+        float targetRudderInput = 0f;
+
+        if (Input.GetKey(KeyCode.A)) { targetRudderInput = 1f; }
+        else if (Input.GetKey(KeyCode.D)) { targetRudderInput = -1f; }
+
+        float rudderInputChangePerFrame = _rudderChangeSpeed * Time.deltaTime;
+
+        if (_currentRudderInput < targetRudderInput)
+        {
+            _currentRudderInput += rudderInputChangePerFrame;
+            if (_currentRudderInput > targetRudderInput) { _currentRudderInput = targetRudderInput; }
+        }
+        else if (_currentRudderInput > targetRudderInput)
+        {
+            _currentRudderInput -= rudderInputChangePerFrame;
+            if (_currentRudderInput < targetRudderInput) { _currentRudderInput = targetRudderInput; }
+        }
+    }
     private void FloatShip()
     {
         float gravity = Physics.gravity.magnitude;

@@ -26,11 +26,14 @@ public class Tower2 : MonoBehaviour
     private bool _usingExplosive = false;
     private float _currentYaw = 0f;
     private float _currentPitch = 0f;
+    private bool _useHighArc; 
 
     [Header("Turret")]
-    [SerializeField] private Transform _target;
+    [SerializeField] private Transform _targetTransform;
     [SerializeField] private Transform _turret;
 
+    [SerializeField] private Transform _cannonPivot;
+     
 
 
     public void FireProjectile()
@@ -47,7 +50,42 @@ public class Tower2 : MonoBehaviour
         Debug.DrawRay(transform.position, transform.forward * 5f, Color.red, 2f);
     }
 
-    private void Rotation()
+    private bool SolveBallisticAngle(Vector3 originPosition, Vector3 targetPosition, float projectileSpeed, out float launchAngle)
+    {
+        float gravity = Physics.gravity.magnitude;
+
+        Vector3 horizontalVector = new Vector3(
+            targetPosition.x - originPosition.x,
+            0f,
+            targetPosition.z - originPosition.z
+        );
+
+        float horizontalDistance = horizontalVector.magnitude;
+
+        float heightDifference = targetPosition.y - originPosition.y;
+
+        float speedSquared = projectileSpeed * projectileSpeed;
+        float speedFourth = speedSquared * speedSquared;
+
+        float discriminant = speedFourth - gravity * (gravity * horizontalDistance * horizontalDistance + 2 * heightDifference * speedSquared);
+
+        if (discriminant < 0f)
+        {
+            launchAngle = 0f;
+            return false;
+        }
+
+        float squareRoot = Mathf.Sqrt(discriminant);
+
+        float lowAngle = Mathf.Atan((speedSquared - squareRoot) / (gravity * horizontalDistance));
+        float highAngle = Mathf.Atan((speedSquared + squareRoot) / (gravity * horizontalDistance));
+
+        launchAngle = _useHighArc ? highAngle : lowAngle;
+
+        return true;
+    }
+
+   /*private void Rotation()
     {
         Vector3 direction = _target.position - _turret.position;
         direction.y = 0f;
@@ -55,11 +93,11 @@ public class Tower2 : MonoBehaviour
         float angle = Mathf.Atan2(  direction.x, direction.z) * Mathf.Rad2Deg;
 
         _yawPivot.localEulerAngles = new Vector3(0f, angle - 90f , 0f);
-    }
+    }*/
     private void Update()
     {
         //RotateMouse();
-        Rotation();
+        SolveBallisticAngle();
 
 
         if (Input.GetKeyDown(KeyCode.Space))
