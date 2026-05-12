@@ -46,7 +46,7 @@ public class SimpleFloat : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>(); 
         CalculateHullData();
     }
 
