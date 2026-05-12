@@ -3,7 +3,7 @@ using UnityEngine;
 public class MovementShip : MonoBehaviour
 {
     [Header("movimiento")]
-    public Transform _motor; // Donde se generara la potencia
+    [SerializeField] private Transform _motor; // Donde se generara la potencia
     [SerializeField] private float _steerPower = 500f; // el giro con 500 de fuerza definida
     [SerializeField] private float _power = 5f; // La fuerza del Forward (adelante y atras)
     [SerializeField] private float _maxSpeed = 10f; // La velocidad maxima a la que se puede llegar
