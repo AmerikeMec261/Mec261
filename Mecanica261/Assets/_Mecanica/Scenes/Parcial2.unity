@@ -2366,7 +2366,7 @@ MonoBehaviour:
   _leftmotors:
   - {fileID: 2131749371}
   - {fileID: 1980948050}
-  _motorForce: 285
+  _motorForce: 280
   _maxmotorForce: 18
   _rotation: 13
   _area: 0
