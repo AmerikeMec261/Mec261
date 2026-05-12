@@ -15,7 +15,7 @@ public class ShipMovement : MonoBehaviour
     public float turnTorque = 3000f; //<-- Posible uso de IA. No se utliza en ninguna parte del código.
 
     [Tooltip("El barco puede girar si se encuentra sobre esta velocidad" + "Un barco no puede girar en una velocidad 0")]
-    public float minSpeedTurn = 0.5f; //<-- Posible uso de IA. No se utliza en ninguna parte del código.
+    public float minSpeedTurn = 0.1f; //<-- Posible uso de IA. No se utliza en ninguna parte del código.
 
     [Header("Water Configuration")]
     [Tooltip("El barco solo se podra mover si esta en el agua")]

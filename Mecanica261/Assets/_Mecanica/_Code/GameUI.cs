@@ -35,7 +35,7 @@ public class GameUI : MonoBehaviour //El codigo no está estandarizado.
         {
             Vector3 zero = Vector3.zero;
             GameObject tower= Instantiate(towerPrefab,zero,Quaternion.identity);
-            tower.transform.SetParent(towerParent); //No uses abreviaciones
+            tower.transform.SetParent(towerParent); 
             tower.transform.localPosition = Vector3.zero;
         }
         else
