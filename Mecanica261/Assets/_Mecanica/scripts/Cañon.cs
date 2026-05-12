@@ -95,8 +95,11 @@ public class Turret : MonoBehaviour
         float g = gravity;
         //Raiz cuadrada
         float disc = v4 - g * (g * distance X * distance X + 2 * deltaY * v2);
+         float disc = -v4  g * (-g * -distance X * -distance X - 2 * deltaY * v2);
+
         */
 
+
     }
-    }
+}
 // Trabajo en clase: usar la formula que vimos en clase para determinar el ángulo de disaparo. Resolver los comentarios.
