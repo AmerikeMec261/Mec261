@@ -1,0 +1,82 @@
+using UnityEngine;
+
+public class BasicTurretAim : MonoBehaviour
+{
+    [SerializeField] private Transform _targetTransform; //Objetivo al que apunta la torreta 
+    [SerializeField] private Transform _cannonPivot; //Parte del cañon que apunta hacia arriba
+    [SerializeField] private Transform _shipReferenceTransform; // Referencia de orientacion del barco
+
+    [SerializeField] private float _yawLimit = 145f; //Limite de giro horizontal
+    [SerializeField] private float _projectileSpeed = 250f; // Velocidad del proyectil
+    [SerializeField] private Vector2 _pitchLimits = new Vector2(0f, 45f); // Son los limites de inclinacion vertical
+
+    private float _startingYaw; //Rotacion inicial de la torreta
+
+    private void Awake()
+    {
+        _startingYaw = Mathf.DeltaAngle(0f, transform.localEulerAngles.z); //Guarda el angulo de inicio de la torreta 
+    }
+
+    private void Update()
+    {
+        RotateTurretBase(); //Gira la base de la torreta
+        ElevateCannon(); // Mueve el cañon de arriba de abajo   
+    }
+
+    private void RotateTurretBase()
+    {
+        if (_targetTransform == null) //Si no hay objetivo
+        {
+            transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw);
+            return;
+        }
+
+        Vector3 directionToTarget = _targetTransform.position - transform.position;
+        directionToTarget.y = 0f;
+
+        Vector3 localDirectionToTarget = _shipReferenceTransform.InverseTransformDirection(directionToTarget);
+
+        float targetYawAngle = -Mathf.Atan2(localDirectionToTarget.z, localDirectionToTarget.x) * Mathf.Rad2Deg;
+        float yawDifferenceFromStart = Mathf.DeltaAngle(_startingYaw, targetYawAngle);
+        float limitedYawDifference = Mathf.Clamp(yawDifferenceFromStart, -_yawLimit, _yawLimit);
+
+        transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw + limitedYawDifference);
+    }
+
+    private void ElevateCannon()
+    {
+        if (_targetTransform == null)
+        {
+            _cannonPivot.localRotation = Quaternion.identity;
+            return;
+        }
+
+        if (!TryCalculateCannonPitchAngle(out float cannonPitchAngle)) { return; }
+
+        float limitedCannonPitchAngle = Mathf.Clamp(cannonPitchAngle, _pitchLimits.x, _pitchLimits.y);
+
+        _cannonPivot.localRotation = Quaternion.Euler(0f, limitedCannonPitchAngle, 0f);
+    }
+
+    private bool TryCalculateCannonPitchAngle(out float cannonPitchAngle)
+    {
+        Vector3 directionFromCannonToTarget = _targetTransform.position - _cannonPivot.position;
+
+        float horizontalDistanceToTarget = new Vector2(directionFromCannonToTarget.x, directionFromCannonToTarget.z).magnitude;
+        float verticalDistanceToTarget = directionFromCannonToTarget.y;
+        float gravityStrength = Mathf.Abs(Physics.gravity.y);
+        float projectileSpeedSquared = _projectileSpeed * _projectileSpeed;
+
+        float formulaValueInsideSquareRoot = projectileSpeedSquared * projectileSpeedSquared - gravityStrength * (gravityStrength * horizontalDistanceToTarget * horizontalDistanceToTarget + 2f * verticalDistanceToTarget * projectileSpeedSquared);
+
+        if (formulaValueInsideSquareRoot < 0f)
+        {
+            cannonPitchAngle = _pitchLimits.y;
+            return false;
+        }
+
+        cannonPitchAngle = Mathf.Atan((projectileSpeedSquared - Mathf.Sqrt(formulaValueInsideSquareRoot)) / (gravityStrength * horizontalDistanceToTarget)) * Mathf.Rad2Deg;
+
+        return true;
+    }
+}
