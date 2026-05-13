@@ -35,46 +35,46 @@ public class ShipBuoyancy : MonoBehaviour
 
     private void ApplyBuoyancy()
     {
-        float gravityStrength = Physics.gravity.magnitude; 
-        float hullVolumePerPoint = _hullVolume / _buoyancyPoints.Count;
+        float gravityStrength = Physics.gravity.magnitude;  //obtiene la gravedad del barco
+        float hullVolumePerPoint = _hullVolume / _buoyancyPoints.Count; //divide el volumen entre la cantidad de puntos en el barco 
 
-        for (int i = 0; i < _buoyancyPoints.Count; i++)
+        for (int i = 0; i < _buoyancyPoints.Count; i++) //es un bulce para ver cada punto de flotabilidad 
         {
-            Transform buoyancyPoint = _buoyancyPoints[i];
+            Transform buoyancyPoint = _buoyancyPoints[i];   //guarda los puntos de flotacion
 
-            float submergedAmount = Mathf.Clamp01((_waterLevel - buoyancyPoint.position.y) / _hullHeight);
-            if (submergedAmount <= 0f) { continue; }
+            float submergedAmount = Mathf.Clamp01((_waterLevel - buoyancyPoint.position.y) / _hullHeight);  //calcula que parte del punto esta bajo el agua 
+            if (submergedAmount <= 0f) { continue; }    //si el punto no esta sumergido salta al siguiente
 
-            float buoyancyForce = _waterDensity * hullVolumePerPoint * gravityStrength * submergedAmount;
+            float buoyancyForce = _waterDensity * hullVolumePerPoint * gravityStrength * submergedAmount;   //es la formula de empuje 
 
-            _rigidbody.AddForceAtPosition(Vector3.up * buoyancyForce, buoyancyPoint.position, ForceMode.Force);
+            _rigidbody.AddForceAtPosition(Vector3.up * buoyancyForce, buoyancyPoint.position, ForceMode.Force); //aplica una fuerza de empuje hacia arriba
 
-            Vector3 pointVelocity = _rigidbody.GetPointVelocity(buoyancyPoint.position);
+            Vector3 pointVelocity = _rigidbody.GetPointVelocity(buoyancyPoint.position);    //obtiene la velocidad del barco 
 
-            Vector3 waterDragForce = -pointVelocity * pointVelocity.magnitude * _waterDrag * submergedAmount;
+            Vector3 waterDragForce = -pointVelocity * pointVelocity.magnitude * _waterDrag * submergedAmount;   //calcula la fuerza de resistencia del barco 
 
-            _rigidbody.AddForceAtPosition(waterDragForce, buoyancyPoint.position, ForceMode.Force);
+            _rigidbody.AddForceAtPosition(waterDragForce, buoyancyPoint.position, ForceMode.Force); //aplical la fuerza de friccion del barco 
         }
     }
 
     private void CalculateHullData()
     {
         _area = CalculateHullArea();
-        _hullHeight = _topPoint.position.y - _bottomPoint.position.y;
-        _hullVolume = _area * _hullHeight * _shapeFactor;
+        _hullHeight = _topPoint.position.y - _bottomPoint.position.y;   //posicion del punto mas alto - el mas bajo 
+        _hullVolume = _area * _hullHeight * _shapeFactor;   //la fornula del area
 
-        float requiredVolume = _rigidbody.mass / _waterDensity;
-        _draft = requiredVolume / (_area * _shapeFactor);
+        float requiredVolume = _rigidbody.mass / _waterDensity; //volumen desplazado al estar en el agua 
+        _draft = requiredVolume / (_area * _shapeFactor);   //cuanto se hunde 
     }
 
     private float CalculateHullArea()  //esta funcion es para 
     {
         float area = 0f;
 
-        for (int i = 0; i < _buoyancyPoints.Count; i++)
+        for (int i = 0; i < _buoyancyPoints.Count; i++) //mueve los puntos del barco para formar un rectangulo imaginario
         {
-            Vector3 currentPoint = transform.InverseTransformPoint(_buoyancyPoints[i].position);
-            Vector3 nextPoint = transform.InverseTransformPoint(_buoyancyPoints[(i + 1) % _buoyancyPoints.Count].position);
+            Vector3 currentPoint = transform.InverseTransformPoint(_buoyancyPoints[i].position);    //convierte la posicion del punto en coordenadas locales 
+            Vector3 nextPoint = transform.InverseTransformPoint(_buoyancyPoints[(i + 1) % _buoyancyPoints.Count].position); //convierte la posicion del siguiente punto en coordenadas locales 
 
             area += (currentPoint.x * nextPoint.z) - (nextPoint.x * currentPoint.z);
         }
