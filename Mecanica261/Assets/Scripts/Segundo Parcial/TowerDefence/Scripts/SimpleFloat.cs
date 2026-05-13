@@ -148,7 +148,7 @@ public class SimpleFloat : MonoBehaviour
             _rigidbody.AddForceAtPosition(-direction * _rotationAplication, motor.position, ForceMode.Force);
         }
     }
-    private void CalculateHullData()
+    private void CalculateHullData() 
     {
         _area = CalculateArea();
         //Calcular altura del top y button point

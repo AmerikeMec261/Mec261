@@ -11,6 +11,7 @@ public class BasicTurretAim : MonoBehaviour
     [SerializeField] private float _projectileSpeed = 250f;
     [SerializeField] private Vector2 _pitchLimits = new Vector2(0f, 45f);
 
+    //El punto de origen en donde hace que las torretas giren
     private float _startingYaw;
 
     private void Awake()
@@ -21,6 +22,8 @@ public class BasicTurretAim : MonoBehaviour
 
     private void Update()
     {
+        //Y por último la torreta aplicara un giro de manera horizontal en la cual pueda apuntar figamente a un target
+        // Y mientras que la torreta va girar de manera vertical para asi para presenciar un tiro barabólico
         RotateTurretBase();
         ElevateCannon();
     }
@@ -59,22 +62,35 @@ public class BasicTurretAim : MonoBehaviour
         transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw + limitedYawDifference);
     }
 
+    //Ahora que tenemos en que angulo debe girar las torretas para apuntar a un target de manera horizontal, ahora debemos calcular
+    //el ángulo de elevación de la torreta para apuntar al target
     private void ElevateCannon()
     {
+        //Primero si detecta al target, entonces la torreta hará una rotación hacia mira fijamente al target
         if (_targetTransform == null)
         {
             _cannonPivot.localRotation = Quaternion.identity;
             return;
         }
 
+        // Después debemos de calcular el ángulo de lanzamiento parabólico.
+        //Para eso ocuparemos el void de TryCalculateCannonPitchAngle, en la cual hará el calculo del ángulo de lanzamiento parabólico
         if (!TryCalculateCannonPitchAngle(out float cannonPitchAngle)) { return; }
 
+        //Ahora que ya tenemos el calculo de angulo de lanzamiento parabólico, igual vamos a agregar un límite a la torreta
+        //Primero vamos agregar un nuevo float en la cual entro de ahí vamos a darle la información de las limitantes de rotacion mediante 
+        //un mathf.clmap. Dentro del Mathf.Clamp estamos indicando que el resultado de la calculadora del angulo de rotación
+        // le estamos dando sus límites del pitch a base de los valores que los tenemos asignados.
+        //Y por último le agregamos la informacion de limitedCannonPitchAngle a la hora de que la torreta detecta a un target
         float limitedCannonPitchAngle = Mathf.Clamp(cannonPitchAngle, _pitchLimits.x, _pitchLimits.y);
-
         _cannonPivot.localRotation = Quaternion.Euler(0f, limitedCannonPitchAngle, 0f);
     }
 
-    private bool TryCalculateCannonPitchAngle(out float cannonPitchAngle)
+
+    //Esta es la calculadora de ángulo de lanzamiento parabólico
+    // Esto es esencial si queremos que nuestras torretas hagan un giro vertical a la hora de apuntar un target, y cada torreta tendrá un
+    //giro diferente por donde están colocados.
+    private bool TryCalculateCannonPitchAngle(out float cannonPitchAngle) 
     {
         Vector3 directionFromCannonToTarget = _targetTransform.position - _cannonPivot.position;
 
