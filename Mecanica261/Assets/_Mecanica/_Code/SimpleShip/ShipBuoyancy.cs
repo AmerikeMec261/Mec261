@@ -15,6 +15,8 @@ public class ShipBuoyancy : MonoBehaviour
     [SerializeField] private Transform _bottomPoint;
     [SerializeField] private List<Transform> _buoyancyPoints = new List<Transform>();
 
+    //Creamos las variables son serializefield para dejarlas en privado 
+
     private Rigidbody _rigidbody;
 
     private float _area;
@@ -22,17 +24,20 @@ public class ShipBuoyancy : MonoBehaviour
     private float _hullVolume;
     private float _draft;
 
+    // Y aqui los private para hacer las formulas
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         CalculateHullData();
     }
 
+    //Agregamos aqui el calculatehulldata para que se apliquen a la hora de la ejecución del codigo
     private void FixedUpdate()
     {
         ApplyBuoyancy();
     }
-
+    // Y aqui el appplybouyancy igualmente para que se aplique 
     private void ApplyBuoyancy()
     {
         float gravityStrength = Physics.gravity.magnitude;
@@ -56,7 +61,7 @@ public class ShipBuoyancy : MonoBehaviour
             _rigidbody.AddForceAtPosition(waterDragForce, buoyancyPoint.position, ForceMode.Force);
         }
     }
-
+    //Aqui ponemos el void de applybuoyancy junto con toda la formula de la flotabilidad, para que este flote 
     private void CalculateHullData()
     {
         _area = CalculateHullArea();
@@ -66,7 +71,7 @@ public class ShipBuoyancy : MonoBehaviour
         float requiredVolume = _rigidbody.mass / _waterDensity;
         _draft = requiredVolume / (_area * _shapeFactor);
     }
-
+    // Aqui ponemos la formula para calcular el punto mas alto y mas bajo del barco 
     private float CalculateHullArea()
     {
         float area = 0f;
@@ -82,6 +87,10 @@ public class ShipBuoyancy : MonoBehaviour
         return Mathf.Abs(area) * 0.5f;
     }
 
+    // Calculamos los  vectores para que con el inversetransformpoint convierta el espacio local a mundial 
+    //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Transform.InverseTransformPoint.html
+
+
     private void OnDrawGizmos()
     {
         if (_buoyancyPoints == null || _buoyancyPoints.Count < 2) { return; }
@@ -95,5 +104,5 @@ public class ShipBuoyancy : MonoBehaviour
 
             Gizmos.DrawLine(currentPoint, nextPoint);
         }
-    }
+    } // El gizmos es mas que nada algo visual de unas lineas para poder ver
 }

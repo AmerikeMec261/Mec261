@@ -65,7 +65,7 @@ public class SimpleShipControl : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) { targetRudderInput = 1f; } 
         else if (Input.GetKey(KeyCode.D)) { targetRudderInput = -1f; }
 
-        float rudderInputChangePerFrame = _rudderChangeSpeed * Time.deltaTime;
+        float rudderInputChangePerFrame = _rudderChangeSpeed * Time.deltaTime; 
 
         if (_currentRudderInput < targetRudderInput)
         {
@@ -81,9 +81,9 @@ public class SimpleShipControl : MonoBehaviour
 
     private void ApplyEngineForce()
     {
-        Vector3 engineForceDirection = transform.right;
-        Vector3 engineForce = engineForceDirection * _currentEngineInput * _engineForce;
-        _rigidbody.AddForceAtPosition(engineForce, _propeller.position, ForceMode.Force);
+        Vector3 engineForceDirection = transform.right; // Aqui usamos el vector3 con el engine force, para darle direccion al barco 
+        Vector3 engineForce = engineForceDirection * _currentEngineInput * _engineForce; // Aqui al igualmente usamos el vector3 por el engine force para darle potencia al motor 
+        _rigidbody.AddForceAtPosition(engineForce, _propeller.position, ForceMode.Force); // Aqui usamos el addforceatposition para con la formula para darle potencia al barco
     }
 
     private void ApplyRudderForce()
@@ -91,5 +91,5 @@ public class SimpleShipControl : MonoBehaviour
         Vector3 rudderForceDirection = -transform.forward;
         Vector3 rudderForce = rudderForceDirection * _currentRudderInput * _rudderForce;
         _rigidbody.AddForceAtPosition(rudderForce, _rudder.position, ForceMode.Force);
-    }
+    } // Aqui usamos la misma logica que arriba para darle direccion hacia adelante
 }
