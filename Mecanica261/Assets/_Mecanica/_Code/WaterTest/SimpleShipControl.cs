@@ -83,13 +83,13 @@ public class SimpleShipControl : MonoBehaviour
     {
         Vector3 engineForceDirection = transform.right; // Esta linea se encarga de aplicar la fuerza que va a mover al barco hacía delante en eje X
         Vector3 engineForce = engineForceDirection * _currentEngineInput * _engineForce; // Esta línea se encarga de que la fuerza se aplique con la cantidad y dirección correctas 
-        _rigidbody.AddForceAtPosition(engineForce, _propeller.position, ForceMode.Force);
+        _rigidbody.AddForceAtPosition(engineForce, _propeller.position, ForceMode.Force); //Esta línea es la que hace que la fuerza se aplique al rigidbody del barco y se efectue el movimiento de manera correcta
     }
 
     private void ApplyRudderForce()
     {
-        Vector3 rudderForceDirection = -transform.forward;
-        Vector3 rudderForce = rudderForceDirection * _currentRudderInput * _rudderForce;
-        _rigidbody.AddForceAtPosition(rudderForce, _rudder.position, ForceMode.Force);
+        Vector3 rudderForceDirection = -transform.forward; // Esta linea se encarga de aplicar la fuerza que va a mover al barco hacía delante en eje Z para girar el barco
+        Vector3 rudderForce = rudderForceDirection * _currentRudderInput * _rudderForce; // Esta línea se encarga de que la fuerza se aplique con la cantidad y dirección correctas 
+        _rigidbody.AddForceAtPosition(rudderForce, _rudder.position, ForceMode.Force); //Esta línea es la que hace que la fuerza se aplique al rigidbody del barco y se efectue el movimiento de manera correcta
     }
 }

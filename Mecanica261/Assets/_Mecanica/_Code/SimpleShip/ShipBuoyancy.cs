@@ -4,11 +4,15 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody))]
 public class ShipBuoyancy : MonoBehaviour
 {
+
+    // Esta sección de water se encarga de determinar las caracteristicas del agua como el nivel, la densidad y el arrastre de la misma
     [Header("Water")]
     [SerializeField] private float _waterLevel = 0f;
     [SerializeField] private float _waterDensity = 1000f;
     [SerializeField] private float _waterDrag = 0.1f;
 
+
+    // La seccion llamada Hull se encarga de detectar los puntos de flotación del barco para que la flotabilidad funcione
     [Header("Hull")]
     [SerializeField] private float _shapeFactor = 0.67f;
     [SerializeField] private Transform _topPoint;
@@ -24,6 +28,7 @@ public class ShipBuoyancy : MonoBehaviour
 
     private void Awake()
     {
+        //En el awake definimos el rigidbody y después llamamos el CalculateHullData
         _rigidbody = GetComponent<Rigidbody>();
         CalculateHullData();
     }
@@ -35,6 +40,7 @@ public class ShipBuoyancy : MonoBehaviour
 
     private void ApplyBuoyancy()
     {
+        //En el metodo de apply bouyancy, lo que se hace es aplicando la gravedad de Unity y tomando en cuenta los puntos de flotabilidad del barco, y aplicando la fuerza para la flotabilidad
         float gravityStrength = Physics.gravity.magnitude;
         float hullVolumePerPoint = _hullVolume / _buoyancyPoints.Count;
 
@@ -59,6 +65,7 @@ public class ShipBuoyancy : MonoBehaviour
 
     private void CalculateHullData()
     {
+        //Este metodo lo que hace es que se encarga de obtener el area y el volumen del barco
         _area = CalculateHullArea();
         _hullHeight = _topPoint.position.y - _bottomPoint.position.y;
         _hullVolume = _area * _hullHeight * _shapeFactor;
@@ -69,6 +76,7 @@ public class ShipBuoyancy : MonoBehaviour
 
     private float CalculateHullArea()
     {
+        //Este metodo se encarga de calcular el area del barco
         float area = 0f;
 
         for (int i = 0; i < _buoyancyPoints.Count; i++)
@@ -84,6 +92,8 @@ public class ShipBuoyancy : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        //Este metodo se encarga de agregar color a los puntos de flotacion, para que sean facilmente aplicables
+
         if (_buoyancyPoints == null || _buoyancyPoints.Count < 2) { return; }
 
         Gizmos.color = Color.green;
