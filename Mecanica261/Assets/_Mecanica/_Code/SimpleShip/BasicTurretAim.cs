@@ -38,44 +38,44 @@ public class BasicTurretAim : MonoBehaviour
 
         float targetYawAngle = -Mathf.Atan2(localDirectionToTarget.z, localDirectionToTarget.x) * Mathf.Rad2Deg;//calcula el angulo horizontal hacia el enemigo y calcula radianes a grados
         float yawDifferenceFromStart = Mathf.DeltaAngle(_startingYaw, targetYawAngle);// calcula cuanto gira desde donde inicia el barquito
-        float limitedYawDifference = Mathf.Clamp(yawDifferenceFromStart, -_yawLimit, _yawLimit);// 
+        float limitedYawDifference = Mathf.Clamp(yawDifferenceFromStart, -_yawLimit, _yawLimit);//este limita el giro para que no gire mas de lo que gira 
 
-        transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw + limitedYawDifference);//
+        transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw + limitedYawDifference);// mete una rotacion horizontal
     }
 
-    private void ElevateCannon()//
+    private void ElevateCannon()//mueve el cañon de arriba a abajo
     {
-        if (_targetTransform == null)
+        if (_targetTransform == null) 
         {
-            _cannonPivot.localRotation = Quaternion.identity;//
+            _cannonPivot.localRotation = Quaternion.identity;// verifica que exista un objeto y si no hay se reinicia la rotacion
             return;
         }
 
-        if (!TryCalculateCannonPitchAngle(out float cannonPitchAngle)) { return; }//
+        if (!TryCalculateCannonPitchAngle(out float cannonPitchAngle)) { return; }// hace que el angulo de disparo sea correcto 
 
-        float limitedCannonPitchAngle = Mathf.Clamp(cannonPitchAngle, _pitchLimits.x, _pitchLimits.y);//
+        float limitedCannonPitchAngle = Mathf.Clamp(cannonPitchAngle, _pitchLimits.x, _pitchLimits.y);//este limita el angulo vertical
 
-        _cannonPivot.localRotation = Quaternion.Euler(0f, limitedCannonPitchAngle, 0f);//
+        _cannonPivot.localRotation = Quaternion.Euler(0f, limitedCannonPitchAngle, 0f);//rota el cañon de arriba a abajo
     }
 
-    private bool TryCalculateCannonPitchAngle(out float cannonPitchAngle)//
+    private bool TryCalculateCannonPitchAngle(out float cannonPitchAngle)// calcula que el angulo del disparo sea verdadero o falso  
     {
-        Vector3 directionFromCannonToTarget = _targetTransform.position - _cannonPivot.position;//
+        Vector3 directionFromCannonToTarget = _targetTransform.position - _cannonPivot.position;//es la direccion del cañon al enemigo
 
-        float horizontalDistanceToTarget = new Vector2(directionFromCannonToTarget.x, directionFromCannonToTarget.z).magnitude;//
-        float verticalDistanceToTarget = directionFromCannonToTarget.y;//
-        float gravityStrength = Mathf.Abs(Physics.gravity.y);//
-        float projectileSpeedSquared = _projectileSpeed * _projectileSpeed;//
+        float horizontalDistanceToTarget = new Vector2(directionFromCannonToTarget.x, directionFromCannonToTarget.z).magnitude;//este da la distancia horizontal del enemigo
+        float verticalDistanceToTarget = directionFromCannonToTarget.y;//esta es la diferencia de la altura
+        float gravityStrength = Mathf.Abs(Physics.gravity.y);//esta calcula la gravedad
+        float projectileSpeedSquared = _projectileSpeed * _projectileSpeed;//da una velocidad al enemigo
 
-        float formulaValueInsideSquareRoot = projectileSpeedSquared * projectileSpeedSquared - gravityStrength * (gravityStrength * horizontalDistanceToTarget * horizontalDistanceToTarget + 2f * verticalDistanceToTarget * projectileSpeedSquared);//
+        float formulaValueInsideSquareRoot = projectileSpeedSquared * projectileSpeedSquared - gravityStrength * (gravityStrength * horizontalDistanceToTarget * horizontalDistanceToTarget + 2f * verticalDistanceToTarget * projectileSpeedSquared);//esto hace que la bala pueda llegar al enemigo
 
         if (formulaValueInsideSquareRoot < 0f)
         {
-            cannonPitchAngle = _pitchLimits.y;//
+            cannonPitchAngle = _pitchLimits.y;// usa el angulo maximo y si te da negativo no le llega al enemigo
             return false;
         }
 
-        cannonPitchAngle = Mathf.Atan((projectileSpeedSquared - Mathf.Sqrt(formulaValueInsideSquareRoot)) / (gravityStrength * horizontalDistanceToTarget)) * Mathf.Rad2Deg;//
+        cannonPitchAngle = Mathf.Atan((projectileSpeedSquared - Mathf.Sqrt(formulaValueInsideSquareRoot)) / (gravityStrength * horizontalDistanceToTarget)) * Mathf.Rad2Deg;//calcula el angulo del disparo exacto
 
         return true;
     }
