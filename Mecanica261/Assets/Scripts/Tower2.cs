@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 
 
-public class Tower2 : MonoBehaviour
+/*public class Tower2 : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private Transform _yawPivot;
@@ -94,8 +94,7 @@ public class Tower2 : MonoBehaviour
 
         _yawPivot.localEulerAngles = new Vector3(0f, angle - 90f , 0f);
     }*/
-    private void Update()
-    {
+  /*  {
         //RotateMouse();
         SolveBallisticAngle();
 
@@ -172,4 +171,3 @@ return true;
 
 
 
-}
