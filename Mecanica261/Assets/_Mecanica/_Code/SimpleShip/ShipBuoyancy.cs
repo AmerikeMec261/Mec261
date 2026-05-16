@@ -97,3 +97,32 @@ public class ShipBuoyancy : MonoBehaviour
         }
     }
 }
+
+// Este script se encarga de controlar toda la flotación del barco usando físicas de Unity.
+// En el código se utilizan diferentes puntos de flotación para detectar
+// qué partes del barco están dentro del agua y aplicar fuerzas de empuje.
+
+// En varias líneas se usa el Rigidbody del barco para aplicar fuerzas físicas,
+// especialmente con métodos como AddForceAtPosition(), el cual permite aplicar
+// fuerza en puntos específicos para que el barco se balancee de manera realista.
+
+// También hay cálculos relacionados con el volumen y el área del casco,
+// los cuales ayudan a determinar qué tan fuerte debe ser la flotación.
+// Algunas variables guardan datos como la densidad del agua,
+// la profundidad máxima antes de hundirse y la resistencia del agua.
+
+// En ciertas partes del código se calcula cuánto está sumergido cada punto de flotación.
+// Dependiendo de ese valor, el script aumenta o disminuye la fuerza aplicada,
+// simulando cómo un barco real sube y baja con las olas.
+
+// Además, el script agrega drag o resistencia al movimiento.
+// Esto evita que el barco se deslice demasiado rápido sobre el agua
+// y hace que el movimiento se sienta más pesado y natural.
+
+// También se utilizan ciclos y arreglos para recorrer todos los puntos de flotación,
+// aplicando fuerzas individualmente en cada uno.
+// Gracias a eso, el barco puede inclinarse correctamente hacia los lados
+// o hacia adelante dependiendo de cómo interactúe con el agua.
+
+// En general, este script es el encargado de toda la simulación de flotación,
+// estabilidad y comportamiento físico del barco mientras navega.

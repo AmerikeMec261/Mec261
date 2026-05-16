@@ -27,56 +27,64 @@ public class BasicTurretAim : MonoBehaviour
     {
         if (_targetTransform == null) //Si no hay objetivo
         {
-            transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw);
+            transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw); // Regresa a la rotación inicial
             return;
+            // Documentación:
+            // https://docs.unity3d.com/ScriptReference/Quaternion.Euler.html
+
         }
 
-        Vector3 directionToTarget = _targetTransform.position - transform.position;
-        directionToTarget.y = 0f;
+        Vector3 directionToTarget = _targetTransform.position - transform.position; // Dirección desde la torreta hacia el objetivo
+        directionToTarget.y = 0f; // Ignora la altura
 
-        Vector3 localDirectionToTarget = _shipReferenceTransform.InverseTransformDirection(directionToTarget);
+        Vector3 localDirectionToTarget = _shipReferenceTransform.InverseTransformDirection(directionToTarget);  // Convierte la dirección al espacio local del barco
+        // Documentación:
+        // https://docs.unity3d.com/ScriptReference/Transform.InverseTransformDirection.html
 
-        float targetYawAngle = -Mathf.Atan2(localDirectionToTarget.z, localDirectionToTarget.x) * Mathf.Rad2Deg;
-        float yawDifferenceFromStart = Mathf.DeltaAngle(_startingYaw, targetYawAngle);
-        float limitedYawDifference = Mathf.Clamp(yawDifferenceFromStart, -_yawLimit, _yawLimit);
+        float targetYawAngle = -Mathf.Atan2(localDirectionToTarget.z, localDirectionToTarget.x) * Mathf.Rad2Deg; // Calcula el ángulo horizontal hacia el objetivo
+        float yawDifferenceFromStart = Mathf.DeltaAngle(_startingYaw, targetYawAngle); // Diferencia entre el ángulo inicial y el objetivo
+        float limitedYawDifference = Mathf.Clamp(yawDifferenceFromStart, -_yawLimit, _yawLimit); // Limita el giro máximo
 
-        transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw + limitedYawDifference);
+        transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw + limitedYawDifference); // Aplica la rotación horizontal
     }
 
     private void ElevateCannon()
     {
-        if (_targetTransform == null)
+        if (_targetTransform == null) // Si no hay objetivo
         {
-            _cannonPivot.localRotation = Quaternion.identity;
+            _cannonPivot.localRotation = Quaternion.identity; // Reinicia la rotación del cañón
             return;
         }
 
-        if (!TryCalculateCannonPitchAngle(out float cannonPitchAngle)) { return; }
+        if (!TryCalculateCannonPitchAngle(out float cannonPitchAngle)) { return; }  // Intenta calcular el ángulo correcto
 
-        float limitedCannonPitchAngle = Mathf.Clamp(cannonPitchAngle, _pitchLimits.x, _pitchLimits.y);
+        float limitedCannonPitchAngle = Mathf.Clamp(cannonPitchAngle, _pitchLimits.x, _pitchLimits.y); // Limita el ángulo vertical
 
-        _cannonPivot.localRotation = Quaternion.Euler(0f, limitedCannonPitchAngle, 0f);
+        _cannonPivot.localRotation = Quaternion.Euler(0f, limitedCannonPitchAngle, 0f); // Aplica la inclinación del cañón
     }
 
     private bool TryCalculateCannonPitchAngle(out float cannonPitchAngle)
     {
-        Vector3 directionFromCannonToTarget = _targetTransform.position - _cannonPivot.position;
+        Vector3 directionFromCannonToTarget = _targetTransform.position - _cannonPivot.position; // Dirección desde el cañón hasta el objetivo
 
-        float horizontalDistanceToTarget = new Vector2(directionFromCannonToTarget.x, directionFromCannonToTarget.z).magnitude;
-        float verticalDistanceToTarget = directionFromCannonToTarget.y;
-        float gravityStrength = Mathf.Abs(Physics.gravity.y);
-        float projectileSpeedSquared = _projectileSpeed * _projectileSpeed;
+        float horizontalDistanceToTarget = new Vector2(directionFromCannonToTarget.x, directionFromCannonToTarget.z).magnitude; // Distancia horizontal al objetivo
+        float verticalDistanceToTarget = directionFromCannonToTarget.y; // Distancia vertical al objetivo
+        float gravityStrength = Mathf.Abs(Physics.gravity.y);  // Aplica fuerza de gravedad
+        float projectileSpeedSquared = _projectileSpeed * _projectileSpeed;  // Velocidad del proyectil al cuadrado
 
-        float formulaValueInsideSquareRoot = projectileSpeedSquared * projectileSpeedSquared - gravityStrength * (gravityStrength * horizontalDistanceToTarget * horizontalDistanceToTarget + 2f * verticalDistanceToTarget * projectileSpeedSquared);
+        float formulaValueInsideSquareRoot = projectileSpeedSquared * projectileSpeedSquared - gravityStrength * (gravityStrength * horizontalDistanceToTarget * horizontalDistanceToTarget + 2f * verticalDistanceToTarget * projectileSpeedSquared);  // Fórmula balística para calcular el disparo
 
-        if (formulaValueInsideSquareRoot < 0f)
+        if (formulaValueInsideSquareRoot < 0f)  // Si el valor es menor a 0 no puede llegar al objetivo
         {
-            cannonPitchAngle = _pitchLimits.y;
+            cannonPitchAngle = _pitchLimits.y; // Usa el ángulo máximo
             return false;
         }
 
-        cannonPitchAngle = Mathf.Atan((projectileSpeedSquared - Mathf.Sqrt(formulaValueInsideSquareRoot)) / (gravityStrength * horizontalDistanceToTarget)) * Mathf.Rad2Deg;
+        cannonPitchAngle = Mathf.Atan((projectileSpeedSquared - Mathf.Sqrt(formulaValueInsideSquareRoot)) / (gravityStrength * horizontalDistanceToTarget)) * Mathf.Rad2Deg; // Calcula el ángulo de inclinación necesario
 
         return true;
+
+        // Documentación:
+        // https://docs.unity3d.com/ScriptReference/Mathf.Sqrt.html
     }
 }
