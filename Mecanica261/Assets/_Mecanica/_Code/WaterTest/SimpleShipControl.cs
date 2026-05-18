@@ -22,16 +22,16 @@ public class SimpleShipControl : MonoBehaviour
 
     private void Awake() 
     { 
-        _rigidbody = GetComponent<Rigidbody>(); //Aquí es para  
+        _rigidbody = GetComponent<Rigidbody>(); //Aquí es para asignar el rb.
     }
 
-    private void Update()
+    private void Update() // Se aplica aquí el update del input y del rudder.
     {
         UpdateEngineInput();
         UpdateRudderInput();
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate() //Aquí se aplica la fuerza del motor y del rudder .
     {
         ApplyEngineForce();
         ApplyRudderForce();
