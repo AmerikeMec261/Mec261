@@ -35,7 +35,7 @@ public class Ejercicio : MonoBehaviour
 
     private List<GameObject> _inventory = new List<GameObject>(); //15
 
-    [FormerlySerializedAs("_speed")] private float _speed2; //16
+    [FormerlySerializedAs("_speed")] private float _speed1; //16
 
     private Vector3 _playerPosition; //17
 
