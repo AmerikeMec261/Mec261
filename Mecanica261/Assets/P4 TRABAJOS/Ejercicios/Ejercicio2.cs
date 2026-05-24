@@ -1,10 +1,6 @@
-using DG.Tweening;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
+
 
 public class Ejercicio2 : MonoBehaviour
 {
