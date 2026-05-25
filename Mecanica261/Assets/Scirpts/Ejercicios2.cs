@@ -126,8 +126,7 @@ public class Ejercicios2 : MonoBehaviour
     }
 
     public float GetHealthPercentage(float currentHealth, float maxHealth) //18
-    {
-        // Se asegura de no dividir entre 0
+    {        
         if (maxHealth <= 0) return 0f;
         return currentHealth / maxHealth;
     }
