@@ -12,11 +12,13 @@ public class BasicTurretAim : MonoBehaviour
 
     private float _startingYaw;
 
+    // Usamos las variables con serializefield para hacerlas privadas y usarlas dentro de unity 
+
     private void Awake()
     {
         _startingYaw = Mathf.DeltaAngle(0f, transform.localEulerAngles.z);
     }
-
+    // Ponemos la formula para el yaw y que este nos de los angulos para la torreta 
     private void Update()
     {
         RotateTurretBase();
@@ -43,6 +45,11 @@ public class BasicTurretAim : MonoBehaviour
         transform.localRotation = Quaternion.Euler(0f, 0f, _startingYaw + limitedYawDifference);
     }
 
+    //Aqui es la formula para la torreta para darle los angulos y que esta gire junto con el math.clamp para limitar el valor flotante minimo y maximo 
+
+    // https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Mathf.Clamp.html
+
+
     private void ElevateCannon()
     {
         if (_targetTransform == null)
@@ -57,6 +64,8 @@ public class BasicTurretAim : MonoBehaviour
 
         _cannonPivot.localRotation = Quaternion.Euler(0f, limitedCannonPitchAngle, 0f);
     }
+
+    // Aqui ponemos la formula para que el cañon suba de formal vertical la parte del cañon igualmente con el math.clamp.
 
     private bool TryCalculateCannonPitchAngle(out float cannonPitchAngle)
     {
@@ -74,9 +83,11 @@ public class BasicTurretAim : MonoBehaviour
             cannonPitchAngle = _pitchLimits.y;
             return false;
         }
-
+        
         cannonPitchAngle = Mathf.Atan((projectileSpeedSquared - Mathf.Sqrt(formulaValueInsideSquareRoot)) / (gravityStrength * horizontalDistanceToTarget)) * Mathf.Rad2Deg;
 
         return true;
     }
-}
+}  // Creo aqui tratamos de identificar el target del cañon junto con la gravedad y la celocidad del proyectil, el math.atan devielve el angulo en grados para que no tenga problema el codigo el math. sqrt devuelve la raiz cuadrada del numero real
+   //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Mathf.Atan.html
+   //https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Mathf.Sqrt.html
