@@ -5,7 +5,7 @@ public class Ejercicios2 : MonoBehaviour
     /*
     [SerializeField] private int _playerHealth = 100;
     [SerializeField] private int _damage = 5;
-    private string Playername 
+    private string _playername 
 
 
     private override void PlayerDamage() // ejercicio 1
@@ -23,19 +23,41 @@ public class Ejercicios2 : MonoBehaviour
 
     private override void CalculateDistance()  //3
     { 
-     Vector3 * Vector3 
+     return Vector3.Distance(origin, destiny);
     }
 
-     private override void PlayerName()   //5
+    private Vector3 GetDirection() //4
+    {
+    return (destiny - origin).normalized;
+    }
+
+     private string PlayerName()   //5
 
     {
-       
+       return _playername 
     }
 
-    private override void  Enemies() //6
+    private override void  Enemies(List<GameObject> Enemylist) //6
     {
-        List
+        return Enemylist.count;
     }
+
+    private void PlayerMove(Vector3 direction, float celocity) //8
+    {
+    transform.position +=direction * velocity * Time.deltaTime;
+    }
+
+    private float GradeToRadians(float grades) //9
+    {
+     return grades * Mathf.Deg2Rad;
+    }
+
+    private Quaternion AngleRotation() //12
+
+    {
+    return Quaternion.Euler(0, gradesangles, 0);
+    }
+
 
 
     */
