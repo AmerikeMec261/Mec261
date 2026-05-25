@@ -148,6 +148,4 @@ public class Metodos_Ejercicios : MonoBehaviour
        _rigidbody.AddForce(_direction * _force);
     }
 
-
-
 }
