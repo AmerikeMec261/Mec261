@@ -1,15 +1,15 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 
 public class Ejercicio3 : MonoBehaviour
 {
     [Header("Variables")]
     [SerializeField] private int _stamina;
-    [SerializeField] private List<GameObject> _Inventory;
-    [SerializeField] private float _speed = 50f;
+    [SerializeField] private List<GameObject> _Inventory = new();
+    [SerializeField] private float _speed;
+    [SerializeField] private Transform _enemyPosition;
 
     private int _currentHealth;
     private int _MaxHealth;
@@ -40,7 +40,7 @@ public class Ejercicio3 : MonoBehaviour
 
     public int Stamina => _stamina; //10
 
-    public bool Attack => 
+    public bool Attack => (_rigidbodyP.transform.position - _enemyPosition.transform.position).magnitude <= 5; //11
 
     public int Volume { get { return _volume; } //12
     set { _volume = Mathf.Clamp(value, 0, 100); }}
@@ -50,12 +50,13 @@ public class Ejercicio3 : MonoBehaviour
 
     public float HorizontalSpeed => _rigidbodyP.linearVelocity.magnitude; //16
 
-    
+    public int Energy { get; private set ; } //17
 
+    public Vector3 CurrentPosition => _rigidbodyP.transform.position; //18
 
+    public IReadOnlyList<GameObject> InventoryItems => _Inventory; //19
 
-
-
+    public bool IsRunning => _rigidbodyP.linearVelocity.magnitude > 0.5; //20
 
 
 }
