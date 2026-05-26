@@ -12,6 +12,8 @@ public class PropiedadeeProgra : MonoBehaviour
     [SerializeField] private float _volume;
     [SerializeField] private float _inventoryItems;
     [SerializeField] private float _inventorySize;
+    [SerializeField] private float _runSpeed;
+    //private RigidBody _rigidBody;
     public int Health {  get; private set; }
     public bool IsDead => Health <= 0;
     //public string PlayerName { get; init; }
@@ -29,7 +31,11 @@ public class PropiedadeeProgra : MonoBehaviour
     public DateTime Date { get; } = DateTime.Now;
     public bool InventoryFull => _inventoryItems >= _inventorySize;
     //public int LevelMax { get; init; }
-    public float SpeedHorizontal;
+    //public float SpeedHorizontal => _rigidBody.linearVelocity.x;
+    public float Energy { get; private set; }
+    public Vector3 CurrentPosition => transform.position;
+   // public List<Item> InventoryItems => _inventoryItems;
+    //public bool Running => _rigidBody.velocity.magnitude >= _runSpeed;
     
 
 
