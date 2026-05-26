@@ -3,138 +3,163 @@ using System.Collections;
 using System.Collections.Generic;
 public class Override : MonoBehaviour
 {
-    int _playerHealth;
-    string _playerName;
-    private bool _isAlive;
+    [SerializeField] private Rigidbody _rigidbody;
 
+    private int _playerHealth;
+    private int maxHealth;
+    private string _playerName = "Player";
+    
 
-    void Start()
+    public void TakeDamage(int damage)
     {
-
+        _playerHealth = Mathf.Max(0, _playerHealth - damage);  
     }
 
-
-    void Update()
-    {
-
-    }
-
-
-    void TakeDamage(int damage)
-    {
-        _playerHealth -= damage;  
-    }
-
-    bool IsAlive()
+    public bool IsAlive()
     {
         return _playerHealth > 0;
     }
 
+    public float GetDistance(Vector3 firstPosition, Vector3 secondPosition)
+    {
+        return Vector3.Distance(firstPosition, secondPosition);
+    }
     Vector3 Direction(Vector3 playerPosition, Vector3 enemyPosition)
     {
         return (playerPosition - enemyPosition).normalized;
 
     }
 
-    string PlayerName()
+    public string PlayerName()
     {
         return _playerName;
     }
 
-    int EnemyCount(List<GameObject> _enemyList)
+    public int EnemyCount(List<GameObject> _enemyList)
     {
         return _enemyList.Count;
     }
 
-    GameObject NearestEnemy(List<GameObject> _enemies, Vector3 _playerPosition)
+    public GameObject NearestEnemy(List<GameObject> enemies, Vector3 _playerPosition)
     {
         GameObject nearestEnemy = null;
-        float _minDist = Mathf.Infinity;
-        foreach (GameObject e in _enemies)
+        float closestDist = float.MaxValue;
+
+        foreach (GameObject enemy in enemies)
         {
-            float dist = Vector3.Distance(_playerPosition, e.transform.position);
-            if (dist < _minDist)
+            float dist = Vector3.Distance(_playerPosition, enemy.transform.position);
+            if (dist < closestDist)
             {
-                _minDist = dist;
-                nearestEnemy = e;
+                closestDist = dist;
+                nearestEnemy = enemy;
             }
-            return nearestEnemy;
         }
+        return nearestEnemy;
     }
 
-    void MovePlayer(Vector3 _direction, float _speed)
+    public void MovePlayer(Vector3 _direction, float _speed)
     {
-        transform.Translate(_direction * _speed * Time.deltaTime);
+        transform.position += _direction.normalized * _speed * Time.deltaTime;
     }
 
-    float _deegresToRadians(float _deegres)
+    public float _deegresToRadians(float _deegres)
     {
         return _deegres * Mathf.Deg2Rad;
     }
 
-    bool _playerInRange(float _range, out GameObject _playerFound)
+    public bool PlayerInRange(float searchRange, out GameObject closestPlayer)
     {
-        GameObject player;
-        float dist = Vector3.Distance(transform.position, player.transform.position);
-        _playerFound = (dist < _range) ? player : null;
-        return _playerFound != null;
+        closestPlayer = null;
+
+        float closestDistance = float.MaxValue;
+        Vector3 currentPosition = transform.position;
+
+        foreach (GameObject player in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            float distance = Vector3.Distance(currentPosition, player.transform.position);
+
+            if (distance < closestDistance && distance <= searchRange)
+            {
+                closestDistance = distance;
+                closestPlayer = player;
+            }
+
+            return closestPlayer != null; 
+        }
     }
 
-    bool _convertText(string _text, out int _result)
+    public bool _convertText(string text, out int result)
     {
-        return int.TryParse(_text, out _result);
+        return int.TryParse(text, out result);
     }
 
-    Quaternion _deegresToQuatenion(float _deegres)
+    public Quaternion _deegresToQuatenion(float _deegres)
     {
         return Quaternion.Euler(0, _deegres, 0);
     }
 
-    void ObtainEnemiesArea(Vector3 _center, float _radius, List<GameObject> _list)
+    public void ObtainEnemiesArea(Vector3 center, float radius, List<GameObject> enemiesInArea)
     {
-        Collider[] _colliders = Physics.OverlapBox(transform.position, _center);
-        foreach (var c in _colliders)
+       enemiesInArea.Clear();
+        Collider[] hits = Physics.OverlapSphere(center, radius);
+        foreach (Collider hit in hits)
         {
-            if (c.CompareTag("Enemigo"))
+            GameObject enemy = hit.GetComponent<GameObject>();
+
+            if (enemy != null)
             {
-                _list.Add(c.gameObject);
+                enemiesInArea.Add(enemy);
             }
         }
     }
 
-    void RestarPosition(Vector3 _spawnPoint)
+    public void RestartPosition(Vector3 spawnPoint)
     {
-        transform.position = _spawnPoint;
-    }
+        transform.position = spawnPoint;
+        transform.rotation = Quaternion.identity;
 
-    public class BaseClass
-    {
-        public virtual void Action()
+        if(_rigidbody != null)
         {
-            // Acciones de base
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
         }
     }
 
-    public class InheritanceClass : BaseClass
+    public virtual void PerformAction()
     {
-        public override void Action()
+        Debug.Log("Acción base realizada. ");
+    }
+
+    public class Warrior : Override
+    {
+        public override void PerformAction()
         {
-            base.Action();
+            Debug.Log("Guerrero realiza un ataque poderoso. ");
         }
     }
 
-    float _lifePercentage(float _actualLife, float _maxLife)
+    public class InheritanceClass : Warrior
     {
-        return (_actualLife / _maxLife) * 100f;
+        public override void PerformAction()
+        {
+            base.PerformAction();
+            Debug.Log("El guerrero realiza un ataque poderoso. ");
+        }
     }
 
-    bool IsDodgeable(float _probability)
+    public float LifePercentage()
     {
-        return Random.Range(0, 100f) == _probability;
+        return (float)_playerHealth / maxHealth * 100f;
     }
 
-    void ApplyForce(Rigidbody _rigidbody, Vector3 _direction, float _force)
+    public bool IsDodgeable(float probability)
     {
-        _rigidbody.AddForce(_direction * _force, ForceMode.Impulse);
+        return Random.Range(0, 100f) == probability;
+    }
+
+    void ApplyForce(Vector3 direction, float force)
+    {
+        if (_rigidbody == null) return;
+        _rigidbody.AddForce(direction.normalized * force, ForceMode.Impulse);
     }
 }
