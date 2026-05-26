@@ -1,11 +1,15 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class propiedades : MonoBehaviour
 {
     [SerializeField] private float _stamina;
     //[SerializeField] private List<Item> _inventoryItems = new List<Item>();
     [SerializeField] private int _maxInventorySlots = 10;
+    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private List<Item> _inventoryItems = new List<Item>();
     private float _currentHealth;
     private float _maxHealth;
     private float _movementSpeed;
@@ -36,13 +40,18 @@ public class propiedades : MonoBehaviour
         set { _volume = Mathf.Clamp(value, 0f, 100f); }
     } //12
     public DateTime CreationDate { get; } = DateTime.Now; //13
-    //public bool IsInventoryFull => _inventoryItems.Count >= _maxInventorySlots; //14
+    public bool IsInventoryFull => _inventoryItems.Count >= _maxInventorySlots; //14
     public int MaxLevel { get; private set; } //15
+    public float HorizontalSpeed => _rigidbody.linearVelocity.x;//16
+    public float Energy { get; private set; }//17
+    public Vector3 CurrentPosition => transform.position; //18
+    public IReadOnlyList<Item> InventoryItems => _inventoryItems;//19
+    public bool IsRunning => HorizontalSpeed > 5f;//20
 
 
 
 
-    
+
 
 
 
