@@ -11,13 +11,13 @@ public class Ejercicios_Propiedades : MonoBehaviour
     public float Distance;
     public float Things;
     public float Velocity;
-    public float Speed; 
+    public float Speed;
 
-    public int Health {  get; set; } //Ej.1
+    public int Health { get; set; } //Ej.1
 
     public bool IsDead => Health <= 0;//Ej.2
 
-    public string PlayerName { get; init; }//Ej.3
+    // public string PlayerName { get; init; }//Ej.3
 
     public int Coins { get; set; }//Ej.4
 
@@ -43,7 +43,7 @@ public class Ejercicios_Propiedades : MonoBehaviour
 
     public bool IsFull => Things <= 5;//Ej.14
 
-    public int MaxLevel { get; init; }//Ej.15
+    //public int MaxLevel { get; init; }//Ej.15
 
     public bool IsHorizontalSpeed => Velocity <= 0;//Ej.16
 
