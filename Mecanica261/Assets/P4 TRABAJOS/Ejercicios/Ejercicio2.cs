@@ -36,15 +36,17 @@ public class Ejercicio2 : MonoBehaviour
     private bool _playerfound;
     private bool _enemyfound;
 
-
+    //Solucion de ejercicio metodos comentados
     public void TakeDamage(float damage) //1
     {
-        _playerLife -= damage;
+        //_playerLife =Mathf.Max(0, _playerLife - damage); 
         Debug.Log($"El jugador recibio {damage} de daño");
     }
 
-    public void PlayerAlive() //2
+    public void PlayerAlive() //2 
     {
+        // return _playerLife > 0;
+
         if (_playerLife == 0f)
         {
             _IsAlive = false;
@@ -54,48 +56,40 @@ public class Ejercicio2 : MonoBehaviour
             _IsAlive = true;
         }
     }
-    public void Distance() //3
+    public void Distance(Vector3 firstposition, Vector3 secondPosition) //3
     {
+        //return Vector3.Distance(Vector3 firstPosition, Vector3 secondPosition)
         Vector3 distance = (_rigidBodyPlayer.transform.position - _enemy.transform.position);
         _distance = distance;
     }
 
-    public void Direction() //4 
+    public void Direction(Vector3 originPosition, Vector3 targetPosition) //4 
     {
+        //return (targetPosition - originPosition).normalizef
         _distance = _distance.normalized;
     }
 
     public void PlayerName() //5
     {
+        //return _nametag;
         Debug.Log($"Nombre del jugador:{_nametag}");
     }
 
-    public void EnemyList() //6
+    public void EnemyList(List<Enemy> enemies) //6
     {
+        //return enemies.Count;
         _totalEnemies = _enemies.Count;
         Debug.Log($"Hay un total de {_totalEnemies} enemigos");
     }
 
-    public void NearEnemy() //7
+    public void NearEnemy(List<Enemy> enemies, Vector3 playerPosition) //7
     {
-        int nearEnemy = 0;
-        GameObject ie = _enemies[nearEnemy];
+        Enemy closestEnemy = null;
+        float closestDistance = float.MaxValue;
 
-        for (int i = 0; i < _enemies.Count; i++)
+        foreach (Enemy enemy in enemies)
         {
-            GameObject enemies = _enemies[i];
-
-            Vector3 position = enemies.transform.position - _rigidBodyPlayer.transform.position; 
-
-            Vector3 nearPosition = ie.transform.position - _rigidBodyPlayer.transform.position;
-
-            if (position.magnitude < nearPosition.magnitude) //Link de .magnitude: https://docs.unity3d.com/ScriptReference/Vector3-magnitude.html
-            {
-                nearEnemy = i;
-                ie = _enemies[nearEnemy];
-                Debug.Log($" El enemigo mas cercano es {nearEnemy}");
-            }
-        
+            float distance = Vector3.Distance(playerPosition, enemy.transform.position);
         }
     }
 
