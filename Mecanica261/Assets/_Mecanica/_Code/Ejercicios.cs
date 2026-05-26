@@ -1,25 +1,26 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class Ejercicios : MonoBehaviour
 {
-    public void TakeDamage(float damage) // 1
+    public void TakeDamage(float damage) // 1 
     {
         float CurrentHealth = 100;
         CurrentHealth -= damage;
     }
 
-    public bool IsAlive(float Life)// 2
+    public bool IsAlive(float Life)// 2 
     {
         return Life > 0;
     }
 
-    public float Distance(Vector3 Point_A, Vector3 Point_B) // 3
+    public float Distance(Vector3 Point_A, Vector3 Point_B) // 3 
     {
         return Vector3.Distance(Point_A, Point_B);
     }
 
-    public Vector3 DirectionNormalize(Vector3 origin, Vector3 Destiny) // 4
+    public Vector3 DirectionNormalize(Vector3 origin, Vector3 Destiny) // 4 
     {
         return (origin - Destiny).normalized;
     }
@@ -34,10 +35,21 @@ public class Ejercicios : MonoBehaviour
         return enemies.Count;
     }
 
-    public GameObject CloseEnemy(Vector3 PostionPlayer, List<GameObject> Enemies)// 7
+    /*public Enemys GetCloseEnemy(Vector3 PostionPlayer, List<Enemys> Enemies)// 7
     {
-        return Enemies[0];
-    }
+        Enemys closeEnemy = null;
+        float DistancecloseEnemy = float.MaxValue;
+        foreach (GameObject enemy in Enemies)
+        {
+            float distance = Vector3.Distance(PostionPlayer, enemy.transform.position);
+            if (distance > DistancecloseEnemy)
+            {
+                DistancecloseEnemy = distance;
+                closeEnemy = enemy;
+            }
+        }
+        return closeEnemy;
+    }*/
 
     public void MovePlayer(Transform Player, float Velocity, Vector3 Direction)// 8
     {
@@ -49,11 +61,28 @@ public class Ejercicios : MonoBehaviour
         return grades * Mathf.Deg2Rad;
     }
 
-    public bool TryGetPlayer(out GameObject player)// 10 
+    public bool TryGetClosetsPlayer(float searchRange, out Player clostsPlayer)// 10_2
+    {
+        clostsPlayer = null;
+
+        float closetsDistance = float.MaxValue;
+        Vector3 currenPosition = transform.position;
+        foreach(Player player in FindObjectsByType<Player>(FindObjectsSortMode.None))
+        {
+            float distance = Vector3.Distance(currenPosition, player.transform.position);
+            if(distance <= searchRange && distance < closetsDistance)
+            {
+                closetsDistance = distance;
+                clostsPlayer = player;
+            }
+        }
+        return clostsPlayer != null;
+    }
+    /*public bool TryGetPlayer(out GameObject player)// 10 
     {
         player = GameObject.FindWithTag("PlayerName");
         return player != null;
-    }
+    }*/
 
     public bool Text(string text, out int valor)// 11
     {
