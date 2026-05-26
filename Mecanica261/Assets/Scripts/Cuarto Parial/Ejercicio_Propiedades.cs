@@ -6,8 +6,7 @@ using UnityEditor.Searcher;
 using UnityEditor.PackageManager;
 
 public class Ejercicio_Propiedades : MonoBehaviour
-{ 
-    [SerializeField] private Rigidbody _rigidbody;
+{
     [SerializeField] private float _currentHealth;
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _movementSpeed;
@@ -32,15 +31,15 @@ public class Ejercicio_Propiedades : MonoBehaviour
     public int Experience { get; private set; } //9
 
     [SerializeField] private int _stamina;
-    public int Stamina => _stamina; //10 
+    public int Stamina { get { return _stamina; } set { _stamina = value; } } //10 ***
 
     [SerializeField] private Transform Player;
-    public float _attackRange;
-    public bool CanAttack => Vector3.Distance(transform.position , Player.position) <= _attackRange; //11
+    public float _atackRange;
+    public bool CanAtaack => Vector3.Distance(transform.position , Player.position) <= _atackRange; //11
 
     public int Volume { get { return _volume; } set { _volume = Mathf.Clamp(value, 0, 100); } } //12
 
-    public readonly DateTime CreationDate = DateTime.Now; //13
+    public int CreatePlayer { get; } //13***
 
     [SerializeField] List<string> _inventory = new List<string>();
     public int _maxInventtory;
@@ -48,6 +47,7 @@ public class Ejercicio_Propiedades : MonoBehaviour
 
     // public int MaxLevel { get; init; } //15
 
+    [SerializeField] private Rigidbody _rigidbody;
     public float HorizontalMovement => new Vector3(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z).magnitude; //16
 
     public int Energy { get; private set; } //17
@@ -56,7 +56,9 @@ public class Ejercicio_Propiedades : MonoBehaviour
 
     public List<string> Inventory = new List<string>(); //19
 
-    public bool IsRunning => HorizontalMovement > 5f; //20
+    public float _currentVelocity;
+    public float _still = 0;
+    public bool IsRunning => _still  <= (_currentVelocity = _rigidbody.linearVelocity.magnitude); //20
 
 
 }

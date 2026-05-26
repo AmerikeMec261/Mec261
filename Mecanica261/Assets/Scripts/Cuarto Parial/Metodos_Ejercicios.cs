@@ -1,20 +1,23 @@
-using NUnit.Framework;
-using System.Runtime.InteropServices.WindowsRuntime;
+
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Metodos_Ejercicios : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rigidbody; //Para el ejercicio 20
+     private int _currentHealth = 100;
+     private int _maxHealth = 100;
+  
 
     private void Awake() //Para el ejercicio 20
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    public void TakeDamage(float _damage) //1
+    public void TakeDamage(int damage) //1
     {
-        Debug.Log("Recibe Daño");
+        _currentHealth = Mathf.Max(0, _currentHealth - damage);
     }
 
     public bool StayinAlive() //2
@@ -32,9 +35,9 @@ public class Metodos_Ejercicios : MonoBehaviour
         return (_origin - _destiny).normalized;
     }
 
-    public void TryNamePlayer(string PlayerName) //5 
+    public string TryNamePlayer(string _playerName) //5 
     {
-        Debug.Log("Busca nombre");
+        return _playerName;
     }
 
     public int CounterEnemies(List<GameObject> _listEnemies) //6
@@ -42,18 +45,19 @@ public class Metodos_Ejercicios : MonoBehaviour
         return _listEnemies.Count;
     }
 
-    public GameObject FindTarget(List<GameObject> Enemies) //7
+    public Enemy GetClosestEnemy(List<Enemy> enemies, Vector3 playerPosition)
     {
-        GameObject _closestEnemy = null;
-        float _detectionRadius = 24f;
+        Enemy _closestEnemy = null;
+        float closestDistance = float.MaxValue;
 
-        foreach (GameObject _enemy in Enemies)
+        foreach (Enemy enemy in enemies)
         {
-            float _distance = Vector3.Distance(transform.position, _enemy.transform.position);
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if (_distance <= _detectionRadius)
+            if (distance <= closestDistance)
             {
-                _closestEnemy = _enemy;
+                closestDistance = distance;
+                _closestEnemy = enemy;
             }
         }
 
@@ -70,23 +74,29 @@ public class Metodos_Ejercicios : MonoBehaviour
         float _radius = _degreesCelcius * Mathf.Deg2Rad;
     }
 
-    public bool ClosestPlayer(List<GameObject> Player, float _range, out GameObject PlayerFound) //10
+    /*
+    public bool TryGetClosestPlayer(float searchRange, out Player closestPlayer ) //10
     {
-        PlayerFound = null;
+        closestPlayer = null;
 
-        foreach (GameObject _player in Player)
+        float closestDistance = float.MaxValue;
+        Vector3 currentPosition = transform.position;
+
+        foreach(Player player in FindObjectsByType<Player>(FindObjectsSortMode.None))
         {
-            float _distance = Vector3.Distance(transform.position, _player.transform.position);
+            float distance = Vector3.Distance(currentPosition, player.transform.position);
 
-            if (_distance <= _range)
+            if (distance <= searchRange && distance < closestDistance)
             {
-                PlayerFound = _player;
-                return true;
+                closestDistance= distance;
+                closestPlayer = player;
             }
         }
 
-        return false;
+        return closestPlayer != null;
     }
+    */
+
     public bool Text(string _text, out int _result) //11
     {
         return int.TryParse(_text, out _result);
@@ -97,25 +107,32 @@ public class Metodos_Ejercicios : MonoBehaviour
         return Quaternion.Euler(0, _angle, 0);
     }
 
-    public List<GameObject> GetEnemies (float _radius) //13
+    
+    public void GetEnemiesInArea(Vector3 centerPosition, float radius, List<Enemy> enemiesInArea) //13
     {
-        List<GameObject> EnemiesInside = new List<GameObject>();
+        enemiesInArea.Clear();
+        Collider[] hits = Physics.OverlapSphere(centerPosition, radius);
 
-        foreach (GameObject Enemy in EnemiesInside)
+        foreach (Collider hit in hits)
         {
-            float _distance = Vector3.Distance(transform.position, Enemy.transform.position);
-
-            if (_distance <= _radius)
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if(enemy != null)
             {
-                EnemiesInside.Add(Enemy);
+                enemiesInArea.Add(enemy);
             }
         }
-
-        return EnemiesInside;
     }
+    
     public void RestartPosition(Vector3 _position) //14
     {
         transform.position = _position;
+        transform.rotation = Quaternion.identity;
+
+        if(_rigidbody != null)
+        {
+            _rigidbody.angularVelocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
     }
 
     public class Character //15
@@ -147,5 +164,5 @@ public class Metodos_Ejercicios : MonoBehaviour
     {
        _rigidbody.AddForce(_direction * _force);
     }
-
+ 
 }
