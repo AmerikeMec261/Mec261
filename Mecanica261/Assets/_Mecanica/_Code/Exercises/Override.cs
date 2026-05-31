@@ -120,14 +120,14 @@ public class Override : MonoBehaviour
 
         if(_rigidbody != null)
         {
-            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.linearVelocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
         }
     }
 
     public virtual void PerformAction()
     {
-        Debug.Log("Acción base realizada. ");
+        Debug.Log("Acciï¿½n base realizada. ");
     }
 
     public class Warrior : Override
