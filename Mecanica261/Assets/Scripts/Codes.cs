@@ -3,8 +3,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(Rigidbody))] //Ej5.
-public class NewMonoBehaviourScript2 : MonoBehaviour
+//[RequireComponent(typeof(Rigidbody))] //Ej5.
+/*public class NewMonoBehaviourScript2 : MonoBehaviour
 {
 
     [SerializeField] private float movmentSpeed = 5f; //Ej1.
@@ -35,6 +35,9 @@ public class NewMonoBehaviourScript2 : MonoBehaviour
     [Tooltip("Volumen") ] 
     [SerializeField] private float = 5f; //Ej12.
 
+
+
+
     private bool enemyAtack; //Ej14.
 
     private List<Transform> _objects; //Ej15
@@ -50,21 +53,5 @@ public class NewMonoBehaviourScript2 : MonoBehaviour
     [Range(0f, 100f)]
     [SerializeField] protected float _detction;//Ej20.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
+}*/
 
