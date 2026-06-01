@@ -7,7 +7,7 @@ namespace Minecraft
         [SerializeField] private float _range = 1f;
         [SerializeField] private float _radius = 0.25f;
 
-        public override void Use(Vector3 direction)
+        protected override void UseWeapon(Vector3 direction)
         {
             GetComponentInParent<IWeaponAnimationReceiver>()?.PlayPunch();
 

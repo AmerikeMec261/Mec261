@@ -152,7 +152,8 @@ Transform:
   m_LocalPosition: {x: 0.13999999, y: -1.14, z: 0}
   m_LocalScale: {x: 0.28, y: 2.6666665, z: 0.46666664}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2260222886635771160}
   m_Father: {fileID: 1140149317750385894}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2049033382909687303
@@ -471,6 +472,9 @@ GameObject:
   - component: {fileID: 5335375582903467295}
   - component: {fileID: 850972058396061431}
   - component: {fileID: 9070198301979643410}
+  - component: {fileID: 8354426513644122991}
+  - component: {fileID: 1101388472648620326}
+  - component: {fileID: 772900324394360798}
   m_Layer: 0
   m_Name: Skeleton
   m_TagString: Enemy
@@ -516,10 +520,26 @@ MonoBehaviour:
   _targetTransform: {fileID: 0}
   _maxLife: 100
   _currentLife: 100
-  _attackCooldown: 1
-  _weapon: {fileID: 0}
+  _onLifeChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  _onReceiveDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  _attackCooldown: 3
+  _onCharge:
+    m_PersistentCalls:
+      m_Calls: []
+  _onAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  _weapon: {fileID: 3210853780595941231}
   _aimTime: 0.75
   _postShotWaitTime: 0.25
+  _turnSpeed: 360
 --- !u!114 &3521880110932730853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,17 +556,17 @@ MonoBehaviour:
   _speed: 2
   _turnSpeed: 150
   _gravity: -20
-  _activationDistance: 25
+  _activationDistance: 40
   _visionAngle: 90
-  _passiveDetectionDistance: 10
-  _arrivalDistance: 7
+  _passiveDetectionDistance: 13
+  _arrivalDistance: 10
   _investigationPauseTime: 2
   _wanderRadius: 30
   _wanderArrivalDistance: 3
   _wanderPauseTime: 8
   _wanderPointAttempts: 10
-  _idleLookRadius: 4
-  _idleLookHeight: 1.5
+  _idleLookRadius: 15
+  _idleLookHeight: 1
   _idleLookInterval: 4
   _groundCheckHeight: 30
   _groundCheckDistance: 50
@@ -592,7 +612,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2.18
+  m_Height: 2
   m_Radius: 0.26
   m_SlopeLimit: 80
   m_StepOffset: 0.3
@@ -649,6 +669,64 @@ MonoBehaviour:
   _minimumMoveSpeed: 0.05
   _speedSmoothTime: 12
   _rotationSmoothTime: 12
+--- !u!114 &8354426513644122991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3706836460914646863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b031f71278be44558cab2dd93c90591d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.WeaponArmAnimator
+  _armPivots:
+  - {fileID: 1140149317750385894}
+  - {fileID: 3339293333226872532}
+  _punchRotation: {x: 45, y: 0, z: 0}
+  _punchOutTime: 0.08
+  _punchBackTime: 0.12
+  _swingRotation: {x: 70, y: 0, z: 0}
+  _swingOutTime: 0.12
+  _swingBackTime: 0.18
+  _bowRecoilRotation: {x: -5, y: 0, z: 0}
+  _bowRecoilOutTime: 0.08
+  _bowRecoilBackTime: 0.16
+  _aimRotation: {x: -90, y: 0, z: 0}
+  _aimInTime: 0.2
+  _aimOutTime: 1
+--- !u!114 &1101388472648620326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3706836460914646863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d20c5095833a0a84088ea4c4da6d5e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.DamageFeedback
+  _renderers: []
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashTime: 0.3
+  _scalePunch: {x: 0.08, y: 0.08, z: 0.08}
+  _scalePunchTime: 0.12
+--- !u!114 &772900324394360798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3706836460914646863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e8c242d7634f14a9c14315b83720ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.SoundBankPlayer
+  _sounds: []
+  _volume: 1
 --- !u!1 &3728205625030440368
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,3 +1151,92 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &3160783549699821778
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2963171450065917986}
+    m_Modifications:
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 57.14286
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 57.14286
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.6214286
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.33124992
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.042857442
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5000015
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.50000006
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.49999988
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.49999857
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6328857389982673889, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+      propertyPath: m_Name
+      value: Bow
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+--- !u!4 &2260222886635771160 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3783225280624297418, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+  m_PrefabInstance: {fileID: 3160783549699821778}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3210853780595941231 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 527595587498250173, guid: 37ae35f56d606b04fa3cdbdc37823b47, type: 3}
+  m_PrefabInstance: {fileID: 3160783549699821778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f117d16c469641439d630bc38169935c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.Bow

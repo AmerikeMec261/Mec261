@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3366500737348856436}
   m_Layer: 0
-  m_Name: Hand
-  m_TagString: Untagged
+  m_Name: RightHandSocket
+  m_TagString: RightHandSocket
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24,12 +24,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429455221504293294}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.546, y: -0.804, z: 0.181}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.15899998, y: -0.638, z: 0.013999939}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6909517897324970297}
+  m_Father: {fileID: 8057615863951664111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1737560638086529252
 GameObject:
@@ -48,7 +48,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2624872365899571437
 Transform:
   m_ObjectHideFlags: 0
@@ -211,6 +211,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2200448496834589413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 890126142302356962}
+  m_Layer: 0
+  m_Name: RightHandGhostSocket
+  m_TagString: RightHandGhostSocket
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &890126142302356962
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200448496834589413}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.747, y: 0.359, z: 1.061}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5964532224566259638}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2232582173345710057
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,7 +252,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5134127283895916200}
   - component: {fileID: 6860137205807545033}
-  - component: {fileID: 7616156654267300119}
   - component: {fileID: 309644047497457388}
   m_Layer: 0
   m_Name: GhostCamera
@@ -278,14 +308,14 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 2
+  far clip plane: 50
   field of view: 60
   orthographic: 0
   orthographic size: 1
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 40960
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -297,14 +327,6 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &7616156654267300119
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2232582173345710057}
-  m_Enabled: 1
 --- !u!114 &309644047497457388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,6 +461,38 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2478789476164181977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5964532224566259638}
+  m_Layer: 0
+  m_Name: GhostWeapons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5964532224566259638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2478789476164181977}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.78550005, z: -0.008}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 890126142302356962}
+  m_Father: {fileID: 4788583035588587767}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2786513602589642586
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,6 +538,8 @@ GameObject:
   - component: {fileID: 2475211277639454146}
   - component: {fileID: 2630883380597353427}
   - component: {fileID: 6269193233336621131}
+  - component: {fileID: 439894423853786433}
+  - component: {fileID: 9016377502177313088}
   m_Layer: 0
   m_Name: MainPlayer
   m_TagString: Untagged
@@ -505,7 +561,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3706229736827200394}
-  - {fileID: 3366500737348856436}
   - {fileID: 6834344849803516477}
   - {fileID: 615683485525001582}
   - {fileID: 8057615863951664111}
@@ -532,7 +587,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 1.9
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -573,6 +628,9 @@ MonoBehaviour:
   _onLifeChanged:
     m_PersistentCalls:
       m_Calls: []
+  _cameraShakeDuration: 0.15
+  _cameraShakeStrengthPerDamage: 0.015
+  _maximumCameraShakeStrength: 0.35
 --- !u!114 &2630883380597353427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -623,6 +681,45 @@ MonoBehaviour:
   _idleReturnSpeed: 12
   _minimumMoveSpeed: 0.05
   _speedSmoothTime: 12
+--- !u!114 &439894423853786433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3520934414057679574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b031f71278be44558cab2dd93c90591d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.WeaponArmAnimator
+  _armPivots:
+  - {fileID: 8057615863951664111}
+  - {fileID: 615683485525001582}
+  _punchRotation: {x: 45, y: 0, z: 0}
+  _punchOutTime: 0.08
+  _punchBackTime: 0.12
+  _swingRotation: {x: -70, y: 0, z: 0}
+  _swingOutTime: 0.12
+  _swingBackTime: 0.18
+  _bowRecoilRotation: {x: -15, y: 0, z: 0}
+  _bowRecoilOutTime: 0.08
+  _bowRecoilBackTime: 0.16
+  _aimRotation: {x: 90, y: 0, z: 0}
+  _aimInTime: 0.2
+  _aimOutTime: 0.2
+--- !u!114 &9016377502177313088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3520934414057679574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe417d3ede8eb14195bbd447bc25ee1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.PlayerPickup
 --- !u!1 &4258958567838664947
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +840,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8786489093465381385}
+  - {fileID: 3366500737348856436}
   m_Father: {fileID: 6909517897324970297}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4699973738441892132
@@ -778,6 +876,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5134127283895916200}
+  - {fileID: 5964532224566259638}
   m_Father: {fileID: 3706229736827200394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &5891924849469517362
@@ -1138,7 +1237,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6939898970195514008}
   - component: {fileID: 7005107590098298952}
-  - component: {fileID: 733407856462535616}
   - component: {fileID: 2243014492774286216}
   m_Layer: 0
   m_Name: BodyCamera
@@ -1201,7 +1299,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 20480
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 0db355d4e9ac0e842b3dc199e7e7fdf5, type: 2}
   m_TargetDisplay: 0
@@ -1213,14 +1311,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &733407856462535616
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6909690544789769383}
-  m_Enabled: 1
 --- !u!114 &2243014492774286216
 MonoBehaviour:
   m_ObjectHideFlags: 0

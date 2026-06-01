@@ -6,15 +6,22 @@ namespace Minecraft
     public class Bow : Weapon
     {
         [Header("Projectile")]
-        [SerializeField, Required] private Projectile _projectilePrefab;
+        [SerializeField, Required, ValidateInput(nameof(HasProjectile), "Prefab must have a Projectile component.")]
+        private GameObject _projectilePrefab;
         [SerializeField] private float _projectileSpeed = 15f;
 
-        public override void Use(Vector3 direction)
+        protected override void UseWeapon(Vector3 direction)
         {
             GetComponentInParent<IWeaponAnimationReceiver>()?.PlayBowRecoil();
 
-            Projectile projectile = Instantiate(_projectilePrefab, AttackPoint.position, AttackPoint.rotation);
-            projectile.Shoot(direction, _projectileSpeed, Damage);
+            GameObject projectileObject = Instantiate(_projectilePrefab, AttackPoint.position, AttackPoint.rotation);
+            Projectile projectile = projectileObject.GetComponentInChildren<Projectile>();
+            projectile.Shoot(AttackPoint.forward, _projectileSpeed, Damage);
+        }
+
+        private bool HasProjectile()
+        {
+            return _projectilePrefab != null && _projectilePrefab.GetComponentInChildren<Projectile>() != null;
         }
     }
 }

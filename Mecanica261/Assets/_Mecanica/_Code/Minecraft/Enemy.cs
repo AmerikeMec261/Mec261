@@ -14,16 +14,30 @@ namespace Minecraft
         [SerializeField] private float _maxLife = 100f;
         [SerializeField] private float _currentLife = 100f;
         [SerializeField] private UnityEvent _onLifeChanged = new UnityEvent();
+        [SerializeField] private UnityEvent _onReceiveDamage = new UnityEvent();
+        [SerializeField] private UnityEvent _onDeath = new UnityEvent();
 
         [Header("Attack")]
         [SerializeField] private float _attackCooldown = 1f;
+        [SerializeField] private UnityEvent _onCharge = new UnityEvent();
+        [SerializeField] private UnityEvent _onAttack = new UnityEvent();
 
         private float _nextAttackTime;
         private bool _isAttacking;
+        private bool _isDead;
 
         public float MaxLife { get { return _maxLife; } private set { _maxLife = value; } }
         public float CurrentLife { get { return _currentLife; } private set { SetCurrentLife(value); } }
         public UnityEvent OnLifeChanged { get { return _onLifeChanged; } }
+        public UnityEvent OnReceiveDamage { get { return _onReceiveDamage; } }
+        public UnityEvent OnDeath { get { return _onDeath; } }
+        public UnityEvent OnCharge { get { return _onCharge; } }
+        public UnityEvent OnAttack { get { return _onAttack; } }
+
+        protected virtual void Awake()
+        {
+            AssignPlayerTargetIfNeeded();
+        }
 
         public virtual IEnumerator AttackMethod()
         {
@@ -41,6 +55,7 @@ namespace Minecraft
         {
             _isAttacking = true;
             _nextAttackTime = Time.time + _attackCooldown;
+            _onAttack.Invoke();
 
             yield return AttackMethod();
 
@@ -49,7 +64,11 @@ namespace Minecraft
 
         public void ReceiveDamage(float damage)
         {
+            if (_isDead) { return; }
+            if (damage <= 0f) { return; }
+
             CurrentLife = Mathf.Max(CurrentLife - damage, 0f);
+            _onReceiveDamage.Invoke();
 
             if (CurrentLife <= 0f)
             {
@@ -59,7 +78,16 @@ namespace Minecraft
 
         protected virtual void Die()
         {
+            if (_isDead) { return; }
+
+            _isDead = true;
+            _onDeath.Invoke();
             Destroy(gameObject);
+        }
+
+        protected void InvokeCharge()
+        {
+            _onCharge.Invoke();
         }
 
         private void SetCurrentLife(float currentLife)
@@ -68,6 +96,18 @@ namespace Minecraft
 
             _currentLife = currentLife;
             _onLifeChanged.Invoke();
+        }
+
+        private void AssignPlayerTargetIfNeeded()
+        {
+            if (_targetTransform != null) { return; }
+
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+
+            if (playerObject != null)
+            {
+                _targetTransform = playerObject.transform;
+            }
         }
     }
 }

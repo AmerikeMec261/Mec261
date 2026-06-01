@@ -22,9 +22,9 @@ namespace Minecraft
             _rigidbody.linearVelocity = direction.normalized * speed;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision collision)
         {
-            IDamagable damagable = other.GetComponentInParent<IDamagable>();
+            IDamagable damagable = collision.collider.GetComponentInParent<IDamagable>();
 
             damagable?.ReceiveDamage(Damage);
 

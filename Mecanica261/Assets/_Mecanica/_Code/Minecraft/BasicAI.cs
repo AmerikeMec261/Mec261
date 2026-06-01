@@ -85,6 +85,7 @@ public class BasicAI : MonoBehaviour, IMovementController
     {
         _characterController = GetComponent<CharacterController>();
         _looker = GetComponent<ILooker>();
+        AssignPlayerTargetIfNeeded();
         if (_groundLayer.value == 0) { _groundLayer = LayerMask.GetMask(_groundTag); }
 
         PickWanderTarget();
@@ -133,6 +134,18 @@ public class BasicAI : MonoBehaviour, IMovementController
         if (_targetTransform == null) { return Mathf.Infinity; }
 
         return Vector3.Distance(transform.position, _targetTransform.position);
+    }
+
+    private void AssignPlayerTargetIfNeeded()
+    {
+        if (_targetTransform != null) { return; }
+
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObject != null)
+        {
+            _targetTransform = playerObject.transform;
+        }
     }
 
     private void Wander()
@@ -192,6 +205,7 @@ public class BasicAI : MonoBehaviour, IMovementController
 
         if (distanceToTarget <= _arrivalDistance)
         {
+            FaceTarget();
             Arrive();
             return;
         }
@@ -283,6 +297,16 @@ public class BasicAI : MonoBehaviour, IMovementController
 
         Quaternion targetRotation = Quaternion.LookRotation(horizontalVelocity.normalized, Vector3.up);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);
+    }
+
+    private void FaceTarget()
+    {
+        if (_targetTransform == null) { return; }
+
+        Vector3 direction = _targetTransform.position - transform.position;
+        direction.y = 0f;
+
+        FaceMoveDirection(direction);
     }
 
     private void ApplyGravity()

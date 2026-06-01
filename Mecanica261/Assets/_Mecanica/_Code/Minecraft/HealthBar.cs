@@ -32,7 +32,7 @@ namespace Minecraft
         private float[] _shakeOffsets;
         private Sequence _waveSequence;
         private Sequence _dangerSequence;
-        private Tween[] _dangerShakeTweens;
+        private bool _isDangerAnimating;
 
         private void OnEnable()
         {
@@ -64,7 +64,7 @@ namespace Minecraft
                 _fullHeartImages[i].fillAmount = GetHeartFillAmount(heartValue - i);
             }
 
-            if (heartValue > 0f && heartValue <= 1f)
+            if (heartValue <= 1f)
             {
                 StartDangerAnimation();
             }
@@ -89,7 +89,6 @@ namespace Minecraft
             _fullStartingPositions = new Vector3[_fullHeartImages.Length];
             _jumpOffsets = new float[_fullHeartImages.Length];
             _shakeOffsets = new float[_fullHeartImages.Length];
-            _dangerShakeTweens = new Tween[_fullHeartImages.Length];
 
             for (int i = 0; i < _emptyHeartImages.Length; i++)
             {
@@ -99,6 +98,14 @@ namespace Minecraft
             for (int i = 0; i < _fullHeartImages.Length; i++)
             {
                 _fullStartingPositions[i] = _fullHeartImages[i].rectTransform.localPosition;
+            }
+        }
+
+        private void Update()
+        {
+            if (_isDangerAnimating)
+            {
+                UpdateDangerShake();
             }
         }
 
@@ -149,36 +156,18 @@ namespace Minecraft
 
             _dangerSequence.AppendInterval(_dangerLoopDelay);
             _dangerSequence.SetLoops(-1, LoopType.Restart);
-            StartDangerShakeAnimation();
+            _isDangerAnimating = true;
         }
 
-        private void StartDangerShakeAnimation()
+        private void UpdateDangerShake()
         {
             for (int i = 0; i < _fullHeartImages.Length; i++)
             {
-                _dangerShakeTweens[i] = CreateHeartShakeTween(i, GetShakeDelay(i));
+                float timingOffset = GetShakeDelay(i);
+                float shakeTime = (Time.time + timingOffset) / _dangerShakeDuration;
+                _shakeOffsets[i] = Mathf.Sin(shakeTime * Mathf.PI * 2f) * _dangerShakeHeight;
+                ApplyHeartPosition(i);
             }
-        }
-
-        private Tween CreateHeartShakeTween(int heartIndex, float delay)
-        {
-            Sequence shakeSequence = DOTween.Sequence();
-
-            shakeSequence.AppendCallback(() =>
-            {
-                _shakeOffsets[heartIndex] = -_dangerShakeHeight;
-                ApplyHeartPosition(heartIndex);
-            });
-            shakeSequence.Append(DOTween.To(() => _shakeOffsets[heartIndex], value =>
-                {
-                    _shakeOffsets[heartIndex] = value;
-                    ApplyHeartPosition(heartIndex);
-                }, _dangerShakeHeight, _dangerShakeDuration)
-                .SetEase(Ease.Linear)
-                .SetLoops(-1, LoopType.Yoyo));
-            shakeSequence.SetDelay(delay);
-
-            return shakeSequence;
         }
 
         private float GetShakeDelay(int heartIndex)
@@ -205,15 +194,7 @@ namespace Minecraft
                 _dangerSequence = null;
             }
 
-            for (int i = 0; i < _dangerShakeTweens.Length; i++)
-            {
-                if (_dangerShakeTweens[i] != null)
-                {
-                    _dangerShakeTweens[i].Kill();
-                    _dangerShakeTweens[i] = null;
-                }
-            }
-
+            _isDangerAnimating = false;
             ResetHeartPositions();
         }
 

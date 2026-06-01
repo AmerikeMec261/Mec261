@@ -523,10 +523,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5515330182063096771}
+  - component: {fileID: 3070622929753907030}
   - component: {fileID: 6101686141520785371}
   - component: {fileID: 3156016203578351653}
   - component: {fileID: 3992131920782699540}
   - component: {fileID: 7108044724112553597}
+  - component: {fileID: 2303675269980202776}
+  - component: {fileID: 6159811839222417766}
   m_Layer: 0
   m_Name: Creeper
   m_TagString: Enemy
@@ -555,6 +558,86 @@ Transform:
   - {fileID: 2964176653929671511}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3070622929753907030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6757991582986559199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e43de15ca00f45b49d7cb22a18d32687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.CreeperEnemy
+  _targetTransform: {fileID: 0}
+  _maxLife: 100
+  _currentLife: 100
+  _onLifeChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  _onReceiveDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  _attackCooldown: 1.5
+  _onCharge:
+    m_PersistentCalls:
+      m_Calls: []
+  _onAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  _damage: 100
+  _explosionRadius: 4
+  _chargeTime: 1.5
+  _chargedScale: 1.2
+  _cancelScaleTime: 0.4
+  _damageByDistance:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 100
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.6666667
+      value: 100
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 2.6666667
+      value: 50
+      inSlope: -35.93851
+      outSlope: -35.93851
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 4
+      value: 10
+      inSlope: -24.999998
+      outSlope: -24.999998
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _lastCurveDamage: 100
+  _lastCurveDistance: 4
 --- !u!114 &6101686141520785371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,7 +657,7 @@ MonoBehaviour:
   _activationDistance: 25
   _visionAngle: 90
   _passiveDetectionDistance: 10
-  _arrivalDistance: 4
+  _arrivalDistance: 2
   _investigationPauseTime: 2
   _wanderRadius: 30
   _wanderArrivalDistance: 4
@@ -660,6 +743,37 @@ MonoBehaviour:
   _idleReturnSpeed: 12
   _minimumMoveSpeed: 0.05
   _speedSmoothTime: 12
+--- !u!114 &2303675269980202776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6757991582986559199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d20c5095833a0a84088ea4c4da6d5e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.DamageFeedback
+  _renderers: []
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashTime: 0.3
+  _scalePunch: {x: 0.08, y: 0.08, z: 0.08}
+  _scalePunchTime: 0.12
+--- !u!114 &6159811839222417766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6757991582986559199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e8c242d7634f14a9c14315b83720ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.SoundBankPlayer
+  _sounds: []
+  _volume: 1
 --- !u!1 &7126332145726696990
 GameObject:
   m_ObjectHideFlags: 0

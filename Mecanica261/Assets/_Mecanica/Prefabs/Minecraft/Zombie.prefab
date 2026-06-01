@@ -48,6 +48,8 @@ GameObject:
   - component: {fileID: 7750617627237437708}
   - component: {fileID: 5108587038610305064}
   - component: {fileID: 4651736498536650890}
+  - component: {fileID: 4585628172431367936}
+  - component: {fileID: 7106796547401554266}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Enemy
@@ -131,7 +133,19 @@ MonoBehaviour:
   _onLifeChanged:
     m_PersistentCalls:
       m_Calls: []
+  _onReceiveDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeath:
+    m_PersistentCalls:
+      m_Calls: []
   _attackCooldown: 1
+  _onCharge:
+    m_PersistentCalls:
+      m_Calls: []
+  _onAttack:
+    m_PersistentCalls:
+      m_Calls: []
   _damage: 10
   _attackRange: 2.2
   _attackWindupTime: 0.2
@@ -170,7 +184,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2.18
+  m_Height: 1.78
   m_Radius: 0.26
   m_SlopeLimit: 80
   m_StepOffset: 0.3
@@ -251,6 +265,40 @@ MonoBehaviour:
   _bowRecoilRotation: {x: -15, y: 0, z: 0}
   _bowRecoilOutTime: 0.08
   _bowRecoilBackTime: 0.16
+  _aimRotation: {x: 90, y: 0, z: 0}
+  _aimInTime: 0.2
+  _aimOutTime: 0.2
+--- !u!114 &4585628172431367936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234848540792622938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d20c5095833a0a84088ea4c4da6d5e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.DamageFeedback
+  _renderers: []
+  _damageColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashTime: 0.3
+  _scalePunch: {x: 0.08, y: 0.08, z: 0.08}
+  _scalePunchTime: 0.12
+--- !u!114 &7106796547401554266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234848540792622938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e8c242d7634f14a9c14315b83720ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.SoundBankPlayer
+  _sounds: []
+  _volume: 1
 --- !u!1 &517691702989446286
 GameObject:
   m_ObjectHideFlags: 0

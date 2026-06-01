@@ -1,6 +1,7 @@
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.Events;
+using System.Collections;
 
 [RequireComponent(typeof(CharacterController))]
 public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
@@ -35,13 +36,21 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
     [SerializeField] private float _currentLife = 100f;
     [SerializeField] private UnityEvent _onLifeChanged = new UnityEvent();
 
+    [Header("Damage Feedback")]
+    [SerializeField] private float _cameraShakeDuration = 0.15f;
+    [SerializeField] private float _cameraShakeStrengthPerDamage = 0.015f;
+    [SerializeField] private float _maximumCameraShakeStrength = 0.35f;
+
     private CharacterController _characterController;
     private Vector3 _velocity;
     private float _cameraPitch;
     private float _headYaw;
     private bool _isGrounded;
+    private Coroutine _cameraShakeCoroutine;
+    private Vector3 _cameraShakeStartPosition;
 
     public Transform Hand { get { return _handTransform; } private set { } }
+    public Minecraft.Weapon CurrentWeapon { get { return _currentWeapon; } private set { _currentWeapon = value; } }
     public float MaxLife { get { return _maxLife; } private set { _maxLife = value; } }
     public float CurrentLife { get { return _currentLife; } private set { SetCurrentLife(value); } }
     public UnityEvent OnLifeChanged { get { return _onLifeChanged; } }
@@ -51,6 +60,7 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
         Cursor.lockState = CursorLockMode.Locked;
         _characterController = GetComponent<CharacterController>();
         if (_groundLayer.value == 0) { _groundLayer = LayerMask.GetMask(_groundTag); }
+        if (_currentWeapon == null) { _currentWeapon = _handTransform.GetComponentInChildren<Minecraft.Weapon>(); }
     }
 
     private void Update()
@@ -62,7 +72,15 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
 
     public void ReceiveDamage(float damage)
     {
+        float previousLife = CurrentLife;
+
         CurrentLife = Mathf.Max(CurrentLife - damage, 0f);
+        ShakeCamera(previousLife - CurrentLife);
+    }
+
+    public void SetWeapon(Minecraft.Weapon weapon)
+    {
+        CurrentWeapon = weapon;
     }
 
     private void SetCurrentLife(float currentLife)
@@ -77,8 +95,42 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
     {
         if (Input.GetMouseButtonDown(0))
         {
-            _currentWeapon?.Use(_playerCamera.transform.forward);
+            _currentWeapon?.TryUse(_playerCamera.transform.forward);
         }
+    }
+
+    private void ShakeCamera(float damage)
+    {
+        Camera mainCamera = Camera.main;
+
+        if (damage <= 0f) { return; }
+        if (mainCamera == null) { return; }
+
+        if (_cameraShakeCoroutine != null)
+        {
+            StopCoroutine(_cameraShakeCoroutine);
+            mainCamera.transform.localPosition = _cameraShakeStartPosition;
+        }
+
+        _cameraShakeCoroutine = StartCoroutine(CameraShakeRoutine(mainCamera.transform, damage));
+    }
+
+    private IEnumerator CameraShakeRoutine(Transform cameraTransform, float damage)
+    {
+        _cameraShakeStartPosition = cameraTransform.localPosition;
+        float strength = Mathf.Min(damage * _cameraShakeStrengthPerDamage, _maximumCameraShakeStrength);
+        float timer = 0f;
+
+        while (timer < _cameraShakeDuration)
+        {
+            timer += Time.deltaTime;
+            float remainingStrength = Mathf.Lerp(strength, 0f, timer / _cameraShakeDuration);
+            cameraTransform.localPosition = _cameraShakeStartPosition + Random.insideUnitSphere * remainingStrength;
+            yield return null;
+        }
+
+        cameraTransform.localPosition = _cameraShakeStartPosition;
+        _cameraShakeCoroutine = null;
     }
 
     private void Look()
