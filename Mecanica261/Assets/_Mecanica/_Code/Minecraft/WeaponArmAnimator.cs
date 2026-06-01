@@ -59,6 +59,18 @@ namespace Minecraft
             }
         }
 
+        private void OnDisable()
+        {
+            _enableArmAnimatorTween?.Kill();
+
+            for (int i = 0; i < _armPivots.Length; i++)
+            {
+                if (_armPivots[i] == null) { continue; }
+
+                _armPivots[i].DOKill();
+            }
+        }
+
         public void PlayPunch()
         {
             PlayAnimation(_punchRotation, _punchOutTime, _punchBackTime);

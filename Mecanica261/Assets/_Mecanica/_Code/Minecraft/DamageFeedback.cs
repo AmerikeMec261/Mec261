@@ -5,6 +5,9 @@ namespace Minecraft
 {
     public class DamageFeedback : MonoBehaviour
     {
+        private const string BaseColorProperty = "_BaseColor";
+        private const string ColorProperty = "_Color";
+
         [Header("Flash")]
         [Tooltip("Renderers that flash when this object loses life.")]
         [SerializeField] private Renderer[] _renderers;
@@ -22,6 +25,7 @@ namespace Minecraft
         private IDamagable _damagable;
         private Material[][] _materials;
         private Color[][] _startColors;
+        private string[][] _colorProperties;
         private Vector3 _startScale;
         private float _lastLife;
 
@@ -54,6 +58,7 @@ namespace Minecraft
             if (_damagable == null) { return; }
 
             _damagable.OnLifeChanged.RemoveListener(OnLifeChanged);
+            KillTweens();
         }
 
         private void OnLifeChanged()
@@ -76,15 +81,22 @@ namespace Minecraft
         {
             _materials = new Material[_renderers.Length][];
             _startColors = new Color[_renderers.Length][];
+            _colorProperties = new string[_renderers.Length][];
 
             for (int i = 0; i < _renderers.Length; i++)
             {
                 _materials[i] = _renderers[i].materials;
                 _startColors[i] = new Color[_materials[i].Length];
+                _colorProperties[i] = new string[_materials[i].Length];
 
                 for (int j = 0; j < _materials[i].Length; j++)
                 {
-                    _startColors[i][j] = _materials[i][j].color;
+                    _colorProperties[i][j] = GetColorProperty(_materials[i][j]);
+
+                    if (!string.IsNullOrEmpty(_colorProperties[i][j]))
+                    {
+                        _startColors[i][j] = _materials[i][j].GetColor(_colorProperties[i][j]);
+                    }
                 }
             }
         }
@@ -97,10 +109,13 @@ namespace Minecraft
                 {
                     Material material = _materials[i][j];
                     Color startColor = _startColors[i][j];
+                    string colorProperty = _colorProperties[i][j];
+
+                    if (string.IsNullOrEmpty(colorProperty)) { continue; }
 
                     material.DOKill();
-                    material.color = _damageColor;
-                    material.DOColor(startColor, _flashTime);
+                    material.SetColor(colorProperty, _damageColor);
+                    material.DOColor(startColor, colorProperty, _flashTime);
                 }
             }
         }
@@ -110,6 +125,27 @@ namespace Minecraft
             transform.DOKill();
             transform.localScale = _startScale;
             transform.DOPunchScale(_scalePunch, _scalePunchTime);
+        }
+
+        private string GetColorProperty(Material material)
+        {
+            if (material.HasProperty(BaseColorProperty)) { return BaseColorProperty; }
+            if (material.HasProperty(ColorProperty)) { return ColorProperty; }
+
+            return string.Empty;
+        }
+
+        private void KillTweens()
+        {
+            transform.DOKill();
+
+            for (int i = 0; i < _materials.Length; i++)
+            {
+                for (int j = 0; j < _materials[i].Length; j++)
+                {
+                    _materials[i][j].DOKill();
+                }
+            }
         }
     }
 }
