@@ -130,22 +130,59 @@ MonoBehaviour:
   _targetTransform: {fileID: 0}
   _maxLife: 100
   _currentLife: 100
+  _score: 50
   _onLifeChanged:
     m_PersistentCalls:
       m_Calls: []
   _onReceiveDamage:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7106796547401554266}
+        m_TargetAssemblyTypeName: Minecraft.SoundBankPlayer, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _onDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7106796547401554266}
+        m_TargetAssemblyTypeName: Minecraft.SoundBankPlayer, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _attackCooldown: 1
   _onCharge:
     m_PersistentCalls:
       m_Calls: []
   _onAttack:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7106796547401554266}
+        m_TargetAssemblyTypeName: Minecraft.SoundBankPlayer, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _damage: 10
   _attackRange: 2.2
   _attackWindupTime: 0.2
@@ -297,7 +334,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e8c242d7634f14a9c14315b83720ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minecraft.SoundBankPlayer
-  _sounds: []
+  _sounds:
+  - {fileID: 8300000, guid: 736f812f84c7ab04c85c70c179690afb, type: 3}
+  - {fileID: 8300000, guid: bd632af816ceec7439c09869d4697228, type: 3}
+  - {fileID: 8300000, guid: 0678917acae24cb44afad5dc2cdad0c1, type: 3}
   _volume: 1
 --- !u!1 &517691702989446286
 GameObject:

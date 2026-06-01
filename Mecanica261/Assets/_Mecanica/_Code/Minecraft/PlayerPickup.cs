@@ -16,6 +16,8 @@ namespace Minecraft
 
         private void OnTriggerEnter(Collider other)
         {
+            if (_player.IsDead) { return; }
+
             IPickable pickable = other.GetComponentInParent<IPickable>();
 
             if (pickable == null) { return; }
@@ -55,6 +57,7 @@ namespace Minecraft
             _spawnedWeapon = weapon;
             _spawnedVisualWeapon = visualWeapon;
             _player.SetWeapon(weapon);
+            equipableWeapons.InvokeEquiped();
         }
 
         private Transform GetSocket(string socketTag)

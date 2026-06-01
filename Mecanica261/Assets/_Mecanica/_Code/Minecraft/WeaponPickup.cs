@@ -1,5 +1,6 @@
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEngine.Events;
 
 namespace Minecraft
 {
@@ -7,6 +8,9 @@ namespace Minecraft
     {
         [SerializeField, Required] private EquipableWeapons _equipableWeapons;
         [SerializeField] private bool _destroyAfterPickup = true;
+        [SerializeField] private UnityEvent _onPicked = new UnityEvent();
+
+        public UnityEvent OnPicked { get { return _onPicked; } }
 
         private void Awake()
         {
@@ -18,6 +22,7 @@ namespace Minecraft
             if (playerPickup == null) { return; }
 
             playerPickup.EquipWeapon(_equipableWeapons);
+            _onPicked.Invoke();
 
             if (_destroyAfterPickup)
             {

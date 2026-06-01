@@ -12,6 +12,7 @@ namespace Minecraft
         [SerializeField] private float _spawnRadius = 10f;
         [SerializeField] private float _spawnInterval = 3f;
         [SerializeField] private int _maxActiveSpawns = 5;
+        [SerializeField] private int _prewarmEnemies;
 
         [Header("Ground")]
         [SerializeField] private float _groundCheckUpDistance = 10f;
@@ -28,6 +29,12 @@ namespace Minecraft
             if (_groundLayer.value == 0) { _groundLayer = LayerMask.GetMask(_groundTag); }
         }
 
+        private void Start()
+        {
+            PrewarmEnemies();
+            _nextSpawnTime = Time.time + _spawnInterval;
+        }
+
         private void Update()
         {
             CleanDestroyedSpawns();
@@ -41,9 +48,9 @@ namespace Minecraft
             TrySpawn();
         }
 
-        private void TrySpawn()
+        private bool TrySpawn()
         {
-            if (_prefab == null) { return; }
+            if (_prefab == null) { return false; }
 
             for (int i = 0; i < _spawnPointAttempts; i++)
             {
@@ -51,8 +58,19 @@ namespace Minecraft
                 {
                     GameObject spawnedObject = Instantiate(_prefab, spawnPosition, Quaternion.identity, _spawnRoot);
                     _activeSpawns.Add(spawnedObject);
-                    return;
+                    return true;
                 }
+            }
+
+            return false;
+        }
+
+        private void PrewarmEnemies()
+        {
+            for (int i = 0; i < _prewarmEnemies; i++)
+            {
+                if (_activeSpawns.Count >= _maxActiveSpawns) { return; }
+                if (!TrySpawn()) { return; }
             }
         }
 

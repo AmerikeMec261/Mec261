@@ -13,6 +13,7 @@ namespace Minecraft
         [Header("Life")]
         [SerializeField] private float _maxLife = 100f;
         [SerializeField] private float _currentLife = 100f;
+        [SerializeField] private int _score = 10;
         [SerializeField] private UnityEvent _onLifeChanged = new UnityEvent();
         [SerializeField] private UnityEvent _onReceiveDamage = new UnityEvent();
         [SerializeField] private UnityEvent _onDeath = new UnityEvent();
@@ -28,6 +29,7 @@ namespace Minecraft
 
         public float MaxLife { get { return _maxLife; } private set { _maxLife = value; } }
         public float CurrentLife { get { return _currentLife; } private set { SetCurrentLife(value); } }
+        public int Score { get { return _score; } }
         public UnityEvent OnLifeChanged { get { return _onLifeChanged; } }
         public UnityEvent OnReceiveDamage { get { return _onReceiveDamage; } }
         public UnityEvent OnDeath { get { return _onDeath; } }
@@ -81,6 +83,7 @@ namespace Minecraft
             if (_isDead) { return; }
 
             _isDead = true;
+            GameManager.Instance?.AddScore(Score);
             _onDeath.Invoke();
             Destroy(gameObject);
         }

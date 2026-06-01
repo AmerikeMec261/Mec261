@@ -24,6 +24,38 @@ PrefabInstance:
       propertyPath: _visualWeaponLocalRotation.z
       value: 257.94455
       objectReference: {fileID: 0}
+    - target: {fileID: 3027377823832585706, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onEquiped.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027377823832585706, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onEquiped.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027377823832585706, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onEquiped.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3985728774666276020}
+    - target: {fileID: 3027377823832585706, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onEquiped.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027377823832585706, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onEquiped.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlaySound
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027377823832585706, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onEquiped.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Minecraft.SoundBankPlayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027377823832585706, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onEquiped.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027377823832585706, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onEquiped.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3511180297271228194, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
       propertyPath: m_Name
       value: PickableWeapon Sword
@@ -68,6 +100,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8695194224496589699, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onPicked.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8695194224496589699, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onPicked.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8695194224496589699, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onPicked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3985728774666276020}
+    - target: {fileID: 8695194224496589699, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onPicked.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8695194224496589699, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onPicked.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlaySound
+      objectReference: {fileID: 0}
+    - target: {fileID: 8695194224496589699, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onPicked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Minecraft.SoundBankPlayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8695194224496589699, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      propertyPath: _onPicked.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -75,6 +135,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3511180297271228194, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1159345675560706457}
+    - targetCorrespondingSourceObject: {fileID: 3511180297271228194, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3985728774666276020}
   m_SourcePrefab: {fileID: 100100000, guid: 7edcccad085d27245aeb4d2ff396def3, type: 3}
 --- !u!1 &366365533485111424 stripped
 GameObject:
@@ -96,3 +159,19 @@ MonoBehaviour:
   _floatAmount: {x: 0, y: 0.05, z: 0}
   _floatSpeed: 2
   _rotationSpeed: {x: 0, y: 30, z: 0}
+--- !u!114 &3985728774666276020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366365533485111424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e8c242d7634f14a9c14315b83720ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minecraft.SoundBankPlayer
+  _sounds:
+  - {fileID: 8300000, guid: 4609ddde53aaef645bb13e411517dd98, type: 3}
+  - {fileID: 8300000, guid: d22e2a15bdc585945a02261a8f140cac, type: 3}
+  _volume: 1

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace Minecraft
 {
@@ -16,7 +17,11 @@ namespace Minecraft
         [SerializeField, HideInInspector] private float _lastCurveDamage;
         [SerializeField, HideInInspector] private float _lastCurveDistance;
 
+        [Header("Events")]
+        [SerializeField] private UnityEvent _onExplode = new UnityEvent();
+
         public float Damage { get { return _damage; } }
+        public UnityEvent OnExplode { get { return _onExplode; } }
 
         private void OnValidate()
         {
@@ -74,6 +79,8 @@ namespace Minecraft
                 movementController?.ResumeMovement();
                 yield break;
             }
+
+            _onExplode.Invoke();
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius);
             HashSet<IDamagable> damagedTargets = new HashSet<IDamagable>();

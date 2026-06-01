@@ -34,6 +34,7 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
     [Header("Life")]
     [SerializeField] private float _maxLife = 100f;
     [SerializeField] private float _currentLife = 100f;
+    [SerializeField] private bool _debugNoDeath;
     [SerializeField] private UnityEvent _onLifeChanged = new UnityEvent();
 
     [Header("Damage Feedback")]
@@ -48,9 +49,11 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
     private bool _isGrounded;
     private Coroutine _cameraShakeCoroutine;
     private Vector3 _cameraShakeStartPosition;
+    private bool _isDead;
 
     public Transform Hand { get { return _handTransform; } private set { } }
     public Minecraft.Weapon CurrentWeapon { get { return _currentWeapon; } private set { _currentWeapon = value; } }
+    public bool IsDead { get { return _isDead; } }
     public float MaxLife { get { return _maxLife; } private set { _maxLife = value; } }
     public float CurrentLife { get { return _currentLife; } private set { SetCurrentLife(value); } }
     public UnityEvent OnLifeChanged { get { return _onLifeChanged; } }
@@ -58,6 +61,7 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         _characterController = GetComponent<CharacterController>();
         if (_groundLayer.value == 0) { _groundLayer = LayerMask.GetMask(_groundTag); }
         if (_currentWeapon == null) { _currentWeapon = _handTransform.GetComponentInChildren<Minecraft.Weapon>(); }
@@ -65,6 +69,8 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
 
     private void Update()
     {
+        if (_isDead) { return; }
+
         Look();
         Move();
         UseWeapon();
@@ -76,6 +82,11 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
 
         CurrentLife = Mathf.Max(CurrentLife - damage, 0f);
         ShakeCamera(previousLife - CurrentLife);
+
+        if (CurrentLife <= 0f && !_debugNoDeath)
+        {
+            Die();
+        }
     }
 
     public void SetWeapon(Minecraft.Weapon weapon)
@@ -89,6 +100,17 @@ public class FirstPersonPlayer : MonoBehaviour, Minecraft.IDamagable
 
         _currentLife = currentLife;
         _onLifeChanged.Invoke();
+    }
+
+    private void Die()
+    {
+        if (_isDead) { return; }
+
+        _isDead = true;
+        _velocity = Vector3.zero;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Minecraft.GameManager.Instance?.ShowDeathScreen();
     }
 
     private void UseWeapon()

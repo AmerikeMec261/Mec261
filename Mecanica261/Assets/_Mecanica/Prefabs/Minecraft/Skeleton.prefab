@@ -520,15 +520,40 @@ MonoBehaviour:
   _targetTransform: {fileID: 0}
   _maxLife: 100
   _currentLife: 100
+  _score: 100
   _onLifeChanged:
     m_PersistentCalls:
       m_Calls: []
   _onReceiveDamage:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 772900324394360798}
+        m_TargetAssemblyTypeName: Minecraft.SoundBankPlayer, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _onDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 772900324394360798}
+        m_TargetAssemblyTypeName: Minecraft.SoundBankPlayer, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _attackCooldown: 3
   _onCharge:
     m_PersistentCalls:
@@ -725,7 +750,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e8c242d7634f14a9c14315b83720ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minecraft.SoundBankPlayer
-  _sounds: []
+  _sounds:
+  - {fileID: 8300000, guid: 4805cbdd90f0dbb46b044d6e01d454e0, type: 3}
+  - {fileID: 8300000, guid: 058dfac7e933a8d4f80e61257915ba4f, type: 3}
   _volume: 1
 --- !u!1 &3728205625030440368
 GameObject:

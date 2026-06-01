@@ -1,5 +1,6 @@
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEngine.Events;
 
 namespace Minecraft
 {
@@ -25,6 +26,9 @@ namespace Minecraft
         private Vector3 _visualWeaponLocalScale = Vector3.one;
         [SerializeField, Layer] private int _ghostWeaponLayer;
 
+        [Header("Events")]
+        [SerializeField] private UnityEvent _onEquiped = new UnityEvent();
+
         public Weapon ActualWeaponPrefab { get { return _actualWeaponPrefab; } }
         public string ActualWeaponSocketTag { get { return _actualWeaponSocketTag; } }
         public Vector3 ActualWeaponLocalPosition { get { return _actualWeaponLocalPosition; } }
@@ -38,6 +42,12 @@ namespace Minecraft
         public Vector3 VisualWeaponLocalRotation { get { return _visualWeaponLocalRotation; } }
         public Vector3 VisualWeaponLocalScale { get { return _visualWeaponLocalScale; } }
         public int GhostWeaponLayer { get { return _ghostWeaponLayer; } }
+        public UnityEvent OnEquiped { get { return _onEquiped; } }
+
+        public void InvokeEquiped()
+        {
+            _onEquiped.Invoke();
+        }
 
         private bool HasActualSocketTag()
         {
