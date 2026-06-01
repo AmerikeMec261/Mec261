@@ -138,10 +138,10 @@ public class Ejercicios : MonoBehaviour
         return CurrentHealt / HealtMax * 100;
     }
 
-    public bool CanDodge(float probability)// 19
+    /*public bool CanDodge(float probability)// 19
     {
         return Random.value < probability;
-    }
+    }*/
 
     public void ApplyForce(Rigidbody _rigidBody, float Force, Vector3 direction)// 20
     {

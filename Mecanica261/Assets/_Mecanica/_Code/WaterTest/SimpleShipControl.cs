@@ -79,14 +79,14 @@ public class SimpleShipControl : MonoBehaviour
         }
     }
 
-    private void ApplyEngineForce()
+    private void ApplyEngineForce()// Aqui aplica la direccion del barco y aplicando la fuerza desde de el barco y la fuerza aplica en la derecha del barco
     {
         Vector3 engineForceDirection = transform.right;
         Vector3 engineForce = engineForceDirection * _currentEngineInput * _engineForce;
         _rigidbody.AddForceAtPosition(engineForce, _propeller.position, ForceMode.Force);
     }
 
-    private void ApplyRudderForce()
+    private void ApplyRudderForce()// Aqui es la fuerza del timon del barco con la posicion del timon y la furaz que se aplica para mover el barco
     {
         Vector3 rudderForceDirection = -transform.forward;
         Vector3 rudderForce = rudderForceDirection * _currentRudderInput * _rudderForce;
