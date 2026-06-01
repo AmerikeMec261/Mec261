@@ -6,8 +6,10 @@ namespace Minecraft
     public class Bow : Weapon
     {
         [Header("Projectile")]
+        [Tooltip("Projectile prefab spawned when the bow fires.")]
         [SerializeField, Required, ValidateInput(nameof(HasProjectile), "Prefab must have a Projectile component.")]
         private GameObject _projectilePrefab;
+        [Tooltip("Initial movement speed applied to fired projectiles.")]
         [SerializeField] private float _projectileSpeed = 15f;
 
         protected override void UseWeapon(Vector3 direction)

@@ -8,21 +8,32 @@ namespace Minecraft
     public class HealthBar : MonoBehaviour
     {
         [Header("Dependencies")]
+        [Tooltip("Component that provides current and maximum life.")]
         [SerializeField, Required, ValidateInput(nameof(IsDamagableScriptValid), "Script must implement IDamagable.")]
         private MonoBehaviour _damagableScript;
+        [Tooltip("Empty heart images ordered from left to right.")]
         [SerializeField] private Image[] _emptyHeartImages = new Image[10];
+        [Tooltip("Filled heart images ordered from left to right.")]
         [SerializeField] private Image[] _fullHeartImages = new Image[10];
 
         [Header("Settings")]
+        [Tooltip("Fill amount used to display a half heart.")]
         [SerializeField] private float _halfHeartFillAmount = 0.55f;
 
         [Header("Animation")]
+        [Tooltip("Vertical distance each heart moves during the wave.")]
         [SerializeField] private float _jumpHeight = 10f;
+        [Tooltip("Time for a heart to move up during the wave.")]
         [SerializeField] private float _jumpDuration = 0.09f;
+        [Tooltip("Delay between each heart in the wave.")]
         [SerializeField] private float _heartDelay = 0.025f;
+        [Tooltip("Vertical distance used by the low health shake.")]
         [SerializeField] private float _dangerShakeHeight = 4f;
+        [Tooltip("Time used for one low health shake cycle.")]
         [SerializeField] private float _dangerShakeDuration = 0.06f;
+        [Tooltip("Timing offset between hearts during the low health shake.")]
         [SerializeField] private float _dangerShakeStartDelay = 0.055f;
+        [Tooltip("Delay before the low health wave repeats.")]
         [SerializeField] private float _dangerLoopDelay = 0.3f;
 
         private IDamagable _damagable;

@@ -51,13 +51,13 @@ namespace Minecraft
 
             GameObject visualWeapon = Instantiate(equipableWeapons.VisualWeaponPrefab, visualWeaponSocket);
             ApplyLocalTransform(visualWeapon.transform, equipableWeapons.VisualWeaponLocalPosition, equipableWeapons.VisualWeaponLocalRotation, equipableWeapons.VisualWeaponLocalScale);
-            SetLayerRecursively(visualWeapon.transform, equipableWeapons.GhostWeaponLayer);
+            SetLayerRecursively(visualWeapon.transform, equipableWeapons.VisualWeaponLayer);
             visualWeapon.GetComponentInChildren<VisualWeaponAnimator>()?.ListenTo(weapon);
 
             _spawnedWeapon = weapon;
             _spawnedVisualWeapon = visualWeapon;
             _player.SetWeapon(weapon);
-            equipableWeapons.InvokeEquiped();
+            equipableWeapons.InvokeEquipped();
         }
 
         private Transform GetSocket(string socketTag)

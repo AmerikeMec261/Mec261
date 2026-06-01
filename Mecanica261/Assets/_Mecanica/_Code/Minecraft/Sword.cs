@@ -1,17 +1,26 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace Minecraft
 {
     public class Sword : Weapon
     {
-        [SerializeField] private float _range = 1.75f;
+        [Header("Hit Box")]
+        [FormerlySerializedAs("_range")]
+        [Tooltip("Forward distance used to draw the sword attack debug line.")]
+        [SerializeField] private float _attackRange = 1.75f;
+        [Tooltip("Local offset from the attack point to the hit box center.")]
         [SerializeField] private Vector3 _boxCenter = new Vector3(0f, 0f, 0.875f);
+        [Tooltip("Size of the sword hit box.")]
         [SerializeField] private Vector3 _boxSize = new Vector3(0.9f, 1.25f, 1.75f);
 
         [Header("Debug")]
+        [Tooltip("Shows the attack line and hit box in the Scene view.")]
         [SerializeField] private bool _drawAttackDebug = true;
+        [Tooltip("How long the attack debug visuals stay visible.")]
         [SerializeField] private float _debugDuration = 0.25f;
+        [Tooltip("Color used for the attack debug visuals.")]
         [SerializeField] private Color _debugColor = Color.red;
 
         private Vector3 _debugStart;
@@ -35,7 +44,7 @@ namespace Minecraft
             Vector3 attackDirection = direction.normalized;
             Quaternion rotation = Quaternion.LookRotation(attackDirection, Vector3.up);
             Vector3 attackStart = AttackPoint.position;
-            Vector3 attackEnd = attackStart + attackDirection * _range;
+            Vector3 attackEnd = attackStart + attackDirection * _attackRange;
             Vector3 boxCenter = attackStart + rotation * _boxCenter;
             Vector3 halfExtents = _boxSize * 0.5f;
 
@@ -57,7 +66,7 @@ namespace Minecraft
 
                 if (damagable != null && damagedTargets.Add(damagable))
                 {
-                    DamageTarget(colliders[i]);
+                    damagable.ReceiveDamage(Damage);
                 }
             }
         }

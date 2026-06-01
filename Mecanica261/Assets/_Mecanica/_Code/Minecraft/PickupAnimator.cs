@@ -4,15 +4,18 @@ namespace Minecraft
 {
     public class PickupAnimator : MonoBehaviour
     {
+        [Tooltip("World position offset used for the floating motion.")]
         [SerializeField] private Vector3 _floatAmount = new Vector3(0f, 0.25f, 0f);
+        [Tooltip("Speed of the floating motion.")]
         [SerializeField] private float _floatSpeed = 2f;
+        [Tooltip("Local rotation speed in degrees per second.")]
         [SerializeField] private Vector3 _rotationSpeed = new Vector3(0f, 90f, 0f);
 
-        private Vector3 _startPosition;
+        private Vector3 _startingPosition;
 
         private void Awake()
         {
-            _startPosition = transform.position;
+            _startingPosition = transform.position;
         }
 
         private void Update()
@@ -23,7 +26,7 @@ namespace Minecraft
 
         private void Float()
         {
-            transform.position = _startPosition + _floatAmount * Mathf.Sin(Time.time * _floatSpeed);
+            transform.position = _startingPosition + _floatAmount * Mathf.Sin(Time.time * _floatSpeed);
         }
 
         private void Rotate()

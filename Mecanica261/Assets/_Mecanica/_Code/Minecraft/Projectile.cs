@@ -7,10 +7,13 @@ namespace Minecraft
     public class Projectile : MonoBehaviour, IAttacker
     {
         [Header("Attack")]
+        [Tooltip("Damage dealt when this projectile hits a damageable target.")]
         [SerializeField] private float _damage = 10f;
 
         [Header("Events")]
+        [Tooltip("Invoked after the projectile receives its launch velocity.")]
         [SerializeField] private UnityEvent _onFired = new UnityEvent();
+        [Tooltip("Invoked when the projectile collides with something.")]
         [SerializeField] private UnityEvent _onHit = new UnityEvent();
 
         private Rigidbody _rigidbody;
@@ -24,10 +27,10 @@ namespace Minecraft
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        public void Shoot(Vector3 direction, float speed, float damage)
+        public void Shoot(Vector3 direction, float projectileSpeed, float damage)
         {
             _damage = damage;
-            _rigidbody.linearVelocity = direction.normalized * speed;
+            _rigidbody.linearVelocity = direction.normalized * projectileSpeed;
             _onFired.Invoke();
         }
 

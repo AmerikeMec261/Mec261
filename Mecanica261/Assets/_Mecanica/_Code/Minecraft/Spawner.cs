@@ -1,24 +1,38 @@
 using UnityEngine;
 using NaughtyAttributes;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace Minecraft
 {
     public class Spawner : MonoBehaviour
     {
         [Header("Spawn")]
-        [SerializeField, Required] private GameObject _prefab;
+        [FormerlySerializedAs("_prefab")]
+        [Tooltip("Prefab created by this spawner.")]
+        [SerializeField, Required] private GameObject _spawnPrefab;
+        [Tooltip("Optional parent assigned to spawned objects.")]
         [SerializeField] private Transform _spawnRoot;
+        [Tooltip("Horizontal radius where objects can spawn.")]
         [SerializeField] private float _spawnRadius = 10f;
+        [Tooltip("Seconds between spawn attempts.")]
         [SerializeField] private float _spawnInterval = 3f;
+        [Tooltip("Maximum number of active spawned objects.")]
         [SerializeField] private int _maxActiveSpawns = 5;
-        [SerializeField] private int _prewarmEnemies;
+        [FormerlySerializedAs("_prewarmEnemies")]
+        [Tooltip("Number of objects spawned when the scene starts.")]
+        [SerializeField] private int _prewarmSpawnCount;
 
         [Header("Ground")]
+        [Tooltip("Distance checked upward when looking for ground.")]
         [SerializeField] private float _groundCheckUpDistance = 10f;
+        [Tooltip("Distance checked downward when looking for ground.")]
         [SerializeField] private float _groundCheckDownDistance = 25f;
+        [Tooltip("Layers accepted as spawn ground.")]
         [SerializeField] private LayerMask _groundLayer;
+        [Tooltip("Tag accepted as spawn ground.")]
         [SerializeField, Tag] private string _groundTag = "Ground";
+        [Tooltip("Random positions tested per spawn attempt.")]
         [SerializeField] private int _spawnPointAttempts = 10;
 
         private readonly List<GameObject> _activeSpawns = new List<GameObject>();
@@ -31,7 +45,7 @@ namespace Minecraft
 
         private void Start()
         {
-            PrewarmEnemies();
+            PrewarmSpawns();
             _nextSpawnTime = Time.time + _spawnInterval;
         }
 
@@ -50,14 +64,11 @@ namespace Minecraft
 
         private bool TrySpawn()
         {
-            if (_prefab == null) { return false; }
-
             for (int i = 0; i < _spawnPointAttempts; i++)
             {
                 if (TryGetSpawnPosition(out Vector3 spawnPosition))
                 {
-                    GameObject spawnedObject = Instantiate(_prefab, spawnPosition, Quaternion.identity, _spawnRoot);
-                    _activeSpawns.Add(spawnedObject);
+                    SpawnAt(spawnPosition);
                     return true;
                 }
             }
@@ -65,13 +76,19 @@ namespace Minecraft
             return false;
         }
 
-        private void PrewarmEnemies()
+        private void PrewarmSpawns()
         {
-            for (int i = 0; i < _prewarmEnemies; i++)
+            for (int i = 0; i < _prewarmSpawnCount; i++)
             {
                 if (_activeSpawns.Count >= _maxActiveSpawns) { return; }
                 if (!TrySpawn()) { return; }
             }
+        }
+
+        private void SpawnAt(Vector3 spawnPosition)
+        {
+            GameObject spawnedObject = Instantiate(_spawnPrefab, spawnPosition, Quaternion.identity, _spawnRoot);
+            _activeSpawns.Add(spawnedObject);
         }
 
         private bool TryGetSpawnPosition(out Vector3 spawnPosition)

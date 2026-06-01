@@ -1,33 +1,49 @@
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Minecraft
 {
     public class EquipableWeapons : MonoBehaviour
     {
         [Header("Actual Weapon")]
+        [Tooltip("Functional weapon prefab spawned on the player.")]
         [SerializeField, Required] private Weapon _actualWeaponPrefab;
+        [Tooltip("Socket tag used to place the functional weapon.")]
         [SerializeField, Tag, ValidateInput(nameof(HasActualSocketTag), "Actual weapon socket tag must be assigned.")]
         private string _actualWeaponSocketTag;
+        [Tooltip("Local position applied to the functional weapon.")]
         [SerializeField] private Vector3 _actualWeaponLocalPosition;
+        [Tooltip("Local rotation applied to the functional weapon.")]
         [SerializeField] private Vector3 _actualWeaponLocalRotation;
+        [Tooltip("Local scale applied to the functional weapon.")]
         [SerializeField, ValidateInput(nameof(IsActualWeaponScaleValid), "Actual weapon scale values must be greater than 0.")]
         private Vector3 _actualWeaponLocalScale = Vector3.one;
+        [Tooltip("Layer applied to the functional weapon and its children.")]
         [SerializeField, Layer] private int _actualWeaponLayer;
 
         [Header("Visual Weapon")]
+        [Tooltip("Visual-only weapon prefab spawned on the player.")]
         [SerializeField, Required] private GameObject _visualWeaponPrefab;
+        [Tooltip("Socket tag used to place the visual weapon.")]
         [SerializeField, Tag, ValidateInput(nameof(HasVisualSocketTag), "Visual weapon socket tag must be assigned.")]
         private string _visualWeaponSocketTag;
+        [Tooltip("Local position applied to the visual weapon.")]
         [SerializeField] private Vector3 _visualWeaponLocalPosition;
+        [Tooltip("Local rotation applied to the visual weapon.")]
         [SerializeField] private Vector3 _visualWeaponLocalRotation;
+        [Tooltip("Local scale applied to the visual weapon.")]
         [SerializeField, ValidateInput(nameof(IsVisualWeaponScaleValid), "Visual weapon scale values must be greater than 0.")]
         private Vector3 _visualWeaponLocalScale = Vector3.one;
-        [SerializeField, Layer] private int _ghostWeaponLayer;
+        [FormerlySerializedAs("_ghostWeaponLayer")]
+        [Tooltip("Layer applied to the visual weapon and its children.")]
+        [SerializeField, Layer] private int _visualWeaponLayer;
 
         [Header("Events")]
-        [SerializeField] private UnityEvent _onEquiped = new UnityEvent();
+        [FormerlySerializedAs("_onEquiped")]
+        [Tooltip("Invoked after this weapon setup is equipped.")]
+        [SerializeField] private UnityEvent _onEquipped = new UnityEvent();
 
         public Weapon ActualWeaponPrefab { get { return _actualWeaponPrefab; } }
         public string ActualWeaponSocketTag { get { return _actualWeaponSocketTag; } }
@@ -41,12 +57,12 @@ namespace Minecraft
         public Vector3 VisualWeaponLocalPosition { get { return _visualWeaponLocalPosition; } }
         public Vector3 VisualWeaponLocalRotation { get { return _visualWeaponLocalRotation; } }
         public Vector3 VisualWeaponLocalScale { get { return _visualWeaponLocalScale; } }
-        public int GhostWeaponLayer { get { return _ghostWeaponLayer; } }
-        public UnityEvent OnEquiped { get { return _onEquiped; } }
+        public int VisualWeaponLayer { get { return _visualWeaponLayer; } }
+        public UnityEvent OnEquipped { get { return _onEquipped; } }
 
-        public void InvokeEquiped()
+        public void InvokeEquipped()
         {
-            _onEquiped.Invoke();
+            _onEquipped.Invoke();
         }
 
         private bool HasActualSocketTag()

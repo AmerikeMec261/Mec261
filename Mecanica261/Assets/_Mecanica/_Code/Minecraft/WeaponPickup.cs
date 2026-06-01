@@ -6,8 +6,11 @@ namespace Minecraft
 {
     public class WeaponPickup : MonoBehaviour, IPickable
     {
+        [Tooltip("Weapon setup given to the player when collected.")]
         [SerializeField, Required] private EquipableWeapons _equipableWeapons;
+        [Tooltip("Destroys this pickup object after a successful pickup.")]
         [SerializeField] private bool _destroyAfterPickup = true;
+        [Tooltip("Invoked after this pickup is collected.")]
         [SerializeField] private UnityEvent _onPicked = new UnityEvent();
 
         public UnityEvent OnPicked { get { return _onPicked; } }

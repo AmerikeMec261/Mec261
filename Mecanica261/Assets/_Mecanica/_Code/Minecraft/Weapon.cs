@@ -6,11 +6,15 @@ namespace Minecraft
     public abstract class Weapon : MonoBehaviour, IAttacker
     {
         [Header("Attack")]
+        [Tooltip("Damage this weapon applies when it hits a target.")]
         [SerializeField] private float _damage = 10f;
+        [Tooltip("Origin used for aiming, spawning, or hit checks.")]
         [SerializeField] protected Transform _attackPoint;
+        [Tooltip("Minimum time between successful weapon uses.")]
         [SerializeField] private float _useCooldown = 0.75f;
 
         private float _nextUseTime;
+        [Tooltip("Invoked whenever this weapon is used successfully.")]
         [SerializeField] private UnityEvent _onUsed = new UnityEvent();
 
         public float Damage { get { return _damage; } }

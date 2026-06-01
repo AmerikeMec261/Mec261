@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public interface ILooker
+namespace Minecraft
 {
-    void SetLookTarget(Transform lookTarget);
-    void SetLookPosition(Vector3 lookPosition);
-    void ClearLookTarget();
+    public interface ILooker
+    {
+        void SetLookTarget(Transform lookTarget);
+        void SetLookPosition(Vector3 lookPosition);
+        void ClearLookTarget();
+    }
 }

@@ -8,19 +8,29 @@ namespace Minecraft
     public class Enemy : MonoBehaviour, IDamagable, IArrivalReceiver
     {
         [Header("Target")]
+        [Tooltip("Target this enemy attacks when the AI reaches it.")]
         [SerializeField, Required] protected Transform _targetTransform;
 
         [Header("Life")]
+        [Tooltip("Maximum life this enemy can have.")]
         [SerializeField] private float _maxLife = 100f;
+        [Tooltip("Current life this enemy starts with.")]
         [SerializeField] private float _currentLife = 100f;
+        [Tooltip("Score added when this enemy dies.")]
         [SerializeField] private int _score = 10;
+        [Tooltip("Invoked whenever current life changes.")]
         [SerializeField] private UnityEvent _onLifeChanged = new UnityEvent();
+        [Tooltip("Invoked after this enemy receives damage.")]
         [SerializeField] private UnityEvent _onReceiveDamage = new UnityEvent();
+        [Tooltip("Invoked before this enemy is destroyed by death.")]
         [SerializeField] private UnityEvent _onDeath = new UnityEvent();
 
         [Header("Attack")]
+        [Tooltip("Minimum time between attack starts.")]
         [SerializeField] private float _attackCooldown = 1f;
+        [Tooltip("Invoked when this enemy begins a charge or aim phase.")]
         [SerializeField] private UnityEvent _onCharge = new UnityEvent();
+        [Tooltip("Invoked when this enemy starts an attack routine.")]
         [SerializeField] private UnityEvent _onAttack = new UnityEvent();
 
         private float _nextAttackTime;
@@ -41,7 +51,7 @@ namespace Minecraft
             AssignPlayerTargetIfNeeded();
         }
 
-        public virtual IEnumerator AttackMethod()
+        public virtual IEnumerator Attack()
         {
             yield break;
         }
@@ -57,9 +67,9 @@ namespace Minecraft
         {
             _isAttacking = true;
             _nextAttackTime = Time.time + _attackCooldown;
-            _onAttack.Invoke();
+            OnAttackStarted();
 
-            yield return AttackMethod();
+            yield return Attack();
 
             _isAttacking = false;
         }
@@ -70,7 +80,7 @@ namespace Minecraft
             if (damage <= 0f) { return; }
 
             CurrentLife = Mathf.Max(CurrentLife - damage, 0f);
-            _onReceiveDamage.Invoke();
+            OnReceivedDamage();
 
             if (CurrentLife <= 0f)
             {
@@ -84,13 +94,28 @@ namespace Minecraft
 
             _isDead = true;
             GameManager.Instance?.AddScore(Score);
-            _onDeath.Invoke();
+            OnDied();
             Destroy(gameObject);
         }
 
-        protected void InvokeCharge()
+        protected void OnChargeStarted()
         {
             _onCharge.Invoke();
+        }
+
+        protected void OnAttackStarted()
+        {
+            _onAttack.Invoke();
+        }
+
+        protected void OnReceivedDamage()
+        {
+            _onReceiveDamage.Invoke();
+        }
+
+        protected void OnDied()
+        {
+            _onDeath.Invoke();
         }
 
         private void SetCurrentLife(float currentLife)

@@ -7,9 +7,13 @@ namespace Minecraft
     public class ArcherEnemy : Enemy
     {
         [Header("Attack")]
+        [Tooltip("Weapon used when the archer fires.")]
         [SerializeField, Required] private Weapon _weapon;
+        [Tooltip("Time spent aiming before the weapon is used.")]
         [SerializeField] private float _aimTime = 0.75f;
+        [Tooltip("Time the archer waits after shooting before moving again.")]
         [SerializeField] private float _postShotWaitTime = 0.25f;
+        [Tooltip("Degrees per second used to turn toward the target while aiming.")]
         [SerializeField] private float _turnSpeed = 360f;
 
         private IWeaponAnimationReceiver _weaponAnimationReceiver;
@@ -20,11 +24,11 @@ namespace Minecraft
             _weaponAnimationReceiver = GetComponent<IWeaponAnimationReceiver>();
         }
 
-        public override IEnumerator AttackMethod()
+        public override IEnumerator Attack()
         {
             IMovementController movementController = GetComponent<IMovementController>();
             movementController?.StopMovement();
-            InvokeCharge();
+            OnChargeStarted();
             SetAiming(true);
 
             yield return WaitWhileTurning(_aimTime);

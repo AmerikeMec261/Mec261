@@ -1,5 +1,8 @@
-public interface IMovementController
+namespace Minecraft
 {
-    void StopMovement();
-    void ResumeMovement();
+    public interface IMovementController
+    {
+        void StopMovement();
+        void ResumeMovement();
+    }
 }

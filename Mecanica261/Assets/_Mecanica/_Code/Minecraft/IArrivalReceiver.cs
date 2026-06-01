@@ -1,4 +1,7 @@
-public interface IArrivalReceiver
+namespace Minecraft
 {
-    void OnArrival();
+    public interface IArrivalReceiver
+    {
+        void OnArrival();
+    }
 }

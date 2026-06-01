@@ -1,18 +1,23 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using NaughtyAttributes;
 using UnityEngine.SceneManagement;
 
 namespace Minecraft
 {
+    [AddComponentMenu("Minecraft/Game Manager")]
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
 
         [Header("Death Screen")]
-        [SerializeField] private GameObject _deathScreen;
-        [SerializeField] private TextMeshProUGUI _scoreText;
-        [SerializeField] private Button _retryButton;
+        [Tooltip("Root object shown when the player dies.")]
+        [SerializeField, Required] private GameObject _deathScreen;
+        [Tooltip("Text element that displays the final score.")]
+        [SerializeField, Required] private TextMeshProUGUI _scoreText;
+        [Tooltip("Button that restarts the current scene.")]
+        [SerializeField, Required] private Button _retryButton;
 
         private int _score;
 
@@ -28,21 +33,15 @@ namespace Minecraft
 
             Instance = this;
 
-            if (_deathScreen != null) { _deathScreen.SetActive(false); }
-            if (_retryButton != null) { _retryButton.onClick.AddListener(Retry); }
+            _deathScreen.SetActive(false);
+            _retryButton.onClick.AddListener(Retry);
         }
 
         private void OnDestroy()
         {
-            if (Instance == this)
-            {
-                Instance = null;
-            }
+            if (Instance == this) { Instance = null; }
 
-            if (_retryButton != null)
-            {
-                _retryButton.onClick.RemoveListener(Retry);
-            }
+            _retryButton.onClick.RemoveListener(Retry);
         }
 
         public void AddScore(int score)
@@ -52,16 +51,8 @@ namespace Minecraft
 
         public void ShowDeathScreen()
         {
-            if (_scoreText != null)
-            {
-                _scoreText.text = "Score: " + _score;
-            }
-
-            if (_deathScreen != null)
-            {
-                _deathScreen.SetActive(true);
-            }
-
+            _scoreText.text = "Score: " + _score;
+            _deathScreen.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }

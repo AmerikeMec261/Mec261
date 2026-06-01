@@ -6,12 +6,17 @@ namespace Minecraft
     public class DamageFeedback : MonoBehaviour
     {
         [Header("Flash")]
+        [Tooltip("Renderers that flash when this object loses life.")]
         [SerializeField] private Renderer[] _renderers;
+        [Tooltip("Color applied during the damage flash.")]
         [SerializeField] private Color _damageColor = Color.red;
+        [Tooltip("Time before flashed materials return to their original color.")]
         [SerializeField] private float _flashTime = 0.08f;
 
         [Header("Scale")]
+        [Tooltip("Temporary scale offset applied when damage is received.")]
         [SerializeField] private Vector3 _scalePunch = new Vector3(0.08f, 0.08f, 0.08f);
+        [Tooltip("Duration of the scale punch feedback.")]
         [SerializeField] private float _scalePunchTime = 0.12f;
 
         private IDamagable _damagable;
