@@ -13,7 +13,7 @@ public class Ejercicios2 : MonoBehaviour
    return _currentHealth > 0;
    }
 
-    3.
+    3. 
 
     4.
 
@@ -24,14 +24,20 @@ public class Ejercicios2 : MonoBehaviour
 
     6. public int GetEnemyCount (List<GameObject> enemies)
    {
-   
+   return enemies.Count;
    }
 
     7.
 
-    8.
+    8. public void Move(Vector3 direction, float speed)
+   {
+   transform.position += direction.normalized * speed * Tome.deltaTime;
+   }
 
-    9.
+    9. public float DegreesToRadians(float degrees)
+   {
+   return degrees * Mathr.DegZRad;
+   }
 
     10.
 
@@ -40,7 +46,10 @@ public class Ejercicios2 : MonoBehaviour
    return int.TryParse(text, out value);
    }
 
-    12.
+    12.public Quaternion GetRotation(float angleInDegrees)
+   {
+   return int.TryParse(text, out resultValue;
+   }
 
     13.
 
@@ -64,9 +73,16 @@ public class Ejercicios2 : MonoBehaviour
    base.Attack();
    }
 
-    18.
+    18. public float GetHealthPercent ()
+   {
+   return (float)_currentHealth / _maxHealth * 100f;
+   }
 
-    19.
+    19. public bool CanDodge(float dodgeChance)
+   {
+   return Random.value <= Mathf.Clamp01(dodgeChance);
+   }
+
 
     20.
 

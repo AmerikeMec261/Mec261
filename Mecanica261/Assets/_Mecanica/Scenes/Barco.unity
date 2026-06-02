@@ -294,7 +294,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff4567a0ffc50254aa04525471809975, type: 3}
---- !u!1 &729329470
+--- !u!1 &665757874
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -302,7 +302,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 729329471}
+  - component: {fileID: 665757875}
   m_Layer: 0
   m_Name: esq2
   m_TagString: Untagged
@@ -310,13 +310,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &729329471
+--- !u!4 &665757875
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 729329470}
+  m_GameObject: {fileID: 665757874}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.5, z: 0.49545458}
@@ -350,7 +350,7 @@ Transform:
   m_GameObject: {fileID: 736454600}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.49955627, y: -0.5, z: 0.49545458}
+  m_LocalPosition: {x: -0.4795, y: -0.5, z: 0.141}
   m_LocalScale: {x: 0.004033885, y: 0.05, z: 0.030303031}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -916,7 +916,7 @@ Transform:
   - {fileID: 954863273}
   - {fileID: 416286062}
   - {fileID: 736454601}
-  - {fileID: 729329471}
+  - {fileID: 665757875}
   - {fileID: 1490534164}
   - {fileID: 2113254992}
   - {fileID: 1326979139}
@@ -976,7 +976,7 @@ MonoBehaviour:
   _bottomPoint: {fileID: 954863273}
   _floatPoints:
   - {fileID: 736454601}
-  - {fileID: 729329471}
+  - {fileID: 665757875}
   - {fileID: 1490534164}
   - {fileID: 2113254992}
   - {fileID: 1326979139}
@@ -993,20 +993,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d09f4f488c311345b0be7cf34b0ee99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipController
-  engineForcePoints:
-  - {fileID: 1535629153}
-  - {fileID: 903812094}
-  - {fileID: 122696896}
-  - {fileID: 1165292787}
-  rudderForcePoints:
-  - {fileID: 1507442704}
-  maximumSpeed: 10
-  engineForce: 1400
-  rudderForce: 120
-  acceleration: 1
-  deceleration: 0.4
-  rudderSmoothness: 0.15
-  maximumRudderAngle: 12
+  _engineForcePoints: []
+  _rudderForcePoints: []
+  _maximumSpeed: 16.46
+  _engineForce: 155000
+  _rudderForce: 45000
+  _acceleration: 0.25
+  _deceleration: 0.12
+  _rudderSmoothness: 0.35
+  _maximumRudderAngle: 35
 --- !u!1 &1326979138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1063,7 +1058,7 @@ Transform:
   m_GameObject: {fileID: 1490534163}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.49988306, y: -0.5, z: 0.49545458}
+  m_LocalPosition: {x: 0.4818, y: -0.5, z: 0.112}
   m_LocalScale: {x: 0.004033885, y: 0.05, z: 0.030303031}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1391,7 +1386,7 @@ Transform:
   m_GameObject: {fileID: 2085700945}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5003227, y: -0.5, z: -0.4996969}
+  m_LocalPosition: {x: -0.4813, y: -0.5, z: -0.128}
   m_LocalScale: {x: 0.004033885, y: 0.05, z: 0.030303031}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1422,7 +1417,7 @@ Transform:
   m_GameObject: {fileID: 2113254991}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.49988306, y: -0.5, z: -0.4996969}
+  m_LocalPosition: {x: 0.4814, y: -0.5, z: -0.167}
   m_LocalScale: {x: 0.004033885, y: 0.05, z: 0.030303031}
   m_ConstrainProportionsScale: 0
   m_Children: []
