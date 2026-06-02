@@ -28,7 +28,7 @@ public class EjercicioMetodos : MonoBehaviour
         return Vector3.Distance(firstPosition, secondPosition);
     }
 
-    //Dirección normalizada
+    //Direcciï¿½n normalizada
     public Vector3 GetDirection (Vector3 originPosition, Vector3 targetPosition)
     {
         return (targetPosition - originPosition).normalized;
@@ -46,7 +46,7 @@ public class EjercicioMetodos : MonoBehaviour
         return enemies.Count;
     }
 
-    //Enemigo más cercano
+    //Enemigo mï¿½s cercano
     public Enemy GetClosestEnemy(List<Enemy> enemies, Vector3 playerPosition)
     {
         Enemy closestEnemy = null;
@@ -76,7 +76,7 @@ public class EjercicioMetodos : MonoBehaviour
         return degrees*Mathf.Deg2Rad;
     }
 
-    //Jugador más cercano
+    //Jugador mï¿½s cercano
     public bool TryGetClosestPlayer(float searchRange, out Player closestPlayer)
     {
         closestPlayer = null;
@@ -110,7 +110,7 @@ public class EjercicioMetodos : MonoBehaviour
         return Quaternion.Euler(0f, angleInDegrees, 0f);
     }
 
-    //Enemigos en un área
+    //Enemigos en un ï¿½rea
     public void GetEnemiesInArea(Vector3 centerPosition, float radius, List<Enemy> enemiesInArea)
     {
         enemiesInArea.Clear();
@@ -128,7 +128,7 @@ public class EjercicioMetodos : MonoBehaviour
         }
     }
 
-    //Reiniciar posición del jugador
+    //Reiniciar posiciï¿½n del jugador
     public void ResetPosition(Vector3 spawnPoint)
     {
         transform.position = spawnPoint;
@@ -136,7 +136,7 @@ public class EjercicioMetodos : MonoBehaviour
 
         if(_rigidbody != null)
         {
-          _rigidbody.velocity = Vector3.zero;
+          _rigidbody.linearVelocity = Vector3.zero;
           _rigidbody.angularVelocity = Vector3.zero;
         }
     }
